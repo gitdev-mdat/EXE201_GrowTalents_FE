@@ -1,0 +1,278 @@
+/* Tổng container */
+.container {
+  padding: 20px;
+  background-color: #f5f7fa; /* Nền nhẹ */
+  min-height: 100vh; /* Đảm bảo chiếm toàn bộ chiều cao màn hình */
+  box-sizing: border-box;
+  overflow: hidden; /* Không cho phép cuộn */
+}
+
+/* Thanh tìm kiếm và bộ lọc */
+.filterContainer {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  align-items: center;
+  background-color: #fff; /* Nền trắng */
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ */
+}
+
+/* Ô tìm kiếm */
+.search {
+  flex: 1;
+  padding: 12px 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #333;
+  background-color: #f9f9f9; /* Nền sáng */
+  transition: all 0.3s ease;
+}
+
+.search:focus {
+  outline: none;
+  border-color: #0084ff; /* Màu xanh khi focus */
+  box-shadow: 0 0 8px rgba(0, 132, 255, 0.3); /* Hiệu ứng sáng */
+}
+
+/* Bộ lọc */
+.filter {
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #f9f9f9; /* Nền sáng */
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter:hover {
+  border-color: #0084ff;
+  background-color: #e6f0ff; /* Màu sáng khi hover */
+}
+
+/* Hiệu ứng hover tổng quan */
+.filterContainer:hover {
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Bóng đổ mạnh hơn */
+}
+
+/* Bảng thông tin học sinh */
+.infoContainer {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  height: calc(
+    100vh - 150px
+  ); /* Đảm bảo bảng chiếm hầu hết chiều cao màn hình */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden; /* Không có cuộn dọc */
+}
+
+.studentTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  table-layout: fixed; /* Đảm bảo chiều rộng các cột ổn định */
+  overflow-x: hidden; /* Không cho phép cuộn ngang */
+}
+
+.studentTable th {
+  background-color: #152259; /* Màu xanh đậm */
+  color: white; /* Màu chữ trắng */
+  padding: 14px 16px;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+  border-bottom: 2px solid #f5f7fa;
+}
+
+.studentTable td {
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #ddd;
+  vertical-align: middle;
+  white-space: nowrap; /* Giữ nguyên bố cục khi nội dung dài */
+  overflow: hidden; /* Tránh xuất hiện thanh cuộn ngang */
+  text-overflow: ellipsis; /* Dấu ba chấm nếu nội dung dài */
+}
+
+.studentTable tr:hover {
+  background-color: #e8f0fe; /* Màu sáng khi hover */
+}
+
+.studentImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+/* Cột chi tiết học sinh */
+.detailContainer {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 400px; /* Chiều rộng tối đa */
+  height: calc(100vh - 150px); /* Đảm bảo chiều cao cột chi tiết vừa vặn */
+  box-sizing: border-box;
+  overflow: hidden; /* Không cuộn */
+}
+
+/* Phần chi tiết học sinh (bên phải) */
+.detailImage {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+  object-fit: cover;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.detailName {
+  color: #152259;
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+/* Phần thông tin chi tiết (số điện thoại, địa chỉ, ngày sinh) */
+.detailInfoCard {
+  display: flex;
+  align-items: center;
+  background-color: #f5f7fa; /* Màu nền sáng */
+  padding: 15px 20px; /* Khoảng cách trong card */
+  border-radius: 10px; /* Bo góc */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ */
+  margin-bottom: 15px; /* Khoảng cách giữa các card */
+  transition: transform 0.2s, box-shadow 0.2s; /* Hiệu ứng hover */
+  min-width: 350px;
+}
+
+.detailInfoCard:hover {
+  transform: translateY(-3px); /* Hiệu ứng nổi khi hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Tăng bóng đổ */
+}
+
+.detailInfoCard .icon {
+  font-size: 1.5rem; /* Kích thước icon lớn hơn */
+  color: #152259; /* Màu xanh đậm */
+  margin-right: 15px; /* Khoảng cách giữa icon và nội dung */
+}
+
+.detailInfoCard .label {
+  font-size: 0.9rem; /* Kích thước nhỏ hơn cho nhãn */
+  color: #555; /* Màu xám nhạt */
+}
+
+.detailInfoCard .value {
+  font-size: 1rem; /* Kích thước chữ vừa phải */
+  color: #333; /* Màu chữ chính */
+  font-weight: bold; /* In đậm giá trị */
+  margin-left: auto; /* Căn phải nội dung */
+}
+
+/* Responsive điều chỉnh khoảng cách */
+@media (max-width: 768px) {
+  .detailInfoCard {
+    flex-direction: column; /* Chuyển nội dung thành cột */
+    align-items: flex-start; /* Căn trái */
+    padding: 10px 15px; /* Giảm padding */
+  }
+
+  .detailInfoCard .value {
+    margin-left: 0; /* Xóa căn phải trên màn hình nhỏ */
+    margin-top: 5px; /* Tạo khoảng cách trên */
+  }
+}
+
+/* Biểu tượng School */
+.schoolIcon {
+  margin-top: 20px;
+  font-size: 1rem; /* Kích thước chữ lớn hơn một chút */
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(90deg, #0084ff, #0062cc); /* Hiệu ứng gradient */
+  padding: 10px 20px; /* Tăng kích thước nút */
+  border-radius: 25px; /* Bo tròn đầy đặn */
+  display: inline-flex; /* Hiển thị linh hoạt */
+  align-items: center; /* Căn giữa icon và chữ */
+  gap: 10px; /* Khoảng cách giữa icon và chữ */
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.schoolIcon:hover {
+  background: linear-gradient(90deg, #0062cc, #005bb5); /* Màu sắc khi hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Hiệu ứng nổi */
+}
+
+.schoolIcon i {
+  font-size: 1.5rem; /* Tăng kích thước icon */
+}
+.paginationContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.paginationButton {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.paginationButton:hover {
+  background-color: #007bff;
+  color: white;
+  transform: scale(1.05);
+}
+
+.pageNumbers {
+  display: flex;
+  gap: 5px;
+}
+
+.pageNumbers button {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.pageNumbers button:hover {
+  background-color: #007bff;
+  color: white;
+  transform: scale(1.05);
+}
+
+.paginationButton:disabled {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
+}
+
+.paginationButton:disabled:hover {
+  background-color: #e0e0e0;
+  color: #999;
+}

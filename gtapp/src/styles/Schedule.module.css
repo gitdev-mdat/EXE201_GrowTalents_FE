@@ -1,0 +1,368 @@
+/* ----------- CONTAINER CHÍNH ----------- */
+.scheduleContainer {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  height: calc(
+    100vh - 60px
+  ); /* Chiều cao toàn trang, trừ header/footer nếu có */
+  margin-top: 20px;
+  padding: 0 20px; /* Khoảng cách hai bên cho container */
+  box-sizing: border-box;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ----------- LỊCH (CALENDAR) ----------- */
+.calendarWrapper {
+  flex: 1;
+  min-height: 100%;
+  overflow: hidden; /* Tránh xuất hiện scroll ngang/ dọc không cần thiết */
+  padding: 20px;
+}
+/* ----------- BẢNG NOTE (CHỈNH MỚI) ----------- */
+.noteContainer {
+  width: 300px; /* Độ rộng phù hợp, tùy chỉnh */
+  background-color: #ffffff; /* Nền trắng */
+  padding: 20px; /* Khoảng cách bên trong */
+  border-radius: 8px; /* Bo góc thẻ */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Bóng nhẹ */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Khoảng cách giữa các phần tử con */
+}
+
+.noteTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #00796b;
+  margin: 0; /* Xóa margin mặc định */
+  padding-bottom: 8px; /* Tạo khoảng cách dưới */
+  border-bottom: 2px solid #00796b; /* Gạch chân tiêu đề */
+}
+
+.noteItem {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Khoảng cách giữa colorBox và text */
+}
+
+.noteItem .colorBox {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px; /* Bo nhẹ các góc */
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
+}
+
+.noteItem .text {
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* ----------- FULLCALENDAR OVERRIDE ----------- */
+
+/* Header của Calendar (Tháng, Năm, nút chuyển) */
+.fc-header-toolbar {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fc-toolbar-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.fc-button-group > .fc-button {
+  background-color: #00796b;
+  border: none;
+  color: #fff;
+  margin: 0 2px;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 14px;
+  box-shadow: none;
+  transition: background-color 0.2s;
+}
+
+.fc-button-group > .fc-button:hover {
+  background-color: #004d40;
+}
+
+/* Các cột chứa ngày trong tuần (Mon, Tue, Wed, ...) */
+.fc-col-header-cell {
+  background: #eef7f6;
+  color: #333;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+/* Các ô ngày */
+.fc-daygrid-day {
+  border: 1px solid #ddd;
+  /* Để FullCalendar tự tính toán chiều cao, bạn có thể bỏ height cố định
+       hoặc chỉ set min-height cho responsive */
+  min-height: 80px;
+  transition: background-color 0.2s;
+}
+
+.fc-daygrid-day:hover {
+  background-color: #f0f0f0; /* Hiệu ứng hover nhẹ nhàng */
+  cursor: pointer;
+}
+
+/* Số ngày (1,2,3...) */
+.fc-daygrid-day-number {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin: 4px;
+}
+
+/* Ngày hiện tại (today) */
+.fc-daygrid-day.fc-day-today {
+  background-color: #dff3f2 !important;
+  color: #00796b;
+  position: relative;
+  border: 2px solid #00796b;
+}
+
+/* Ngày đã qua (past) - làm mờ nhẹ, tùy chọn */
+.fc-daygrid-day.fc-day-past {
+  color: #999;
+  opacity: 0.8;
+}
+
+/* Sự kiện chung */
+.fc-event {
+  border: none;
+  padding: 4px 6px;
+  margin: 2px 0;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Sự kiện hover */
+.fc-event:hover {
+  filter: brightness(0.9);
+  cursor: pointer;
+}
+
+/* Sự kiện "Đã dạy" */
+.fc-event.Đã-dạy {
+  background-color: #4682b4;
+  color: #fff;
+}
+
+/* Sự kiện "Chưa dạy" */
+.fc-event.Chưa-dạy {
+  background-color: #ff6347;
+  color: #fff;
+}
+/* Lớp phủ mờ nền khi mở modal */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* màu đen trong suốt */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* Đảm bảo modal nằm trên cùng */
+}
+
+/* Nội dung modal */
+.modalContent {
+  background-color: #fff;
+  padding: 20px 30px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 90%; /* cho responsive */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+/* Nút đóng */
+.modalContent button {
+  margin-top: 20px;
+  padding: 8px 14px;
+  background-color: #00796b;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modalContent button:hover {
+  background-color: #005f56;
+}
+/* ----------- EVENT CONTENT ----------- */
+.eventContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Căn lề trái */
+  justify-content: center; /* Giữa các thành phần */
+  width: 100%; /* Chiều ngang đều nhau */
+  height: 60px; /* Chiều cao cố định */
+  padding: 8px 12px; /* Khoảng cách bên trong */
+  border-radius: 8px; /* Bo góc */
+  box-sizing: border-box; /* Tính cả padding trong kích thước */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hiệu ứng hover */
+.eventContent:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Sự kiện đã dạy */
+.eventTaught {
+  background-color: #d4edda; /* Xanh nhạt */
+  border: 1px solid #28a745; /* Viền xanh lá */
+  color: #155724; /* Chữ xanh đậm */
+}
+
+/* Sự kiện chưa dạy */
+.eventPending {
+  background-color: #f8d7da; /* Đỏ nhạt */
+  border: 1px solid #dc3545; /* Viền đỏ */
+  color: #721c24; /* Chữ đỏ đậm */
+}
+
+/* Title của sự kiện */
+.eventTitle {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px; /* Khoảng cách với status */
+  width: 100%;
+  text-align: left;
+  overflow: hidden; /* Xử lý chữ dài */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Status của sự kiện */
+.eventStatus {
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+  color: inherit; /* Kế thừa màu từ parent (theo status) */
+}
+/* Overlay của modal */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7); /* Màu đen mờ hơn */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* Nội dung modal */
+/* Modal tổng quan */
+.modalContent {
+  background-color: #ffffff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  max-width: 450px;
+  width: 90%;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Tiêu đề của modal */
+.modalContent h2 {
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Thông tin trạng thái */
+.modalContent p {
+  font-size: 16px;
+  color: #555;
+  margin: 8px 0 16px;
+}
+
+/* Nhóm nút */
+.modalButtonGroup {
+  display: flex;
+  justify-content: center; /* Canh giữa */
+  gap: 20px; /* Khoảng cách giữa các nút */
+  margin-top: 20px;
+}
+
+/* Nút nhận lớp */
+.acceptButton {
+  background-color: #4caf50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-right: 10px;
+}
+
+.acceptButton:hover {
+  background-color: #388e3c;
+  transform: translateY(-2px);
+}
+
+/* Nút điểm danh */
+.attendanceButton {
+  background-color: #ff5722;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-right: 10px;
+}
+
+.attendanceButton:hover {
+  background-color: #e64a19;
+  transform: translateY(-2px);
+}
+
+/* Nút đóng */
+.closeButton {
+  background-color: #757575;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.closeButton:hover {
+  background-color: #616161;
+  transform: translateY(-2px);
+}

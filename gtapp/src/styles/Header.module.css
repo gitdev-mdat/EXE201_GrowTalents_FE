@@ -1,0 +1,140 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  background: #003366;
+  padding: 20px 40px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  animation: popUpAnimation 2s ease-out forwards;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 30px;
+  color: #ffffff;
+}
+
+.separator {
+  margin: 0 10px;
+  font-size: 28px;
+  color: #ffffff;
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 60px;
+  margin-right: 50px;
+}
+
+.course,
+.contact {
+  color: #ffffff;
+  font-size: 18px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.course:hover,
+.contact:hover {
+  color: #f2c14e;
+}
+
+.input {
+  color: #333;
+  border: 2px solid #dcdcdc;
+  max-width: 350px;
+  border-radius: 10px;
+  padding: 10px 15px;
+  background: #f9f9f9;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.input:focus {
+  background: #fff;
+  border-color: #8707ff;
+  box-shadow: 0 0 8px rgba(135, 7, 255, 0.5);
+  outline: none;
+}
+
+.icon {
+  font-size: 24px;
+  color: #ffffff;
+  transition: all 0.3s ease;
+  padding: 10px;
+}
+
+.icon:hover {
+  color: #f2c14e;
+  transform: scale(1.15);
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: #ffffff;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.avatar:hover {
+  color: #f2c14e;
+  transform: scale(1.05);
+}
+
+.avatar svg {
+  margin-left: 5px;
+  font-size: 16px;
+  color: inherit;
+}
+
+.section {
+  padding: 100px 20px 40px; /* tăng padding-top do fixed header */
+  margin: 20px 0;
+}
+
+.section h2 {
+  font-size: 28px;
+  color: #004eba;
+}
+
+.section p {
+  font-size: 16px;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+  }
+
+  .title {
+    font-size: 26px;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .input {
+    width: 100%;
+  }
+
+  .avatar {
+    font-size: 14px;
+  }
+}

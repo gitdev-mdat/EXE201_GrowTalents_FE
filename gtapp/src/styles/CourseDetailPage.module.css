@@ -1,0 +1,307 @@
+/* CourseDetailPage.module.css */
+
+.courseDetailContainer {
+  /* background-image: url("../assets/background.svg"); */
+  background-color: #002569;
+  display: grid;
+  grid-template-columns: 3fr 1fr; /* Chia làm 2 phần, 3 phần là nội dung, 1 phần là phần bên phải */
+  gap: 20px;
+  padding: 20px;
+}
+
+.courseLeft {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* CourseDetailPage.module.css */
+
+/* Phần bên phải */
+.courseRight {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  max-height: 450px;
+}
+
+/* Phần chứa ảnh */
+.imageContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.courseImage {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Phần thông tin khóa học */
+.courseDetails {
+  font-size: 16px;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: center;
+  margin-top: 20px;
+  width: 100%;
+}
+
+/* Các mục thông tin khóa học */
+.detailItem {
+  padding: 15px;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+/* Hiệu ứng hover cho mục thông tin */
+.detailItem:hover {
+  background-color: #e0f7fa;
+  transform: translateY(-5px);
+  cursor: pointer;
+}
+
+/* Sử dụng màu sắc nhẹ cho các tiêu đề trong thông tin khóa học */
+.detailItem strong {
+  color: #00796b;
+}
+
+/* Nút Đăng ký và Thêm vào giỏ hàng */
+.buttonsContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 30px;
+  width: 100%;
+}
+
+.registerButton,
+.addToCartButton {
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  width: 48%; /* Cả hai nút chiếm 48% chiều rộng */
+}
+
+.registerButton {
+  background-color: #00796b;
+  color: #fff;
+}
+
+.registerButton:hover {
+  background-color: #004d40; /* Màu khi hover */
+  transform: translateY(-3px); /* Hiệu ứng nhấc nút lên khi hover */
+}
+
+.addToCartButton {
+  background-color: #0288d1;
+  color: #fff;
+}
+
+.addToCartButton:hover {
+  background-color: #01579b; /* Màu khi hover */
+  transform: translateY(-3px); /* Hiệu ứng nhấc nút lên khi hover */
+}
+
+.courseName {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1d3557; /* Màu tối để dễ đọc */
+  margin-top: 30px;
+  margin-bottom: 20px;
+  line-height: 1.4;
+  text-align: center;
+  text-transform: capitalize; /* Chữ cái đầu tiên mỗi từ sẽ viết hoa */
+}
+
+.courseDescription {
+  font-size: 16px; /* Kích thước chữ hợp lý cho mô tả */
+  color: #555; /* Sử dụng màu tối hơn để dễ đọc */
+  line-height: 1.6; /* Tăng khoảng cách dòng cho dễ đọc */
+  max-width: 800px; /* Giới hạn chiều rộng để không tràn ra ngoài */
+  margin: 0 auto; /* Căn giữa mô tả */
+  padding: 15px; /* Thêm padding xung quanh để tạo không gian */
+  background-color: #f7f7f7; /* Nền sáng nhẹ */
+  border-radius: 8px; /* Bo góc cho phần mô tả */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng nhẹ */
+  text-align: justify; /* Căn đều nội dung trong mô tả */
+  margin-top: 20px; /* Khoảng cách với tên khóa học */
+}
+
+.courseDescription p {
+  margin-bottom: 15px; /* Tạo khoảng cách giữa các đoạn văn trong mô tả */
+}
+
+/* Thêm hiệu ứng hover cho mô tả nếu người dùng di chuột vào */
+.courseDescription:hover {
+  background-color: #e0e0e0;
+  cursor: pointer;
+}
+
+.courseWhatYouWillLearn {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 40px;
+  color: #333;
+  text-transform: uppercase;
+  border-bottom: 2px solid #ddd; /* Thêm đường gạch chân */
+  padding-bottom: 10px;
+}
+
+.courseContent {
+  margin-top: 20px;
+  background-color: #f9f9f9; /* Nền nhạt cho phần nội dung */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.courseContentTitle {
+  font-size: 22px;
+  font-weight: bold;
+  color: #1d3557; /* Màu đậm cho tiêu đề */
+  margin-bottom: 15px;
+}
+
+.courseContentStats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  color: #333; /* Chỉnh lại màu cho chữ, dùng màu tối hơn */
+}
+
+.chapterCount,
+.lessonCount {
+  font-weight: 600; /* Làm nổi bật các con số */
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: #f0f4f4; /* Nền nhẹ và dịu hơn */
+  color: #00796b; /* Màu chữ xanh lá sáng để dễ đọc */
+}
+
+.chapterCount {
+  border: 2px solid #00796b; /* Viền màu */
+}
+
+.lessonCount {
+  border: 2px solid #0288d1; /* Viền màu khác */
+  background-color: #e3f2fd;
+  color: #01579b;
+}
+
+.courseContentStats span:hover {
+  background-color: #b2dfdb; /* Hiệu ứng hover */
+  cursor: pointer;
+}
+
+.courseCollapse {
+  margin-top: 20px;
+}
+
+.otherContent {
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 16px;
+}
+
+/* Thêm styles cho tiêu đề của Collapse */
+.collapseHeader {
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  color: #333; /* Đổi màu chữ cho tiêu đề panel */
+  padding: 10px 15px; /* Tạo khoảng cách xung quanh chữ */
+  cursor: pointer; /* Biến con trỏ thành dấu tay khi hover */
+  border-radius: 5px;
+  transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu nền */
+}
+
+/* Hiệu ứng hover cho tiêu đề Collapse */
+.collapseHeader:hover {
+  background-color: #b2ebf2; /* Màu nền thay đổi khi hover */
+}
+
+/* Thêm styles cho nội dung của Collapse */
+.collapseContent {
+  font-size: 16px;
+  margin-top: 10px;
+  padding-left: 20px;
+  color: #333; /* Chỉnh lại màu chữ trong nội dung */
+  background-color: #f0f4f4; /* Nền nhẹ, phù hợp với nội dung */
+  border-radius: 8px;
+  padding: 15px;
+}
+
+/* Thêm hiệu ứng cho phần nội dung khi mở rộng */
+.collapseContent p {
+  margin-bottom: 15px; /* Khoảng cách giữa các đoạn văn */
+}
+
+/* Thêm styles cho các icon trong tiêu đề */
+.collapseHeader svg {
+  margin-right: 10px;
+}
+
+/* Styles cho Tabs */
+.tabTitle {
+  font-size: 18px;
+  color: #00796b; /* Màu xanh lá cho Toán số */
+  font-weight: bold;
+}
+
+/* Styles cho TabPane */
+.ant-tabs-tab {
+  padding: 12px 20px; /* Khoảng cách giữa các tab */
+  background-color: #e0f7fa; /* Nền nhẹ cho các tab */
+  color: #00796b;
+  font-weight: 600;
+  border-radius: 5px;
+}
+
+.ant-tabs-tab:hover {
+  background-color: #b2dfdb; /* Hiệu ứng hover cho tab */
+  cursor: pointer;
+}
+
+.ant-tabs-tab-active {
+  background-color: #00796b; /* Màu nền cho tab đang được chọn */
+  color: #fff;
+  font-weight: 700;
+}
+
+.ant-tabs-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.ant-tabs-content > .ant-tabs-pane {
+  padding: 20px;
+  background-color: #f7f7f7;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}

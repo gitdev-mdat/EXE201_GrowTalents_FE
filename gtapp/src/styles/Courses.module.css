@@ -1,0 +1,307 @@
+/* General container */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px;
+  background-color: #f4f7fc; /* Nền sáng và nhẹ nhàng */
+  border-radius: 12px;
+  height: 100vh;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif; /* Sử dụng font dễ đọc */
+  color: #2e3a59; /* Màu chữ tối để dễ đọc */
+}
+
+/* Search and Filter Section */
+.search-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+  gap: 20px; /* Khoảng cách giữa các phần tử */
+  width: 100%;
+}
+
+/* Inputs and Select elements */
+.search-section input,
+.search-section select {
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: 1px solid #dddfe3;
+  font-size: 16px;
+  outline: none;
+  background-color: #f8fafc;
+  color: #2e3a59;
+  transition: all 0.3s ease;
+  width: calc(33% - 100px);
+  min-width: 100px; /* Đảm bảo rằng chúng không quá nhỏ */
+  box-sizing: border-box;
+}
+
+/* Chỉnh lại hover và focus cho input và select */
+.search-section input:hover,
+.search-section select:hover {
+  border-color: #4a56d1; /* Màu viền khi hover */
+  background-color: #f0f4fb; /* Màu nền khi hover */
+}
+
+.search-section input:focus,
+.search-section select:focus {
+  border-color: #4a56d1;
+  box-shadow: 0 0 0 3px rgba(74, 86, 209, 0.2); /* Hiệu ứng khi focus */
+}
+
+/* Search Button */
+.search-section button {
+  background-color: #4a56d1;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  width: 180px; /* Chiều rộng nút Search */
+  min-width: 180px;
+}
+
+.search-section button:hover {
+  background-color: #3b47a1; /* Màu nền khi hover */
+}
+
+/* Add Course Button */
+.add-course-btn {
+  background-color: #6c7cff;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  width: 180px; /* Chiều rộng nút Add Courses */
+  margin-top: 20px;
+  align-self: flex-start; /* Đặt về phía trái */
+}
+
+.add-course-btn:hover {
+  background-color: #5561d1; /* Màu tối hơn khi hover */
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .search-section {
+    flex-direction: column;
+    gap: 20px;
+    align-items: stretch;
+  }
+
+  .search-section input,
+  .search-section select,
+  .search-section button {
+    width: 100%; /* Các phần tử chiếm toàn bộ chiều rộng trên màn hình nhỏ */
+  }
+
+  .add-course-btn {
+    width: 100%; /* Đảm bảo nút Add Course chiếm toàn bộ chiều rộng */
+  }
+}
+
+@media (max-width: 768px) {
+  .search-section input,
+  .search-section select,
+  .search-section button {
+    width: 100%; /* Các phần tử chiếm toàn bộ chiều rộng trên màn hình nhỏ */
+  }
+
+  .add-course-btn {
+    width: 100%; /* Nút Add Course cũng rộng như các phần tử khác */
+  }
+}
+
+/* Course Cards Grid */
+.course-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+/* Each course card */
+.course-card {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: calc(33% - 20px);
+  transition: transform 0.3s, box-shadow 0.3s ease;
+  box-sizing: border-box;
+  cursor: pointer;
+  min-height: 320px; /* Đảm bảo chiều cao cố định cho card */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Đảm bảo các phần tử không bị đẩy lên xuống */
+}
+
+/* Hover hiệu ứng cho Course Card */
+.course-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.course-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* Title Style */
+.course-card .title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2e3a59; /* Màu đậm cho tiêu đề */
+  text-align: center;
+  margin-bottom: 10px;
+  text-overflow: ellipsis; /* Cắt chữ khi quá dài */
+  white-space: nowrap; /* Ngăn không cho chữ xuống dòng */
+  overflow: hidden; /* Ẩn phần chữ bị tràn */
+}
+
+/* Info Style for Creator and Last Edit */
+.course-card .info {
+  font-size: 14px;
+  color: #5f6368; /* Màu chữ nhẹ nhàng, dễ nhìn */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+.course-card .info span {
+  font-weight: 600;
+  color: #3e4c59; /* Màu đậm cho thông tin quan trọng */
+  transition: color 0.3s ease;
+}
+
+/* Trạng thái */
+.course-card label {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 30px; /* Làm bo tròn mềm mại */
+  display: inline-block;
+  text-align: center;
+  margin-top: 12px;
+  background-color: #f3f6fc; /* Nền màu xanh nhạt */
+  color: #4a56d1;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Thêm bóng nhẹ */
+}
+
+/* Trạng thái màu sắc */
+.course-card .status-ongoing {
+  background-color: #fff9c4; /* Màu vàng nhạt thanh thoát */
+  color: #fbc02d; /* Màu chữ nổi bật */
+}
+
+.course-card .status-pending {
+  background-color: #b3e5fc; /* Màu xanh nhạt mát mẻ */
+  color: #039be5; /* Màu chữ xanh nổi bật */
+}
+
+.course-card .status-completed {
+  background-color: #c8e6c9; /* Màu xanh lá nhẹ nhàng */
+  color: #388e3c; /* Màu chữ đậm, dễ đọc */
+}
+
+/* Thêm hiệu ứng hover cho trạng thái */
+.course-card label:hover {
+  transform: scale(1.05); /* Phóng to nhẹ khi hover */
+  background-color: #e0e7f1; /* Màu nền nhạt hơn khi hover */
+  color: #2e3a59; /* Chữ đậm hơn khi hover */
+}
+.view-class-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.view-class-button:hover {
+  background-color: #45a049;
+}
+
+.view-class-button svg {
+  margin-right: 5px;
+}
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  gap: 12px;
+}
+
+.pagination button {
+  padding: 12px 20px;
+  border: none;
+  background-color: #4a56d1; /* Màu xanh chủ đạo */
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.pagination button:hover {
+  background-color: #3b47a1;
+}
+
+.pagination .active {
+  background-color: #3b47a1; /* Màu khi active */
+}
+
+.pagination .disabled {
+  background-color: #c4c7d2; /* Màu khi disabled */
+  cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .course-card {
+    width: calc(50% - 20px); /* Hai card mỗi dòng trên màn hình trung bình */
+  }
+}
+
+@media (max-width: 768px) {
+  .course-card {
+    width: 100%; /* Một card mỗi dòng trên màn hình nhỏ */
+  }
+
+  .pagination {
+    flex-direction: column;
+  }
+
+  .pagination button {
+    width: 100%;
+  }
+}

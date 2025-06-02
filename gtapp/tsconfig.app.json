@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "allowJs": true, // Cho phép TypeScript xử lý file .js và .jsx
+    "checkJs": false, // Không kiểm tra chặt chẽ các file .js và .jsx
+    "jsx": "react-jsx", // Hỗ trợ React JSX Transform
+    "strict": true, // Kiểm tra TypeScript chặt chẽ (nếu cần)
+    "noEmit": true, // Không tạo file .js sau khi biên dịch
+    "skipLibCheck": true, // Bỏ qua kiểm tra thư viện bên ngoài
+    "moduleResolution": "bundler",
+    "module": "ESNext",
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM"]
+  },
+  "include": ["src/**/*"], // Bao gồm tất cả file trong thư mục src
+  "exclude": ["node_modules", "dist"] // Loại trừ các thư mục không cần thiết
+}

@@ -1,0 +1,27 @@
+/* Tiêu đề khóa học */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.container {
+  margin: 20px 10px 20px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-image: url("../assets/background_process.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  font-family: "Arial", sans-serif;
+  box-sizing: border-box;
+  overflow: hidden;
+  width: 98%;
+}
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333333;
+  margin: 0;
+}

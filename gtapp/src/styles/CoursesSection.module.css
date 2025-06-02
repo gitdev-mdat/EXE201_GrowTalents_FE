@@ -1,0 +1,191 @@
+/* General Styles */
+.coursesSection {
+  padding: 1rem 2rem;
+  /* background-color: #f4f8ff; */
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Tiêu đề phần khóa học */
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #003366;
+  margin-bottom: 2rem;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Nút lựa chọn cấp học */
+.levelSelection {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.levelButton {
+  background-color: #4a90e2;
+  color: white;
+  padding: 0.5rem 2rem;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.levelButton:hover {
+  background-color: #0066cc;
+}
+
+.selected {
+  background-color: #0066cc;
+}
+
+/* Tiêu đề từng cấp học */
+.levelTitle {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #003366;
+  margin-bottom: 1.5rem;
+}
+
+/* Danh sách khóa học */
+.coursesList {
+  display: flex;
+  /* flex-wrap: wrap; */
+  justify-content: space-around;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Card khóa học */
+.courseCard {
+  background: #fff;
+  border-radius: 15px;
+  padding: 1rem;
+  width: 30%;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease,
+    background-color 0.3s ease;
+  text-align: center;
+  font-family: "Roboto", sans-serif;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid transparent;
+}
+
+.courseCard:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  background-color: #f0f8ff;
+  border: 2px solid #4a90e2;
+}
+
+.courseImage {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+  object-fit: cover;
+}
+
+.courseImage:hover {
+  transform: scale(1.05);
+}
+
+.courseTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #003366;
+}
+
+.courseDescription {
+  font-size: 1rem;
+  color: #777;
+  margin-bottom: 1.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.courseInstructor {
+  font-size: 1rem;
+  color: #555;
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+.coursePrice {
+  font-size: 1.1rem;
+  color: #00cc00;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.courseButton {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  color: #fff;
+  background-color: #4a90e2;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.courseButton:hover {
+  background-color: #0066cc;
+  transform: scale(1.1);
+}
+
+.levelInfo {
+  font-size: 0.9rem;
+  color: #4a90e2;
+  margin-top: 10px;
+}
+
+.badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #ff5f5f;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive - Thích ứng với màn hình nhỏ */
+@media (max-width: 768px) {
+  .coursesList {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .courseCard {
+    width: 100%;
+  }
+
+  .levelButton {
+    font-size: 1rem;
+    padding: 0.5rem 1.5rem;
+  }
+}

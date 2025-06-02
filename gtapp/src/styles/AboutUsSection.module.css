@@ -1,0 +1,131 @@
+.aboutUsSection {
+  padding: 3rem 1rem;
+  background-color: #f9f9f9;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  margin: 0 auto;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.videoContainer {
+  flex: 1;
+  text-align: center;
+  padding-top: 1.5rem;
+}
+
+.videoTitle {
+  font-size: 2.2rem;
+  color: #003366;
+  margin-bottom: 1rem;
+}
+
+.videoWrapper {
+  max-width: 100%;
+  margin: 0 auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.videoPlayer {
+  width: 100%;
+  height: 500px; /* Điều chỉnh lại kích thước video */
+  border-radius: 10px;
+}
+
+.achievementContainer {
+  flex: 1;
+  padding-top: 2rem;
+}
+
+.achievementTitle {
+  font-size: 2rem;
+  color: #003366;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.achievementList {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.achievementItem {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: left;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  max-width: 100%; /* Giới hạn chiều rộng các item */
+  margin: 0 auto; /* Căn giữa */
+}
+
+.achievementItem:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.achievementHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.achievementIcon {
+  align-items: center;
+  font-size: 3rem;
+  color: #4a90e2;
+}
+
+.achievementTitle {
+  align-items: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #003366;
+}
+
+.achievementText {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .videoPlayer {
+    height: 300px;
+  }
+
+  .achievementContainer {
+    padding-top: 1rem;
+  }
+
+  .achievementItem {
+    padding: 1rem;
+  }
+
+  .achievementTitle {
+    font-size: 1.8rem;
+  }
+
+  .achievementText {
+    font-size: 1rem;
+  }
+
+  .achievementIcon {
+    font-size: 2.5rem;
+  }
+}

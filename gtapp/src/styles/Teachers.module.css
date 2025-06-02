@@ -1,0 +1,178 @@
+/* Tổng container bảng */
+.table-container {
+  background-color: #f9fafc; /* Nền sáng */
+  border-radius: 12px; /* Bo góc mềm mại */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Bóng đổ */
+  padding: 20px;
+  min-height: 550px; /* Chiều cao tối thiểu */
+  display: flex;
+  flex-direction: column; /* Nội dung xếp dọc */
+  overflow: hidden; /* Tránh tràn nội dung */
+}
+
+/* Header của bảng */
+.table-head th {
+  font-size: 1.1rem; /* Cải thiện kích thước font */
+  padding: 16px 18px;
+  color: white;
+  text-transform: uppercase;
+  text-align: center;
+  border-bottom: 3px solid #ddd; /* Dày hơn để tạo sự phân biệt */
+  background-color: #152259; /* Màu xanh đậm */
+  letter-spacing: 1px; /* Tạo khoảng cách giữa các chữ */
+  font-family: "Roboto", sans-serif; /* Chọn font dễ đọc */
+}
+
+/* Styling từng hàng trong bảng */
+.table-body tr {
+  display: grid; /* Sử dụng grid layout */
+  grid-template-columns: 0.3fr 0.5fr 1.5fr 1.5fr 2fr 0.5fr; /* Định dạng cột */
+  align-items: center;
+  padding: 12px 16px;
+  margin-bottom: 12px; /* Khoảng cách giữa các hàng */
+  background-color: #ffffff; /* Nền trắng */
+  border-radius: 8px; /* Bo góc */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bóng đổ */
+  transition: transform 0.3s ease, box-shadow 0.3s ease,
+    background-color 0.3s ease;
+  font-family: "Poppins", sans-serif; /* Font thanh thoát, hiện đại */
+  color: #555; /* Màu chữ nhẹ nhàng, dễ đọc */
+}
+
+.table-body tr:hover {
+  transform: translateY(-3px); /* Hover nổi rõ rệt */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  background-color: #e3f2fd; /* Nền xanh nhạt khi hover */
+}
+
+.table-body td {
+  font-size: 1rem; /* Cải thiện font cho dễ đọc */
+  font-weight: 400;
+  color: #333; /* Màu chữ */
+  text-align: center; /* Canh giữa nội dung */
+  overflow: hidden; /* Ẩn nội dung tràn */
+  text-overflow: ellipsis; /* Hiển thị dấu "..." */
+  white-space: nowrap; /* Không xuống dòng */
+  padding: 12px 16px; /* Thêm padding cho mỗi ô */
+  transition: color 0.3s ease, transform 0.3s ease; /* Thêm hiệu ứng chuyển màu cho văn bản */
+}
+
+/* Styling cho giới tính */
+.table-body .gender-male {
+  color: #2196f3; /* Màu xanh nhạt */
+  font-weight: 500;
+  text-transform: capitalize;
+  transition: color 0.3s ease; /* Hiệu ứng chuyển màu */
+}
+
+.table-body .gender-female {
+  color: #e91e63; /* Màu hồng */
+  font-weight: 500;
+  text-transform: capitalize;
+  transition: color 0.3s ease; /* Hiệu ứng chuyển màu */
+}
+
+/* Hover thay đổi màu chữ trong các cột */
+.table-body td:hover {
+  color: #152259; /* Chữ đổi màu khi hover */
+  transform: scale(1.05); /* Thêm hiệu ứng phóng to khi hover */
+}
+
+/* Collapse (phần mở rộng hàng) */
+.collapse-content {
+  margin-top: 12px;
+  background-color: #e3f2fd; /* Nền xanh nhạt */
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.collapse-table th {
+  background-color: #152259; /* Xanh đậm */
+  color: white;
+  padding: 12px 15px;
+  font-size: 1rem;
+  text-align: left; /* Canh trái */
+  font-family: "Roboto", sans-serif;
+}
+
+.collapse-table td {
+  background-color: #ffffff;
+  padding: 12px 15px;
+  font-size: 1rem;
+  text-align: left; /* Canh trái */
+}
+
+.collapse-table tr:hover {
+  background-color: #f3e5f5; /* Tím nhạt khi hover */
+}
+
+/* Buttons container */
+.buttons-container {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-end;
+  padding: 20px 0; /* Thêm padding cho phần button */
+}
+
+/* Export CSV Button */
+.action-button:first-of-type {
+  background-color: #3a506b; /* Xanh */
+  color: white;
+  padding: 10px 18px;
+  border-radius: 5px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.action-button:first-of-type:hover {
+  background-color: #1f2d44;
+  transform: scale(1.05);
+}
+
+/* Add Teacher Button */
+.action-button:last-of-type {
+  background-color: #ffa726; /* Cam */
+  color: white;
+  padding: 10px 18px;
+  border-radius: 5px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.action-button:last-of-type:hover {
+  background-color: #ff8f00;
+  transform: scale(1.05);
+}
+
+/* Pagination */
+.pagination-container {
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 0;
+}
+
+.pagination-container .MuiPaginationItem-root {
+  color: #152259;
+  font-weight: bold;
+  border-radius: 50%;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.pagination-container .MuiPaginationItem-root:hover {
+  background-color: #152259;
+  color: white;
+  transform: scale(1.1);
+}
+
+.pagination-container .Mui-selected {
+  background-color: #152259;
+  color: white;
+  font-weight: bold;
+}
