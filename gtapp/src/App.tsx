@@ -9,12 +9,14 @@ import { ConfigProvider } from "antd";
 import HomePage from "./pages/HomePage";
 import CourseDetailPage from "./pages/CourseDetailPage";
 import LoginPage from "./pages/LoginPage";
-import Teachers from "./components/admin/Teachers";
 import AdminLayout from "./components/admin/AdminLayout";
 import Students from "./components/admin/Students";
 import Courses from "./components/admin/Courses";
 import Dashboard from "./components/admin/Dashboard";
 import Schedule from "./components/admin/Schedule";
+import TeacherList from "./components/admin/TeacherList";
+import TuitionRecord from "./components/admin/TuitionRecord";
+import SummaryReport from "./components/admin/SummaryReport";
 // import HeroSection from "./components/HeroSection";
 // import AboutUsSection from "./components/AboutUsSection";
 // import CourseSection from "./components/CourseSection";
@@ -37,10 +39,12 @@ function App() {
           <Route path="/admin" element={<AdminLayout />}>
             {/* Route con của admin */}
             <Route path="dashboard" element={<Dashboard />} />
-            <Route path="teachers" element={<Teachers />} />
+            <Route path="teachers" element={<TeacherList />} />
             <Route path="students" element={<Students />} />
             <Route path="courses" element={<Courses />} />
             <Route path="schedule" element={<Schedule />} />
+            <Route path="tuition" element={<TuitionRecord />} />
+            <Route path="reports" element={<SummaryReport />} />
           </Route>
         </Routes>
       </Router>

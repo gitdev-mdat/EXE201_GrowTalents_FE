@@ -10,6 +10,9 @@ import EditNoteIcon from "@mui/icons-material/EditNote";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import PersonIcon from "@mui/icons-material/Person";
+import PaymentIcon from "@mui/icons-material/Payment";
+import AssessmentIcon from "@mui/icons-material/Assessment";
 
 const SideBar = () => {
   return (
@@ -25,17 +28,20 @@ const SideBar = () => {
         <Link to="/admin/schedule" className={styles.item}>
           <AccessTimeIcon /> Schedule
         </Link>
-        {/* <Link to="/admin/teachers" className={styles.item}>
-          <SchoolIcon /> Teachers
-        </Link> */}
+        <Link to="/admin/teachers" className={styles.item}>
+          <PersonIcon /> Teachers
+        </Link>
         <Link to="/admin/students" className={styles.item}>
           <PictureInPictureIcon /> Students/classes
         </Link>
         <Link to="/admin/courses" className={styles.item}>
           <LibraryBooksIcon /> Courses
         </Link>
-        <Link to="/admin/exam" className={styles.item}>
-          <EditNoteIcon /> Exam
+        <Link to="/admin/tuition" className={styles.item}>
+          <PaymentIcon /> Tuition Recording
+        </Link>
+        <Link to="/admin/reports" className={styles.item}>
+          <AssessmentIcon /> Summary & Report Export
         </Link>
         <Link to="/admin/settings" className={styles.item}>
           <SettingsIcon /> Settings and profile
