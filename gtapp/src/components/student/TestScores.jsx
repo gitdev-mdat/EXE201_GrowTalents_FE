@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "../../styles/StudentTestScores.module.css";
 import toan from "../../assets/Math1.svg";
 import english from "../../assets/english.svg";
 import physic from "../../assets/physic.svg";
 
 const TestScores = () => {
+  const navigate = useNavigate();
   const [selectedCourse, setSelectedCourse] = useState("all");
   const [selectedPeriod, setSelectedPeriod] = useState("all");
 
@@ -247,7 +249,12 @@ const TestScores = () => {
             )}
             
             <div className={styles.scoreActions}>
-              <button className={styles.viewDetailBtn}>Xem chi tiết</button>
+              <button 
+                className={styles.viewDetailBtn}
+                onClick={() => navigate(`/student/test-detail/${score.id}`)}
+              >
+                Xem chi tiết
+              </button>
               {score.status === "Chưa làm" && (
                 <button className={styles.takeTestBtn}>Làm bài kiểm tra</button>
               )}

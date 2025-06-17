@@ -31,7 +31,7 @@ const StudentSideBar = () => {
         <Link to="/student/documents" className={styles.item}>
           <LibraryBooksIcon /> Documents / Exercises
         </Link>
-        <Link to="/student/scores" className={styles.item}>
+        <Link to="/student/test-scores" className={styles.item}>
           <AssessmentIcon /> Test Scores / Teacher Comments
         </Link>
         <Link to="/student/settings" className={styles.item}>

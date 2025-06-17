@@ -1,13 +1,15 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import styles from "../styles/CoursesSection.module.css";
 import chemistry from "../assets/hoahoc.jpg";
 import math from "../assets/toan.jpg";
 import english from "../assets/tienganh.jpg";
 import physic from "../assets/vatly.jpg";
-import literature from "../assets/van.jpg"; // Thêm môn văn
+import literature from "../assets/van.jpg";
 
 const CoursesSection = () => {
   const [selectedLevel, setSelectedLevel] = useState("Cấp 1 (Lớp 1 - 5)");
+  const navigate = useNavigate(); // Hook điều hướng
 
   // Data cho các khóa học
   const courses = {
@@ -114,6 +116,11 @@ const CoursesSection = () => {
     setSelectedLevel(level);
   };
 
+  const handleViewDetails = (course) => {
+    // Điều hướng đến trang chi tiết khóa học và truyền dữ liệu qua state
+    navigate("/home/course-detail", { state: { course } });
+  };
+
   return (
     <section className={styles.coursesSection}>
       <div className={styles.container}>
@@ -154,7 +161,12 @@ const CoursesSection = () => {
                   Giảng viên: {course.instructor}
                 </div>
                 <p className={styles.coursePrice}>{course.price}</p>
-                <button className={styles.courseButton}>Xem Chi Tiết</button>
+                <button
+                  className={styles.courseButton}
+                  onClick={() => handleViewDetails(course)} // Gọi hàm điều hướng
+                >
+                  Xem Chi Tiết
+                </button>
               </div>
             ))}
           </div>

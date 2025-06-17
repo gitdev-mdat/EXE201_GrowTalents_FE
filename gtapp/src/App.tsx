@@ -28,6 +28,7 @@ import CourseLearning from "./components/student/CourseLearning";
 import StudySchedule from "./components/student/StudySchedule";
 import Documents from "./components/student/Documents";
 import TestScores from "./components/student/TestScores";
+import TestDetail from "./components/student/TestDetail";
 import StudentSettings from "./components/student/Settings";
 
 // import HeroSection from "./components/HeroSection";
@@ -75,7 +76,8 @@ function App() {
             <Route path="courses/:courseId/learn" element={<CourseLearning />} />
             <Route path="schedule" element={<StudySchedule />} />
             <Route path="documents" element={<Documents />} />
-            <Route path="scores" element={<TestScores />} />
+            <Route path="test-scores" element={<TestScores />} />
+            <Route path="test-detail/:testId" element={<TestDetail />} />
             <Route path="settings" element={<StudentSettings />} />
           </Route>
         </Routes>
