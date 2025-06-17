@@ -1,0 +1,76 @@
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #152259;
+  border-right: 2px solid #dcdcdc;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #1e3351;
+  background-color: #152259;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.itemsContainer {
+  flex: 1;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  text-decoration: none;
+  color: #d1d3d8;
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+  margin: 5px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.item:hover {
+  background-color: #1e3351;
+  color: #ffffff;
+  transform: translateX(5px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.item svg {
+  margin-right: 10px;
+  font-size: 18px;
+  color: #a6b1cc;
+  transition: color 0.3s ease;
+}
+
+.item:hover svg {
+  color: #ffffff;
+}
+
+/* Style cho nút logout */
+.itemsContainer .item:last-child {
+  color: #e74c3c;
+  margin-top: auto;
+}
+
+.itemsContainer .item:last-child:hover {
+  background-color: #f2dede;
+  color: #c0392b;
+} 

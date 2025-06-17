@@ -1,0 +1,216 @@
+.scheduleContainer {
+  padding: 20px;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.header h1 {
+  margin: 0;
+  color: #333;
+  font-size: 24px;
+}
+
+.datePicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dateInput {
+  padding: 10px 15px;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.scheduleContent {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+}
+
+.weeklyView {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.weeklyView h2 {
+  margin: 0 0 20px 0;
+  color: #333;
+  font-size: 20px;
+}
+
+.scheduleTable {
+  overflow-x: auto;
+}
+
+.scheduleTable table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.scheduleTable th,
+.scheduleTable td {
+  padding: 12px 8px;
+  text-align: center;
+  border: 1px solid #f0f0f0;
+  vertical-align: top;
+}
+
+.scheduleTable th {
+  background-color: #fafafa;
+  font-weight: 600;
+  color: #333;
+  font-size: 12px;
+}
+
+.scheduleTable th:first-child,
+.scheduleTable td:first-child {
+  text-align: left;
+  font-weight: 500;
+  background-color: #fafafa;
+}
+
+.scheduleCell {
+  background-color: #e6f7ff !important;
+  border: 2px solid #1890ff !important;
+}
+
+.courseItem {
+  padding: 8px;
+  text-align: left;
+}
+
+.courseItem strong {
+  display: block;
+  font-size: 12px;
+  color: #1890ff;
+  margin-bottom: 4px;
+}
+
+.courseItem p {
+  margin: 2px 0;
+  font-size: 11px;
+  color: #666;
+}
+
+.upcomingSessions {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  height: fit-content;
+}
+
+.upcomingSessions h2 {
+  margin: 0 0 20px 0;
+  color: #333;
+  font-size: 20px;
+}
+
+.sessionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.sessionCard {
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  padding: 15px;
+  transition: all 0.2s ease;
+}
+
+.sessionCard:hover {
+  border-color: #1890ff;
+  box-shadow: 0 2px 8px rgba(24, 144, 255, 0.1);
+}
+
+.sessionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.sessionHeader h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+  flex: 1;
+}
+
+.statusBadge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  color: white;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.sessionDetails {
+  margin-bottom: 15px;
+}
+
+.sessionDetails p {
+  margin: 4px 0;
+  font-size: 13px;
+  color: #666;
+}
+
+.sessionActions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.joinBtn, .remindBtn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.joinBtn {
+  background-color: #1890ff;
+  color: white;
+}
+
+.joinBtn:hover {
+  background-color: #096dd9;
+}
+
+.remindBtn {
+  background-color: #f0f0f0;
+  color: #666;
+}
+
+.remindBtn:hover {
+  background-color: #e0e0e0;
+}
+
+@media (max-width: 768px) {
+  .scheduleContent {
+    grid-template-columns: 1fr;
+  }
+  
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+} 
