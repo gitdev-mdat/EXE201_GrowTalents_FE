@@ -61,17 +61,17 @@ function createData(id, name, subject, emailAddress, phoneNumber) {
       { startDate: "2020-01-06", classId: "11091701", className: "Lý 8A8A" },
     ],
     teachingSchedule: [
-      {
-        id: 1,
+  {
+    id: 1,
         day: "Thứ 2",
         time: "08:00 - 09:30",
         subject: `${subject} 10A`,
         room: "Phòng 101",
         type: "Lý thuyết",
         students: 35
-      },
-      {
-        id: 2,
+  },
+  {
+    id: 2,
         day: "Thứ 3",
         time: "10:00 - 11:30",
         subject: `${subject} 11B`,
@@ -642,7 +642,7 @@ export default function TeacherList() {
                 onEditSchedule={handleEditSchedule}
                 onDeleteSchedule={handleDeleteSchedule}
               />
-            ))}
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
@@ -663,13 +663,13 @@ export default function TeacherList() {
       <Dialog open={openScheduleDialog} onClose={handleCloseScheduleDialog} maxWidth="md" fullWidth>
         <DialogTitle>
           {editingSchedule ? 'Sửa lịch giảng dạy' : 'Thêm lịch giảng dạy'}
-          {selectedTeacher && (
+        {selectedTeacher && (
             <Typography variant="subtitle2" color="textSecondary">
               Giáo viên: {selectedTeacher.name} - {selectedTeacher.subject}
             </Typography>
           )}
         </DialogTitle>
-        <DialogContent>
+            <DialogContent>
           <Grid container spacing={3} sx={{ mt: 1 }}>
             <Grid item xs={12} md={6}>
               <FormControl fullWidth>
@@ -754,13 +754,13 @@ export default function TeacherList() {
               />
             </Grid>
           </Grid>
-        </DialogContent>
-        <DialogActions>
+            </DialogContent>
+            <DialogActions>
           <Button onClick={handleCloseScheduleDialog}>Hủy</Button>
           <Button onClick={handleSaveSchedule} variant="contained">
             {editingSchedule ? 'Cập nhật' : 'Thêm'}
           </Button>
-        </DialogActions>
+            </DialogActions>
       </Dialog>
 
       {/* Add Teacher Dialog */}
@@ -836,7 +836,7 @@ export default function TeacherList() {
               <FormControl fullWidth required>
                 <InputLabel>Chuyên môn</InputLabel>
                 <Select
-                  label="Chuyên môn"
+                label="Chuyên môn"
                   name="subject"
                   value={teacherForm.subject}
                   onChange={handleTeacherFormChange}

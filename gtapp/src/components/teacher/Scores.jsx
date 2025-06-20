@@ -38,6 +38,8 @@ import {
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/TeacherScores.module.css';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
 const TeacherScores = () => {
   const navigate = useNavigate();
@@ -134,6 +136,22 @@ const TeacherScores = () => {
 
   const stats = getScoreStats();
 
+  // Mock: Số học sinh đã làm bài cho mỗi test (giả lập)
+  const getStudentsDoneCount = (testId) => {
+    return testId % 2 === 0 ? 8 : 5;
+  };
+  // Mock: Danh sách học sinh đã làm bài cho mỗi test (giả lập)
+  const getStudentsDoneList = (testId) => {
+    // Lẻ: 5 học sinh đầu, chẵn: 8 học sinh đầu
+    return testId % 2 === 0 ? students.slice(0, 8) : students.slice(0, 5);
+  };
+
+  // State để mở rộng từng test
+  const [expandedTestId, setExpandedTestId] = useState(null);
+  const handleExpandTest = (testId) => {
+    setExpandedTestId(expandedTestId === testId ? null : testId);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -144,6 +162,71 @@ const TeacherScores = () => {
           Quản lý và nhập điểm cho các bài kiểm tra của học sinh
         </Typography>
       </div>
+
+      {/* Created Tests Section */}
+      <Card className={styles.tableCard} style={{ marginBottom: 24 }}>
+        <CardContent>
+          <Typography variant="h6" gutterBottom>
+            Danh sách các bài kiểm tra đã tạo
+          </Typography>
+          <TableContainer component={Paper}>
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell />
+                  <TableCell>Tên bài kiểm tra</TableCell>
+                  <TableCell>Ngày kiểm tra</TableCell>
+                  <TableCell>Điểm tối đa</TableCell>
+                  <TableCell>Số học sinh đã làm</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {tests.map((test) => (
+                  <React.Fragment key={test.id}>
+                    <TableRow>
+                      <TableCell>
+                        <IconButton size="small" onClick={() => handleExpandTest(test.id)}>
+                          {expandedTestId === test.id ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                        </IconButton>
+                      </TableCell>
+                      <TableCell>{test.name}</TableCell>
+                      <TableCell>{test.date}</TableCell>
+                      <TableCell>{test.maxScore}</TableCell>
+                      <TableCell>
+                        <Chip
+                          label={`${getStudentsDoneCount(test.id)} học sinh`}
+                          color={getStudentsDoneCount(test.id) >= 8 ? 'success' : 'warning'}
+                          size="small"
+                        />
+                      </TableCell>
+                    </TableRow>
+                    {expandedTestId === test.id && (
+                      <TableRow>
+                        <TableCell colSpan={5} style={{ background: '#f9f9f9', paddingLeft: 48 }}>
+                          <Typography variant="subtitle2" gutterBottom>
+                            Học sinh đã làm bài:
+                          </Typography>
+                          <Box display="flex" flexWrap="wrap" gap={2}>
+                            {getStudentsDoneList(test.id).map((student) => (
+                              <Chip
+                                key={student.id}
+                                label={student.name}
+                                avatar={<Avatar>{student.avatar}</Avatar>}
+                                color="primary"
+                                variant="outlined"
+                              />
+                            ))}
+                          </Box>
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </React.Fragment>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </CardContent>
+      </Card>
 
       {/* Filters */}
       <Card className={styles.filterCard}>
