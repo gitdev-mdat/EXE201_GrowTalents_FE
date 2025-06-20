@@ -36,7 +36,66 @@ const tuitionRecords = [
     status: 'Đã thanh toán',
     paymentMethod: 'Tiền mặt'
   },
-  // Add more mock data as needed
+  {
+    id: 3,
+    studentName: 'Lê Văn C',
+    email: 'levanc@example.com',
+    course: 'Hóa học 12',
+    amount: '3,000,000',
+    paymentDate: '2024-03-20',
+    status: 'Chưa thanh toán',
+    paymentMethod: 'Chưa xác định'
+  },
+  {
+    id: 4,
+    studentName: 'Phạm Thị D',
+    email: 'phamthid@example.com',
+    course: 'Tiếng Anh 10',
+    amount: '1,800,000',
+    paymentDate: '2024-03-18',
+    status: 'Đã thanh toán',
+    paymentMethod: 'Chuyển khoản'
+  },
+  {
+    id: 5,
+    studentName: 'Hoàng Văn E',
+    email: 'hoangvane@example.com',
+    course: 'Văn học 11',
+    amount: '2,200,000',
+    paymentDate: '2024-03-22',
+    status: 'Chưa thanh toán',
+    paymentMethod: 'Chưa xác định'
+  },
+  {
+    id: 6,
+    studentName: 'Vũ Thị F',
+    email: 'vuthif@example.com',
+    course: 'Sinh học 12',
+    amount: '2,800,000',
+    paymentDate: '2024-03-16',
+    status: 'Đã thanh toán',
+    paymentMethod: 'Tiền mặt'
+  },
+  {
+    id: 7,
+    studentName: 'Đặng Văn G',
+    email: 'dangvang@example.com',
+    course: 'Lịch sử 10',
+    amount: '1,500,000',
+    paymentDate: '2024-03-25',
+    status: 'Chưa thanh toán',
+    paymentMethod: 'Chưa xác định'
+  },
+  {
+    id: 8,
+    studentName: 'Bùi Thị H',
+    email: 'buithih@example.com',
+    course: 'Địa lý 11',
+    amount: '1,900,000',
+    paymentDate: '2024-03-17',
+    status: 'Đã thanh toán',
+    paymentMethod: 'Chuyển khoản'
+  }
 ];
 
 const TuitionRecord = () => {
@@ -53,8 +112,6 @@ const TuitionRecord = () => {
         return 'success';
       case 'Chưa thanh toán':
         return 'error';
-      case 'Đang xử lý':
-        return 'warning';
       default:
         return 'default';
     }

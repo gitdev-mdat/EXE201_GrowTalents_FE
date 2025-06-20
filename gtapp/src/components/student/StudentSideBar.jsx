@@ -10,6 +10,9 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import PersonIcon from "@mui/icons-material/Person";
+import PaymentIcon from "@mui/icons-material/Payment";
 
 const StudentSideBar = () => {
   return (
@@ -22,11 +25,11 @@ const StudentSideBar = () => {
         <Link to="/student/dashboard" className={styles.item}>
           <HomeOutlined /> Dashboard
         </Link>
+        <Link to="/student/schedule" className={styles.item}>
+          <AccessTimeIcon /> Personal Study Schedule
+        </Link>
         <Link to="/student/courses" className={styles.item}>
           <SchoolIcon /> List Course
-        </Link>
-        <Link to="/student/schedule" className={styles.item}>
-          <ScheduleIcon /> Personal Study Schedule
         </Link>
         <Link to="/student/documents" className={styles.item}>
           <LibraryBooksIcon /> Documents / Exercises

@@ -59,8 +59,8 @@
 .item:hover {
   background-color: #1e3351;
   color: #ffffff;
-  transform: translateX(5px); /* Di chuyển nhẹ khi hover */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Thêm bóng khi hover */
+  transform: translateX(5px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .item svg {

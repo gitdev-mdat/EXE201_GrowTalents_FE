@@ -1,0 +1,40 @@
+.container {
+  padding: 20px;
+}
+
+.header {
+  margin-bottom: 30px;
+}
+
+.statsGrid {
+  margin-bottom: 30px;
+}
+
+.statCard {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.contentGrid {
+  margin-top: 20px;
+}
+
+.activityItem {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.activityItem:last-child {
+  border-bottom: none;
+}
+
+.classItem {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.classItem:last-child {
+  border-bottom: none;
+} 

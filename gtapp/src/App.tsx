@@ -31,6 +31,16 @@ import TestScores from "./components/student/TestScores";
 import TestDetail from "./components/student/TestDetail";
 import StudentSettings from "./components/student/Settings";
 
+// Teacher components
+import TeacherLayout from "./components/teacher/TeacherLayout";
+import TeacherDashboard from "./components/teacher/Dashboard";
+import TeacherAttendance from "./components/teacher/Attendance";
+import TeacherScores from "./components/teacher/Scores";
+import TeacherDocuments from "./components/teacher/Documents";
+import TeacherSchedule from "./components/teacher/Schedule";
+import TeacherSettings from "./components/teacher/Settings";
+import QuizCreator from "./components/teacher/QuizCreator";
+
 // import HeroSection from "./components/HeroSection";
 // import AboutUsSection from "./components/AboutUsSection";
 // import CourseSection from "./components/CourseSection";
@@ -79,6 +89,20 @@ function App() {
             <Route path="test-scores" element={<TestScores />} />
             <Route path="test-detail/:testId" element={<TestDetail />} />
             <Route path="settings" element={<StudentSettings />} />
+          </Route>
+
+          {/* Route cha cho teacher */}
+          <Route path="/teacher" element={<TeacherLayout />}>
+            {/* Redirect từ /teacher đến /teacher/dashboard */}
+            <Route index element={<Navigate to="dashboard" replace />} />
+            {/* Route con của teacher */}
+            <Route path="dashboard" element={<TeacherDashboard />} />
+            <Route path="attendance" element={<TeacherAttendance />} />
+            <Route path="scores" element={<TeacherScores />} />
+            <Route path="quiz-creator" element={<QuizCreator />} />
+            <Route path="documents" element={<TeacherDocuments />} />
+            <Route path="schedule" element={<TeacherSchedule />} />
+            <Route path="settings" element={<TeacherSettings />} />
           </Route>
         </Routes>
       </Router>

@@ -12,7 +12,7 @@
 }
 
 .statisticItem {
-  background: white;
+  background: #152259;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -24,14 +24,14 @@
 
 .label {
   font-size: 14px;
-  color: #666;
+  color: white;
   margin-bottom: 8px;
 }
 
 .value {
   font-size: 24px;
   font-weight: bold;
-  color: #1890ff;
+  color: white;
 }
 
 .statisticColumn {

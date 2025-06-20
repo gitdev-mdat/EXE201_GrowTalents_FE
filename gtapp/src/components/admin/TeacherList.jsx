@@ -1,506 +1,928 @@
-import React, { useState } from 'react';
+import * as React from "react";
+import PropTypes from "prop-types";
+import Box from "@mui/material/Box";
+import Collapse from "@mui/material/Collapse";
+import IconButton from "@mui/material/IconButton";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import Button from "@mui/material/Button";
+import Pagination from "@mui/material/Pagination";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Grid from "@mui/material/Grid";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Chip from "@mui/material/Chip";
+import Tooltip from "@mui/material/Tooltip";
+import InputAdornment from "@mui/material/InputAdornment";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Typography,
-  Box,
-  Pagination,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Grid,
-  IconButton,
-  Tooltip,
-  InputAdornment,
-  Alert,
-  Snackbar
-} from '@mui/material';
-import { Edit, Delete, Visibility, PersonAdd, VisibilityOff } from '@mui/icons-material';
-import styles from '../../styles/TeacherList.module.css';
+  Schedule,
+  Add,
+  Edit,
+  Delete,
+  Today,
+  AccessTime,
+  Room,
+  Group,
+  School,
+  FileDownload,
+  PersonAdd,
+  AccountCircle,
+  Visibility,
+  VisibilityOff
+} from "@mui/icons-material";
+import styles from "../../styles/TeacherList.module.css";
 
-// Mock data for teachers
-const teachers = [
-  {
-    id: 1,
-    name: 'Nguyễn Văn A',
-    email: 'nguyenvana@example.com',
-    specialization: 'Toán học',
-    phone: '0987654321',
-    address: 'Hà Nội',
-    experience: '5 năm',
-    education: 'Thạc sĩ Toán học',
-    classes: ['Toán 10', 'Toán 11', 'Toán 12'],
-    status: 'active',
-    hasAccount: false
-  },
-  {
-    id: 2,
-    name: 'Trần Thị B',
-    email: 'tranthib@example.com',
-    specialization: 'Vật lý',
-    phone: '0987654322',
-    address: 'TP.HCM',
-    experience: '3 năm',
-    education: 'Cử nhân Vật lý',
-    classes: ['Lý 10', 'Lý 11'],
-    status: 'active',
-    hasAccount: false
-  },
-  // Add more mock data as needed
+// Function to create data
+function createData(id, name, subject, emailAddress, phoneNumber) {
+  return {
+    id,
+    name,
+    subject,
+    emailAddress,
+    phoneNumber,
+    courseTeaching: [
+      { startDate: "2020-01-05", classId: "11091700", className: "Toán 6A" },
+      { startDate: "2020-01-06", classId: "11091701", className: "Lý 8A8A" },
+    ],
+    teachingSchedule: [
+      {
+        id: 1,
+        day: "Thứ 2",
+        time: "08:00 - 09:30",
+        subject: `${subject} 10A`,
+        room: "Phòng 101",
+        type: "Lý thuyết",
+        students: 35
+      },
+      {
+        id: 2,
+        day: "Thứ 3",
+        time: "10:00 - 11:30",
+        subject: `${subject} 11B`,
+        room: "Phòng 102",
+        type: "Thực hành",
+        students: 30
+      }
+    ]
+  };
+}
+
+// Row Component
+function Row(props) {
+  const { row, onAddSchedule, onEditSchedule, onDeleteSchedule } = props;
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <React.Fragment>
+      <TableRow className={styles["table-body"]}>
+        <TableCell>
+          <IconButton
+            aria-label="expand row"
+            size="small"
+            onClick={() => setOpen(!open)}
+            className={styles["icon-button"]}
+          >
+            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </IconButton>
+        </TableCell>
+        <TableCell>{row.id}</TableCell>
+        <TableCell scope="row">{row.name}</TableCell>
+        <TableCell>{row.subject}</TableCell>
+        <TableCell>{row.emailAddress}</TableCell>
+        <TableCell>{row.phoneNumber}</TableCell>
+        <TableCell>
+          <Button
+            variant="contained"
+            size="small"
+            startIcon={<Schedule />}
+            onClick={() => onAddSchedule(row)}
+            color="primary"
+            sx={{ 
+              bgcolor: '#1976d2',
+              '&:hover': { bgcolor: '#1565c0' }
+            }}
+          >
+            Tạo lịch
+          </Button>
+        </TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <Box sx={{ margin: 1 }} className={styles["collapse-content"]}>
+              <Grid container spacing={3}>
+                {/* Teaching Classes */}
+                <Grid item xs={12} md={6}>
+                  <Typography variant="h6" gutterBottom component="div">
+                    Lớp đang dạy
+                  </Typography>
+                  <Table
+                    size="small"
+                    aria-label="purchases"
+                    className={styles["collapse-table"]}
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Ngày bắt đầu</TableCell>
+                        <TableCell>Id Lớp</TableCell>
+                        <TableCell>Tên Lớp</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {row.courseTeaching.map((courseTeachingRow) => (
+                        <TableRow key={courseTeachingRow.startDate}>
+                          <TableCell scope="row">
+                            {courseTeachingRow.startDate}
+                          </TableCell>
+                          <TableCell>{courseTeachingRow.classId}</TableCell>
+                          <TableCell>{courseTeachingRow.className}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </Grid>
+
+                {/* Teaching Schedule */}
+                <Grid item xs={12} md={6}>
+                  <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                    <Typography variant="h6" component="div">
+                      Lịch giảng dạy
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      startIcon={<Add />}
+                      onClick={() => onAddSchedule(row)}
+                    >
+                      Thêm lịch
+                    </Button>
+                  </Box>
+                  <Table
+                    size="small"
+                    aria-label="schedule"
+                    className={styles["collapse-table"]}
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Thứ</TableCell>
+                        <TableCell>Thời gian</TableCell>
+                        <TableCell>Môn học</TableCell>
+                        <TableCell>Phòng</TableCell>
+                        <TableCell>Loại</TableCell>
+                        <TableCell>Thao tác</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {row.teachingSchedule && row.teachingSchedule.length > 0 ? (
+                        row.teachingSchedule.map((schedule) => (
+                          <TableRow key={schedule.id}>
+                            <TableCell>{schedule.day}</TableCell>
+                            <TableCell>{schedule.time}</TableCell>
+                            <TableCell>{schedule.subject}</TableCell>
+                            <TableCell>{schedule.room}</TableCell>
+                            <TableCell>
+                              <Chip
+                                label={schedule.type}
+                                size="small"
+                                color={
+                                  schedule.type === "Lý thuyết" ? "primary" :
+                                  schedule.type === "Thực hành" ? "secondary" : "success"
+                                }
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Box display="flex" gap={0.5}>
+                                <Tooltip title="Sửa lịch">
+                                  <IconButton
+                                    size="small"
+                                    color="primary"
+                                    onClick={() => onEditSchedule(row, schedule)}
+                                  >
+                                    <Edit fontSize="small" />
+                                  </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Xóa lịch">
+                                  <IconButton
+                                    size="small"
+                                    color="error"
+                                    onClick={() => onDeleteSchedule(row.id, schedule.id)}
+                                  >
+                                    <Delete fontSize="small" />
+                                  </IconButton>
+                                </Tooltip>
+                              </Box>
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      ) : (
+                        <TableRow>
+                          <TableCell colSpan={6} align="center">
+                            <Typography variant="body2" color="textSecondary">
+                              Chưa có lịch giảng dạy. Nhấn "Thêm lịch" để tạo lịch mới.
+                            </Typography>
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </Grid>
+              </Grid>
+            </Box>
+          </Collapse>
+        </TableCell>
+      </TableRow>
+    </React.Fragment>
+  );
+}
+
+// PropTypes for Row component
+Row.propTypes = {
+  row: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    subject: PropTypes.string.isRequired,
+    emailAddress: PropTypes.string.isRequired,
+    phoneNumber: PropTypes.string.isRequired,
+    courseTeaching: PropTypes.arrayOf(
+      PropTypes.shape({
+        startDate: PropTypes.string.isRequired,
+        classId: PropTypes.string.isRequired,
+        className: PropTypes.string.isRequired,
+      })
+    ),
+    teachingSchedule: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        day: PropTypes.string.isRequired,
+        time: PropTypes.string.isRequired,
+        subject: PropTypes.string.isRequired,
+        room: PropTypes.string.isRequired,
+        type: PropTypes.string.isRequired,
+        students: PropTypes.number.isRequired,
+      })
+    ),
+  }).isRequired,
+  onAddSchedule: PropTypes.func.isRequired,
+  onEditSchedule: PropTypes.func.isRequired,
+  onDeleteSchedule: PropTypes.func.isRequired,
+};
+
+// Sample rows of teachers
+const initialRows = [
+  createData(
+    1,
+    "PhamQuocNga",
+    "Vật Lý",
+    "phamquocngadaknong@gmail.com",
+    "0123456789"
+  ),
+  createData(
+    2,
+    "PhamQuocViet",
+    "Toán",
+    "phamquocvietdaknong@gmail.com",
+    "0123456789"
+  ),
+  createData(3, "PhamQuocHiep", "Hoá", "phamquochiepdaknong@gmail.com", "0123456789"),
+  createData(
+    4,
+    "PhamQuocHiep1",
+    "Anh",
+    "phamquochiep1daknong@gmail.com",
+    "0123456789"
+  ),
+  createData(5, "PhamQuocHiep", "Hoá", "phamquochiepdaknong@gmail.com", "0123456789"),
+  createData(
+    6,
+    "PhamQuocHiep1",
+    "Anh",
+    "phamquochiep1daknong@gmail.com",
+    "0123456789"
+  ),
+  createData(7, "PhamQuocHiep", "Hoá", "phamquochiepdaknong@gmail.com", "0123456789"),
+  createData(
+    8,
+    "PhamQuocHiep1",
+    "Anh",
+    "phamquochiep1daknong@gmail.com",
+    "0123456789"
+  ),
 ];
 
-const TeacherList = () => {
-  const [selectedTeacher, setSelectedTeacher] = useState(null);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  // State for notifications
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: "",
-    severity: "success"
+export default function TeacherList() {
+  const [rows, setRows] = React.useState(initialRows);
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [openScheduleDialog, setOpenScheduleDialog] = React.useState(false);
+  const [openAddTeacherDialog, setOpenAddTeacherDialog] = React.useState(false);
+  const [openCreateAccountDialog, setOpenCreateAccountDialog] = React.useState(false);
+  const [editingSchedule, setEditingSchedule] = React.useState(null);
+  const [selectedTeacher, setSelectedTeacher] = React.useState(null);
+  const [scheduleForm, setScheduleForm] = React.useState({
+    day: "",
+    time: "",
+    subject: "",
+    room: "",
+    type: "",
+    students: ""
   });
-
-  // State for delete confirmation
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [teacherToDelete, setTeacherToDelete] = useState(null);
-
-  // State for new teacher dialog
-  const [openNewTeacherDialog, setOpenNewTeacherDialog] = useState(false);
-  const [newTeacher, setNewTeacher] = useState({
+  const [teacherForm, setTeacherForm] = React.useState({
     name: "",
     dob: "",
     gender: "",
     email: "",
     phone: "",
-    specialization: "",
+    subject: "",
     address: "",
     education: "",
-    experience: "",
-    status: "active",
-    hasAccount: false
+    experience: ""
   });
-
-  // State for create account dialog
-  const [openCreateAccountDialog, setOpenCreateAccountDialog] = useState(false);
-  const [selectedTeacherForAccount, setSelectedTeacherForAccount] = useState(null);
-  const [accountDetails, setAccountDetails] = useState({
+  const [accountForm, setAccountForm] = React.useState({
     username: "",
     password: "",
     confirmPassword: ""
   });
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
-  const handleTeacherClick = (teacher) => {
+  const rowsPerPage = 7;
+
+  // Mock data for form options
+  const days = ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"];
+  const timeSlots = [
+    "08:00 - 09:30",
+    "10:00 - 11:30", 
+    "14:00 - 15:30",
+    "16:00 - 17:30"
+  ];
+  const rooms = [
+    "Phòng 101",
+    "Phòng 102",
+    "Phòng 103", 
+    "Phòng 104",
+    "Phòng 105",
+    "Phòng Lab 1",
+    "Phòng Lab 2"
+  ];
+  const types = ["Lý thuyết", "Thực hành", "Bài tập"];
+  const subjects = ["Toán", "Vật Lý", "Hoá học", "Sinh học", "Văn học", "Lịch sử", "Địa lý", "Tiếng Anh", "Tin học"];
+  const genders = ["Nam", "Nữ", "Khác"];
+
+  // Calculate the rows to display based on current page
+  const displayedRows = rows.slice(
+    (currentPage - 1) * rowsPerPage,
+    currentPage * rowsPerPage
+  );
+
+  // Handle pagination change
+  const handleChangePage = (event, newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  // Handle schedule dialog
+  const handleAddSchedule = (teacher) => {
+    console.log('Opening schedule dialog for teacher:', teacher.name);
     setSelectedTeacher(teacher);
-    setOpenDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
-
-  const handlePageChange = (event, value) => {
-    setPage(value);
-  };
-
-  // Handle new teacher form
-  const handleNewTeacherChange = (e) => {
-    const { name, value } = e.target;
-    setNewTeacher(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleAddTeacher = () => {
-    // Create new teacher object with a unique ID
-    const newTeacherWithId = {
-      ...newTeacher,
-      id: Math.max(...teachers.map(t => t.id)) + 1
-    };
-
-    // Add new teacher to the list
-    setTeachers(prevTeachers => [...prevTeachers, newTeacherWithId]);
-
-    // Show success message
-    setSnackbar({
-      open: true,
-      message: "Thêm giáo viên thành công!",
-      severity: "success"
+    setEditingSchedule(null);
+    setScheduleForm({
+      day: "",
+      time: "",
+      subject: "",
+      room: "",
+      type: "",
+      students: ""
     });
+    setOpenScheduleDialog(true);
+  };
 
-    // Close dialog and reset form
-    setOpenNewTeacherDialog(false);
-    setNewTeacher({
+  const handleEditSchedule = (teacher, schedule) => {
+    console.log('Editing schedule for teacher:', teacher.name, schedule);
+    setSelectedTeacher(teacher);
+    setEditingSchedule(schedule);
+    setScheduleForm({
+      day: schedule.day,
+      time: schedule.time,
+      subject: schedule.subject,
+      room: schedule.room,
+      type: schedule.type,
+      students: schedule.students.toString()
+    });
+    setOpenScheduleDialog(true);
+  };
+
+  const handleDeleteSchedule = (teacherId, scheduleId) => {
+    console.log('Deleting schedule:', scheduleId, 'from teacher:', teacherId);
+    // Here you would typically delete from backend
+    alert('Đã xóa lịch giảng dạy!');
+  };
+
+  const handleSaveSchedule = () => {
+    console.log('Saving schedule for teacher:', selectedTeacher.name, scheduleForm);
+    
+    // Validate form
+    if (!scheduleForm.day || !scheduleForm.time || !scheduleForm.subject || !scheduleForm.room || !scheduleForm.type) {
+      alert('Vui lòng điền đầy đủ thông tin!');
+      return;
+    }
+    
+    setOpenScheduleDialog(false);
+    setEditingSchedule(null);
+    setSelectedTeacher(null);
+    
+    // Show success message
+    alert(editingSchedule ? 'Đã cập nhật lịch giảng dạy thành công!' : 'Đã tạo lịch giảng dạy thành công!');
+    
+    // Here you would typically save to backend
+  };
+
+  const handleCloseScheduleDialog = () => {
+    setOpenScheduleDialog(false);
+    setEditingSchedule(null);
+    setSelectedTeacher(null);
+  };
+
+  // Handle add teacher dialog
+  const handleAddTeacher = () => {
+    setOpenAddTeacherDialog(true);
+  };
+
+  const handleCloseAddTeacherDialog = () => {
+    setOpenAddTeacherDialog(false);
+    setTeacherForm({
       name: "",
       dob: "",
       gender: "",
       email: "",
       phone: "",
-      specialization: "",
+      subject: "",
       address: "",
       education: "",
-      experience: "",
-      status: "active",
-      hasAccount: false
+      experience: ""
     });
   };
 
-  // Handle delete teacher
-  const handleDeleteClick = (teacher) => {
-    setTeacherToDelete(teacher);
-    setOpenDeleteDialog(true);
-  };
-
-  const handleConfirmDelete = () => {
-    // Remove teacher from the list
-    setTeachers(prevTeachers => 
-      prevTeachers.filter(teacher => teacher.id !== teacherToDelete.id)
-    );
-
-    // Show success message
-    setSnackbar({
-      open: true,
-      message: "Xóa giáo viên thành công!",
-      severity: "success"
-    });
-
-    // Close dialog
-    setOpenDeleteDialog(false);
-    setTeacherToDelete(null);
-  };
-
-  // Handle create account
-  const handleCreateAccount = (teacher) => {
-    setSelectedTeacherForAccount(teacher);
-    setAccountDetails({
-      username: "",
-      password: "",
-      confirmPassword: ""
-    });
-    setOpenCreateAccountDialog(true);
-  };
-
-  const handleAccountDetailsChange = (e) => {
+  const handleTeacherFormChange = (e) => {
     const { name, value } = e.target;
-    setAccountDetails(prev => ({
+    setTeacherForm(prev => ({
       ...prev,
       [name]: value
     }));
   };
 
-  const handleSubmitAccount = () => {
-    if (accountDetails.password !== accountDetails.confirmPassword) {
-      setSnackbar({
-        open: true,
-        message: "Mật khẩu xác nhận không khớp!",
-        severity: "error"
-      });
+  const handleSaveTeacher = () => {
+    // Validate form
+    if (!teacherForm.name || !teacherForm.email || !teacherForm.phone || !teacherForm.subject) {
+      alert('Vui lòng điền đầy đủ thông tin bắt buộc!');
       return;
     }
 
-    // Update teacher's account status
-    setTeachers(prevTeachers =>
-      prevTeachers.map(teacher =>
-        teacher.id === selectedTeacherForAccount.id
-          ? { ...teacher, hasAccount: true }
-          : teacher
-      )
+    // Create new teacher
+    const newTeacher = createData(
+      Math.max(...rows.map(r => r.id)) + 1,
+      teacherForm.name,
+      teacherForm.subject,
+      teacherForm.email,
+      teacherForm.phone
     );
 
-    // Show success message
-    setSnackbar({
-      open: true,
-      message: "Tạo tài khoản thành công!",
-      severity: "success"
-    });
+    // Add to rows
+    setRows(prev => [...prev, newTeacher]);
 
-    setOpenCreateAccountDialog(false);
+    // Close dialog and reset form
+    handleCloseAddTeacherDialog();
+
+    // Show success message
+    alert('Đã thêm giáo viên thành công!');
   };
 
-  const handleCloseSnackbar = () => {
-    setSnackbar(prev => ({ ...prev, open: false }));
+  // Handle create account dialog
+  const handleCreateAccount = () => {
+    setOpenCreateAccountDialog(true);
+  };
+
+  const handleCloseCreateAccountDialog = () => {
+    setOpenCreateAccountDialog(false);
+    setAccountForm({
+      username: "",
+      password: "",
+      confirmPassword: ""
+    });
+    setShowPassword(false);
+    setShowConfirmPassword(false);
+  };
+
+  const handleAccountFormChange = (e) => {
+    const { name, value } = e.target;
+    setAccountForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSaveAccount = () => {
+    // Validate form
+    if (!accountForm.username || !accountForm.password || !accountForm.confirmPassword) {
+      alert('Vui lòng điền đầy đủ thông tin!');
+      return;
+    }
+
+    if (accountForm.password !== accountForm.confirmPassword) {
+      alert('Mật khẩu xác nhận không khớp!');
+      return;
+    }
+
+    if (accountForm.password.length < 6) {
+      alert('Mật khẩu phải có ít nhất 6 ký tự!');
+      return;
+    }
+
+    // Here you would typically save to backend
+    console.log('Creating account:', accountForm);
+
+    // Close dialog and reset form
+    handleCloseCreateAccountDialog();
+
+    // Show success message
+    alert('Đã tạo tài khoản thành công!');
+  };
+
+  // Handle export CSV
+  const handleExportCSV = () => {
+    const csvContent = [
+      ['ID', 'Họ và Tên', 'Chuyên môn', 'Email', 'Số điện thoại'],
+      ...rows.map(row => [row.id, row.name, row.subject, row.emailAddress, row.phoneNumber])
+    ].map(row => row.join(',')).join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'danh_sach_giao_vien.csv');
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h1>Danh sách giáo viên</h1>
-        <Button variant="contained" color="primary" onClick={() => setOpenNewTeacherDialog(true)}>
+    <div>
+      {/* Header with instructions */}
+      <Box sx={{ mb: 3, p: 2, bgcolor: 'primary.main', color: 'white', borderRadius: 2 }}>
+        <Typography variant="h5" gutterBottom>
+          Danh sách Giáo viên & Quản lý Lịch giảng dạy
+        </Typography>
+      </Box>
+
+      {/* Buttons - moved to right */}
+      <Box className={styles["buttons-container"]} sx={{ justifyContent: 'flex-end' }}>
+        <Button
+          variant="outlined"
+          color="primary"
+          className={styles["action-button"]}
+          startIcon={<FileDownload />}
+          onClick={handleExportCSV}
+        >
+          Export CSV
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          className={styles["action-button"]}
+          startIcon={<PersonAdd />}
+          onClick={handleAddTeacher}
+        >
           Thêm giáo viên
         </Button>
-      </div>
+        <Button
+          variant="contained"
+          color="success"
+          className={styles["action-button"]}
+          startIcon={<AccountCircle />}
+          onClick={handleCreateAccount}
+        >
+          Tạo tài khoản
+        </Button>
+      </Box>
 
-      <TableContainer component={Paper} className={styles.tableContainer}>
-        <Table>
-          <TableHead>
+      {/* Table */}
+      <TableContainer component={Paper} className={styles["table-container"]}>
+        <Table aria-label="collapsible table">
+          <TableHead className={styles["table-head"]}>
             <TableRow>
-              <TableCell>Tên giáo viên</TableCell>
-              <TableCell>Email</TableCell>
+              <TableCell />
+              <TableCell>Id</TableCell>
+              <TableCell>Họ và Tên</TableCell>
               <TableCell>Chuyên môn</TableCell>
-              <TableCell>Trạng thái</TableCell>
-              <TableCell>Thao tác</TableCell>
+              <TableCell align="left">Email</TableCell>
+              <TableCell align="left">Số điện thoại</TableCell>
+              <TableCell>Tạo lịch</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {teachers
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((teacher) => (
-                <TableRow key={teacher.id}>
-                  <TableCell>{teacher.name}</TableCell>
-                  <TableCell>{teacher.email}</TableCell>
-                  <TableCell>{teacher.phone}</TableCell>
-                  <TableCell>{teacher.specialization}</TableCell>
-                  
-                  <TableCell>
-                    <span
-                      className={`${styles.statusChip} ${
-                        teacher.status === "active"
-                          ? styles.active
-                          : styles.inactive
-                      }`}
-                    >
-                      {teacher.status === "active" ? "Đang dạy" : "Nghỉ phép"}
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    <Tooltip title="Xem chi tiết">
-                      <IconButton size="small" onClick={() => handleTeacherClick(teacher)}>
-                        <Visibility />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Tạo tài khoản">
-                      <IconButton 
-                        size="small"
-                        onClick={() => handleCreateAccount(teacher)}
-                        disabled={teacher.hasAccount}
-                      >
-                        <PersonAdd />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Xóa">
-                      <IconButton 
-                        size="small"
-                        onClick={() => handleDeleteClick(teacher)}
-                      >
-                        <Delete />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>
-              ))}
+            {displayedRows.map((row) => (
+              <Row 
+                key={row.id} 
+                row={row} 
+                onAddSchedule={handleAddSchedule}
+                onEditSchedule={handleEditSchedule}
+                onDeleteSchedule={handleDeleteSchedule}
+              />
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
 
-      <Box className={styles.pagination}>
+      {/* Pagination */}
+      <Box className={styles["pagination-container"]}>
         <Pagination
-          count={Math.ceil(teachers.length / rowsPerPage)}
-          page={page}
-          onChange={handlePageChange}
+          count={Math.ceil(rows.length / rowsPerPage)}
+          page={currentPage}
+          onChange={handleChangePage}
           color="primary"
+          siblingCount={1}
+          boundaryCount={1}
         />
       </Box>
 
-      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="md" fullWidth>
-        {selectedTeacher && (
-          <>
-            <DialogTitle>Thông tin chi tiết giáo viên</DialogTitle>
-            <DialogContent>
-              <Box className={styles.teacherDetails}>
-                <Typography variant="h6">{selectedTeacher.name}</Typography>
-                <Typography>Email: {selectedTeacher.email}</Typography>
-                <Typography>Chuyên môn: {selectedTeacher.specialization}</Typography>
-                <Typography>Số điện thoại: {selectedTeacher.phone}</Typography>
-                <Typography>Địa chỉ: {selectedTeacher.address}</Typography>
-                <Typography>Kinh nghiệm: {selectedTeacher.experience}</Typography>
-                <Typography>Học vấn: {selectedTeacher.education}</Typography>
-                <Typography>
-                  Lớp đang dạy: {selectedTeacher.classes.join(', ')}
-                </Typography>
-              </Box>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleCloseDialog}>Đóng</Button>
-            </DialogActions>
-          </>
-        )}
-      </Dialog>
-
-      {/* New Teacher Dialog */}
-      <Dialog
-        open={openNewTeacherDialog}
-        onClose={() => setOpenNewTeacherDialog(false)}
-        maxWidth="md"
-        fullWidth
-      >
+      {/* Schedule Dialog */}
+      <Dialog open={openScheduleDialog} onClose={handleCloseScheduleDialog} maxWidth="md" fullWidth>
         <DialogTitle>
-          <Typography variant="h6">Thêm giáo viên mới</Typography>
+          {editingSchedule ? 'Sửa lịch giảng dạy' : 'Thêm lịch giảng dạy'}
+          {selectedTeacher && (
+            <Typography variant="subtitle2" color="textSecondary">
+              Giáo viên: {selectedTeacher.name} - {selectedTeacher.subject}
+            </Typography>
+          )}
         </DialogTitle>
         <DialogContent>
           <Grid container spacing={3} sx={{ mt: 1 }}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Họ và tên"
-                name="name"
-                value={newTeacher.name}
-                onChange={handleNewTeacherChange}
-                required
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Ngày sinh"
-                name="dob"
-                type="date"
-                value={newTeacher.dob}
-                onChange={handleNewTeacherChange}
-                InputLabelProps={{ shrink: true }}
-                required
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth required>
-                <InputLabel>Giới tính</InputLabel>
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth>
+                <InputLabel>Thứ</InputLabel>
                 <Select
-                  name="gender"
-                  value={newTeacher.gender}
-                  onChange={handleNewTeacherChange}
-                  label="Giới tính"
+                  label="Thứ"
+                  value={scheduleForm.day}
+                  onChange={(e) => setScheduleForm({...scheduleForm, day: e.target.value})}
                 >
-                  <MenuItem value="Nam">Nam</MenuItem>
-                  <MenuItem value="Nữ">Nữ</MenuItem>
-                  <MenuItem value="Khác">Khác</MenuItem>
+                  {days.map((day) => (
+                    <MenuItem key={day} value={day}>
+                      {day}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth>
+                <InputLabel>Thời gian</InputLabel>
+                <Select
+                  label="Thời gian"
+                  value={scheduleForm.time}
+                  onChange={(e) => setScheduleForm({...scheduleForm, time: e.target.value})}
+                >
+                  {timeSlots.map((time) => (
+                    <MenuItem key={time} value={time}>
+                      {time}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
+                label="Môn học"
+                value={scheduleForm.subject}
+                onChange={(e) => setScheduleForm({...scheduleForm, subject: e.target.value})}
+                placeholder="VD: Toán 10A, Vật lý 11B..."
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth>
+                <InputLabel>Phòng học</InputLabel>
+                <Select
+                  label="Phòng học"
+                  value={scheduleForm.room}
+                  onChange={(e) => setScheduleForm({...scheduleForm, room: e.target.value})}
+                >
+                  {rooms.map((room) => (
+                    <MenuItem key={room} value={room}>
+                      {room}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth>
+                <InputLabel>Loại</InputLabel>
+                <Select
+                  label="Loại"
+                  value={scheduleForm.type}
+                  onChange={(e) => setScheduleForm({...scheduleForm, type: e.target.value})}
+                >
+                  {types.map((type) => (
+                    <MenuItem key={type} value={type}>
+                      {type}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                multiline
+                rows={3}
+                label="Ghi chú"
+                placeholder="Ghi chú về buổi học..."
+              />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseScheduleDialog}>Hủy</Button>
+          <Button onClick={handleSaveSchedule} variant="contained">
+            {editingSchedule ? 'Cập nhật' : 'Thêm'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Add Teacher Dialog */}
+      <Dialog open={openAddTeacherDialog} onClose={handleCloseAddTeacherDialog} maxWidth="md" fullWidth>
+        <DialogTitle>
+          Thêm Giáo viên mới
+        </DialogTitle>
+        <DialogContent>
+          <Grid container spacing={3} sx={{ mt: 1 }}>
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                required
+                label="Họ và tên"
+                name="name"
+                value={teacherForm.name}
+                onChange={handleTeacherFormChange}
+                placeholder="Nhập họ và tên giáo viên"
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                type="date"
+                label="Ngày sinh"
+                name="dob"
+                value={teacherForm.dob}
+                onChange={handleTeacherFormChange}
+                InputLabelProps={{ shrink: true }}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth>
+                <InputLabel>Giới tính</InputLabel>
+                <Select
+                  label="Giới tính"
+                  name="gender"
+                  value={teacherForm.gender}
+                  onChange={handleTeacherFormChange}
+                >
+                  {genders.map((gender) => (
+                    <MenuItem key={gender} value={gender}>
+                      {gender}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                required
+                type="email"
                 label="Email"
                 name="email"
-                type="email"
-                value={newTeacher.email}
-                onChange={handleNewTeacherChange}
-                required
+                value={teacherForm.email}
+                onChange={handleTeacherFormChange}
+                placeholder="example@email.com"
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
+                required
                 label="Số điện thoại"
                 name="phone"
-                value={newTeacher.phone}
-                onChange={handleNewTeacherChange}
-                required
+                value={teacherForm.phone}
+                onChange={handleTeacherFormChange}
+                placeholder="0123456789"
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Chuyên môn"
-                name="specialization"
-                value={newTeacher.specialization}
-                onChange={handleNewTeacherChange}
-                required
-              />
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth required>
+                <InputLabel>Chuyên môn</InputLabel>
+                <Select
+                  label="Chuyên môn"
+                  name="subject"
+                  value={teacherForm.subject}
+                  onChange={handleTeacherFormChange}
+                >
+                  {subjects.map((subject) => (
+                    <MenuItem key={subject} value={subject}>
+                      {subject}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item xs={12}>
               <TextField
                 fullWidth
                 label="Địa chỉ"
                 name="address"
-                value={newTeacher.address}
-                onChange={handleNewTeacherChange}
-                required
-                multiline
-                rows={2}
+                value={teacherForm.address}
+                onChange={handleTeacherFormChange}
+                placeholder="Nhập địa chỉ"
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
-                label="Học vấn"
+                label="Trình độ học vấn"
                 name="education"
-                value={newTeacher.education}
-                onChange={handleNewTeacherChange}
-                required
+                value={teacherForm.education}
+                onChange={handleTeacherFormChange}
+                placeholder="VD: Thạc sĩ, Cử nhân..."
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
-                label="Kinh nghiệm"
+                label="Kinh nghiệm giảng dạy"
                 name="experience"
-                value={newTeacher.experience}
-                onChange={handleNewTeacherChange}
-                required
+                value={teacherForm.experience}
+                onChange={handleTeacherFormChange}
+                placeholder="VD: 5 năm, 10 năm..."
               />
             </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenNewTeacherDialog(false)}>Hủy</Button>
-          <Button onClick={handleAddTeacher} variant="contained" color="primary">
-            Thêm
+          <Button onClick={handleCloseAddTeacherDialog}>Hủy</Button>
+          <Button onClick={handleSaveTeacher} variant="contained">
+            Thêm giáo viên
           </Button>
         </DialogActions>
       </Dialog>
 
       {/* Create Account Dialog */}
-      <Dialog
-        open={openCreateAccountDialog}
-        onClose={() => setOpenCreateAccountDialog(false)}
-        maxWidth="sm"
-        fullWidth
-      >
+      <Dialog open={openCreateAccountDialog} onClose={handleCloseCreateAccountDialog} maxWidth="sm" fullWidth>
         <DialogTitle>
-          <Typography variant="h6">
-            Tạo tài khoản cho {selectedTeacherForAccount?.name}
-          </Typography>
+          Tạo tài khoản cho giáo viên
         </DialogTitle>
         <DialogContent>
           <Grid container spacing={3} sx={{ mt: 1 }}>
             <Grid item xs={12}>
               <TextField
                 fullWidth
+                required
                 label="Tên tài khoản"
                 name="username"
-                value={accountDetails.username}
-                onChange={handleAccountDetailsChange}
-                required
+                value={accountForm.username}
+                onChange={handleAccountFormChange}
+                placeholder="Nhập tên tài khoản"
+                helperText="Tên tài khoản sẽ được sử dụng để đăng nhập"
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 fullWidth
+                required
+                type={showPassword ? 'text' : 'password'}
                 label="Mật khẩu"
                 name="password"
-                type={showPassword ? "text" : "password"}
-                value={accountDetails.password}
-                onChange={handleAccountDetailsChange}
-                required
+                value={accountForm.password}
+                onChange={handleAccountFormChange}
+                placeholder="Nhập mật khẩu"
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton
+                        aria-label="toggle password visibility"
                         onClick={() => setShowPassword(!showPassword)}
                         edge="end"
                       >
@@ -509,21 +931,24 @@ const TeacherList = () => {
                     </InputAdornment>
                   ),
                 }}
+                helperText="Mật khẩu phải có ít nhất 6 ký tự"
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 fullWidth
+                required
+                type={showConfirmPassword ? 'text' : 'password'}
                 label="Xác nhận mật khẩu"
                 name="confirmPassword"
-                type={showConfirmPassword ? "text" : "password"}
-                value={accountDetails.confirmPassword}
-                onChange={handleAccountDetailsChange}
-                required
+                value={accountForm.confirmPassword}
+                onChange={handleAccountFormChange}
+                placeholder="Nhập lại mật khẩu"
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton
+                        aria-label="toggle confirm password visibility"
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                         edge="end"
                       >
@@ -532,62 +957,23 @@ const TeacherList = () => {
                     </InputAdornment>
                   ),
                 }}
+                error={accountForm.confirmPassword !== '' && accountForm.password !== accountForm.confirmPassword}
+                helperText={
+                  accountForm.confirmPassword !== '' && accountForm.password !== accountForm.confirmPassword
+                    ? 'Mật khẩu xác nhận không khớp'
+                    : ''
+                }
               />
             </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenCreateAccountDialog(false)}>Hủy</Button>
-          <Button onClick={handleSubmitAccount} variant="contained" color="primary">
+          <Button onClick={handleCloseCreateAccountDialog}>Hủy</Button>
+          <Button onClick={handleSaveAccount} variant="contained">
             Tạo tài khoản
           </Button>
         </DialogActions>
       </Dialog>
-
-      {/* Delete Confirmation Dialog */}
-      <Dialog
-        open={openDeleteDialog}
-        onClose={() => setOpenDeleteDialog(false)}
-        maxWidth="sm"
-        fullWidth
-      >
-        <DialogTitle>
-          <Typography variant="h6">Xác nhận xóa</Typography>
-        </DialogTitle>
-        <DialogContent>
-          <Typography>
-            Bạn có chắc chắn muốn xóa giáo viên {teacherToDelete?.name}?
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDeleteDialog(false)}>Hủy</Button>
-          <Button 
-            onClick={handleConfirmDelete} 
-            variant="contained" 
-            color="error"
-          >
-            Xóa
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Snackbar for notifications */}
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={3000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      >
-        <Alert 
-          onClose={handleCloseSnackbar} 
-          severity={snackbar.severity}
-          sx={{ width: '100%' }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
     </div>
   );
-};
-
-export default TeacherList; 
+}

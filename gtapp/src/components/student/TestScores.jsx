@@ -4,11 +4,482 @@ import styles from "../../styles/StudentTestScores.module.css";
 import toan from "../../assets/Math1.svg";
 import english from "../../assets/english.svg";
 import physic from "../../assets/physic.svg";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Typography,
+  Box,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  LinearProgress,
+  Alert,
+  IconButton,
+  Chip
+} from "@mui/material";
+import {
+  Timer,
+  CheckCircle,
+  Cancel,
+  ArrowBack,
+  ArrowForward,
+  Flag
+} from "@mui/icons-material";
 
 const TestScores = () => {
   const navigate = useNavigate();
   const [selectedCourse, setSelectedCourse] = useState("all");
   const [selectedPeriod, setSelectedPeriod] = useState("all");
+  const [openTestDialog, setOpenTestDialog] = useState(false);
+  const [currentTest, setCurrentTest] = useState(null);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState({});
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [testStarted, setTestStarted] = useState(false);
+  const [testCompleted, setTestCompleted] = useState(false);
+  const [testResults, setTestResults] = useState(null);
+
+  // Mock test data
+  const mockTests = {
+    6: {
+      id: 6,
+      title: "Bài kiểm tra lý thuyết Vật lý",
+      course: "Khoá học Vật lý cơ bản",
+      duration: 30, // minutes
+      totalQuestions: 10,
+      questions: [
+        {
+          id: 1,
+          question: "Định luật Newton thứ nhất còn được gọi là gì?",
+          options: [
+            "Định luật quán tính",
+            "Định luật tương tác",
+            "Định luật hấp dẫn",
+            "Định luật bảo toàn năng lượng"
+          ],
+          correctAnswer: 0
+        },
+        {
+          id: 2,
+          question: "Đơn vị đo lực trong hệ SI là gì?",
+          options: [
+            "Joule (J)",
+            "Newton (N)",
+            "Watt (W)",
+            "Pascal (Pa)"
+          ],
+          correctAnswer: 1
+        },
+        {
+          id: 3,
+          question: "Công thức tính động năng của một vật là:",
+          options: [
+            "E = mgh",
+            "E = ½mv²",
+            "E = Fs",
+            "E = Pt"
+          ],
+          correctAnswer: 1
+        },
+        {
+          id: 4,
+          question: "Khi một vật chuyển động tròn đều, lực hướng tâm có hướng:",
+          options: [
+            "Tiếp tuyến với quỹ đạo",
+            "Hướng vào tâm quỹ đạo",
+            "Hướng ra ngoài tâm quỹ đạo",
+            "Vuông góc với mặt phẳng quỹ đạo"
+          ],
+          correctAnswer: 1
+        },
+        {
+          id: 5,
+          question: "Hiện tượng nào sau đây là ví dụ về chuyển động thẳng đều?",
+          options: [
+            "Vật rơi tự do",
+            "Vật chuyển động tròn",
+            "Vật chuyển động trên đường thẳng với vận tốc không đổi",
+            "Vật dao động điều hòa"
+          ],
+          correctAnswer: 2
+        },
+        {
+          id: 6,
+          question: "Định luật bảo toàn động lượng phát biểu rằng:",
+          options: [
+            "Tổng động lượng của hệ kín được bảo toàn",
+            "Tổng động năng của hệ được bảo toàn",
+            "Tổng thế năng của hệ được bảo toàn",
+            "Tổng cơ năng của hệ được bảo toàn"
+          ],
+          correctAnswer: 0
+        },
+        {
+          id: 7,
+          question: "Công thức tính áp suất là:",
+          options: [
+            "P = F/A",
+            "P = m/V",
+            "P = F/s",
+            "P = W/t"
+          ],
+          correctAnswer: 0
+        },
+        {
+          id: 8,
+          question: "Khi tăng nhiệt độ của một chất khí, áp suất của nó sẽ:",
+          options: [
+            "Giảm",
+            "Tăng",
+            "Không đổi",
+            "Có thể tăng hoặc giảm tùy thuộc vào thể tích"
+          ],
+          correctAnswer: 1
+        },
+        {
+          id: 9,
+          question: "Hiện tượng khúc xạ ánh sáng xảy ra khi:",
+          options: [
+            "Ánh sáng truyền từ môi trường này sang môi trường khác",
+            "Ánh sáng phản xạ trên bề mặt",
+            "Ánh sáng bị hấp thụ hoàn toàn",
+            "Ánh sáng truyền thẳng"
+          ],
+          correctAnswer: 0
+        },
+        {
+          id: 10,
+          question: "Đơn vị đo cường độ dòng điện là:",
+          options: [
+            "Volt (V)",
+            "Ampere (A)",
+            "Ohm (Ω)",
+            "Watt (W)"
+          ],
+          correctAnswer: 1
+        }
+      ]
+    },
+    7: {
+      id: 7,
+      title: "Bài kiểm tra Toán - Chương 2: Phương trình bậc nhất",
+      course: "Khoá học toán cơ bản 6",
+      duration: 45, // minutes
+      totalQuestions: 15,
+      questions: [
+        {
+          id: 1,
+          question: "Phương trình 2x + 3 = 7 có nghiệm là:",
+          options: [
+            "x = 1",
+            "x = 2",
+            "x = 3",
+            "x = 4"
+          ],
+          correctAnswer: 1
+        },
+        {
+          id: 2,
+          question: "Giải phương trình: 3x - 5 = 10",
+          options: [
+            "x = 3",
+            "x = 5",
+            "x = 7",
+            "x = 15"
+          ],
+          correctAnswer: 1
+        },
+        {
+          id: 3,
+          question: "Phương trình nào sau đây có nghiệm x = 2?",
+          options: [
+            "x + 3 = 5",
+            "2x - 1 = 3",
+            "3x + 2 = 8",
+            "x - 1 = 1"
+          ],
+          correctAnswer: 1
+        },
+        {
+          id: 4,
+          question: "Tìm x biết: 4x + 8 = 20",
+          options: [
+            "x = 2",
+            "x = 3",
+            "x = 4",
+            "x = 5"
+          ],
+          correctAnswer: 1
+        },
+        {
+          id: 5,
+          question: "Phương trình 5x - 2 = 3x + 4 có nghiệm là:",
+          options: [
+            "x = 1",
+            "x = 2",
+            "x = 3",
+            "x = 4"
+          ],
+          correctAnswer: 2
+        },
+        {
+          id: 6,
+          question: "Giải phương trình: 2(x + 3) = 10",
+          options: [
+            "x = 1",
+            "x = 2",
+            "x = 3",
+            "x = 4"
+          ],
+          correctAnswer: 1
+        },
+        {
+          id: 7,
+          question: "Phương trình 3x + 6 = 2x + 9 có nghiệm là:",
+          options: [
+            "x = 1",
+            "x = 2",
+            "x = 3",
+            "x = 4"
+          ],
+          correctAnswer: 2
+        },
+        {
+          id: 8,
+          question: "Tìm x biết: 5x - 3 = 2x + 6",
+          options: [
+            "x = 2",
+            "x = 3",
+            "x = 4",
+            "x = 5"
+          ],
+          correctAnswer: 1
+        },
+        {
+          id: 9,
+          question: "Phương trình 4x - 8 = 2x + 4 có nghiệm là:",
+          options: [
+            "x = 4",
+            "x = 5",
+            "x = 6",
+            "x = 7"
+          ],
+          correctAnswer: 2
+        },
+        {
+          id: 10,
+          question: "Giải phương trình: 3(x - 2) = 9",
+          options: [
+            "x = 3",
+            "x = 4",
+            "x = 5",
+            "x = 6"
+          ],
+          correctAnswer: 2
+        },
+        {
+          id: 11,
+          question: "Phương trình 6x + 4 = 4x + 10 có nghiệm là:",
+          options: [
+            "x = 2",
+            "x = 3",
+            "x = 4",
+            "x = 5"
+          ],
+          correctAnswer: 1
+        },
+        {
+          id: 12,
+          question: "Tìm x biết: 2x + 5 = 3x - 1",
+          options: [
+            "x = 4",
+            "x = 5",
+            "x = 6",
+            "x = 7"
+          ],
+          correctAnswer: 2
+        },
+        {
+          id: 13,
+          question: "Phương trình 5x - 2 = 3x + 6 có nghiệm là:",
+          options: [
+            "x = 2",
+            "x = 3",
+            "x = 4",
+            "x = 5"
+          ],
+          correctAnswer: 2
+        },
+        {
+          id: 14,
+          question: "Giải phương trình: 4(x + 1) = 16",
+          options: [
+            "x = 2",
+            "x = 3",
+            "x = 4",
+            "x = 5"
+          ],
+          correctAnswer: 1
+        },
+        {
+          id: 15,
+          question: "Phương trình 7x - 3 = 4x + 9 có nghiệm là:",
+          options: [
+            "x = 3",
+            "x = 4",
+            "x = 5",
+            "x = 6"
+          ],
+          correctAnswer: 1
+        }
+      ]
+    },
+    8: {
+      id: 8,
+      title: "Bài kiểm tra Tiếng Anh - Unit 3: Daily Activities",
+      course: "Khoá học tiếng Anh cơ bản",
+      duration: 25, // minutes
+      totalQuestions: 12,
+      questions: [
+        {
+          id: 1,
+          question: "What do you usually do in the morning?",
+          options: [
+            "I usually go to bed",
+            "I usually have breakfast",
+            "I usually watch TV",
+            "I usually go to work"
+          ],
+          correctAnswer: 1
+        },
+        {
+          id: 2,
+          question: "Choose the correct form: 'She _____ to school every day.'",
+          options: [
+            "go",
+            "goes",
+            "going",
+            "went"
+          ],
+          correctAnswer: 1
+        },
+        {
+          id: 3,
+          question: "What time do you usually wake up?",
+          options: [
+            "I wake up at 6 AM",
+            "I am waking up at 6 AM",
+            "I wakes up at 6 AM",
+            "I will wake up at 6 AM"
+          ],
+          correctAnswer: 0
+        },
+        {
+          id: 4,
+          question: "Complete the sentence: 'I _____ my teeth twice a day.'",
+          options: [
+            "brush",
+            "brushes",
+            "brushing",
+            "brushed"
+          ],
+          correctAnswer: 0
+        },
+        {
+          id: 5,
+          question: "What is the opposite of 'early'?",
+          options: [
+            "late",
+            "fast",
+            "slow",
+            "quick"
+          ],
+          correctAnswer: 0
+        },
+        {
+          id: 6,
+          question: "Choose the correct question: '_____ do you go to bed?'",
+          options: [
+            "What",
+            "When",
+            "Where",
+            "Why"
+          ],
+          correctAnswer: 1
+        },
+        {
+          id: 7,
+          question: "Complete: 'I _____ dinner at 7 PM.'",
+          options: [
+            "have",
+            "has",
+            "having",
+            "had"
+          ],
+          correctAnswer: 0
+        },
+        {
+          id: 8,
+          question: "What do you do after dinner?",
+          options: [
+            "I go to school",
+            "I have breakfast",
+            "I watch TV or read a book",
+            "I go to work"
+          ],
+          correctAnswer: 2
+        },
+        {
+          id: 9,
+          question: "Choose the correct form: 'They _____ to the gym every week.'",
+          options: [
+            "go",
+            "goes",
+            "going",
+            "went"
+          ],
+          correctAnswer: 0
+        },
+        {
+          id: 10,
+          question: "What is the meaning of 'routine'?",
+          options: [
+            "Something you do once",
+            "Something you do regularly",
+            "Something you do rarely",
+            "Something you do never"
+          ],
+          correctAnswer: 1
+        },
+        {
+          id: 11,
+          question: "Complete: 'I _____ to music while I study.'",
+          options: [
+            "listen",
+            "listens",
+            "listening",
+            "listened"
+          ],
+          correctAnswer: 0
+        },
+        {
+          id: 12,
+          question: "What time do you usually go to bed?",
+          options: [
+            "I go to bed at 10 PM",
+            "I am going to bed at 10 PM",
+            "I goes to bed at 10 PM",
+            "I will go to bed at 10 PM"
+          ],
+          correctAnswer: 0
+        }
+      ]
+    }
+  };
 
   const testScores = [
     {
@@ -100,6 +571,36 @@ const TestScores = () => {
       status: "Chưa làm",
       teacherComment: "",
       feedback: "Chưa có"
+    },
+    {
+      id: 7,
+      course: "Khoá học toán cơ bản 6",
+      courseImage: toan,
+      teacher: "Cô Nguyễn Thị Anh",
+      testName: "Bài kiểm tra chương 2: Phương trình bậc nhất",
+      testDate: "2024-01-18",
+      score: 0,
+      maxScore: 10,
+      percentage: 0,
+      grade: "N/A",
+      status: "Chưa làm",
+      teacherComment: "",
+      feedback: "Chưa có"
+    },
+    {
+      id: 8,
+      course: "Khoá học tiếng Anh cơ bản",
+      courseImage: english,
+      teacher: "Cô Sarah Johnson",
+      testName: "Unit 3: Daily Activities",
+      testDate: "2024-01-20",
+      score: 0,
+      maxScore: 10,
+      percentage: 0,
+      grade: "N/A",
+      status: "Chưa làm",
+      teacherComment: "",
+      feedback: "Chưa có"
     }
   ];
 
@@ -145,6 +646,106 @@ const TestScores = () => {
     
     const totalScore = completedTests.reduce((sum, test) => sum + test.percentage, 0);
     return (totalScore / completedTests.length).toFixed(1);
+  };
+
+  // Test functions
+  const handleStartTest = (testId) => {
+    const test = mockTests[testId];
+    if (test) {
+      setCurrentTest(test);
+      setTimeLeft(test.duration * 60); // Convert to seconds
+      setCurrentQuestionIndex(0);
+      setAnswers({});
+      setTestStarted(false);
+      setTestCompleted(false);
+      setTestResults(null);
+      setOpenTestDialog(true);
+    }
+  };
+
+  const startTest = () => {
+    setTestStarted(true);
+  };
+
+  const handleAnswerChange = (questionId, answerIndex) => {
+    setAnswers(prev => ({
+      ...prev,
+      [questionId]: answerIndex
+    }));
+  };
+
+  const handleNextQuestion = () => {
+    if (currentQuestionIndex < currentTest.questions.length - 1) {
+      setCurrentQuestionIndex(prev => prev + 1);
+    }
+  };
+
+  const handlePreviousQuestion = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(prev => prev - 1);
+    }
+  };
+
+  const handleSubmitTest = () => {
+    const correctAnswers = currentTest.questions.reduce((count, question, index) => {
+      return count + (answers[question.id] === question.correctAnswer ? 1 : 0);
+    }, 0);
+
+    const score = (correctAnswers / currentTest.questions.length) * 10;
+    const percentage = (correctAnswers / currentTest.questions.length) * 100;
+
+    setTestResults({
+      score: score.toFixed(1),
+      maxScore: 10,
+      percentage: percentage.toFixed(1),
+      correctAnswers,
+      totalQuestions: currentTest.questions.length,
+      grade: percentage >= 90 ? "A" : percentage >= 80 ? "B+" : percentage >= 70 ? "B" : "C"
+    });
+
+    setTestCompleted(true);
+  };
+
+  const closeTestDialog = () => {
+    setOpenTestDialog(false);
+    setCurrentTest(null);
+    setCurrentQuestionIndex(0);
+    setAnswers({});
+    setTimeLeft(0);
+    setTestStarted(false);
+    setTestCompleted(false);
+    setTestResults(null);
+  };
+
+  // Timer effect
+  React.useEffect(() => {
+    let timer;
+    if (testStarted && timeLeft > 0 && !testCompleted) {
+      timer = setInterval(() => {
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            handleSubmitTest();
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [testStarted, timeLeft, testCompleted]);
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const getCurrentQuestion = () => {
+    return currentTest?.questions[currentQuestionIndex];
+  };
+
+  const getAnsweredQuestions = () => {
+    return Object.keys(answers).length;
   };
 
   return (
@@ -256,7 +857,12 @@ const TestScores = () => {
                 Xem chi tiết
               </button>
               {score.status === "Chưa làm" && (
-                <button className={styles.takeTestBtn}>Làm bài kiểm tra</button>
+                <button 
+                  className={styles.takeTestBtn}
+                  onClick={() => handleStartTest(score.id)}
+                >
+                  Làm bài kiểm tra
+                </button>
               )}
             </div>
           </div>
@@ -268,6 +874,217 @@ const TestScores = () => {
           <p>Không có bài kiểm tra nào phù hợp với bộ lọc đã chọn.</p>
         </div>
       )}
+
+      {/* Test Dialog */}
+      <Dialog 
+        open={openTestDialog} 
+        onClose={closeTestDialog} 
+        maxWidth="md" 
+        fullWidth
+        disableEscapeKeyDown={testStarted && !testCompleted}
+      >
+        <DialogTitle>
+          <Box display="flex" justifyContent="space-between" alignItems="center">
+            <Typography variant="h6">
+              {currentTest?.title}
+            </Typography>
+            {testStarted && !testCompleted && (
+              <Box display="flex" alignItems="center" gap={1}>
+                <Timer color="warning" />
+                <Typography variant="h6" color="warning.main">
+                  {formatTime(timeLeft)}
+                </Typography>
+              </Box>
+            )}
+          </Box>
+        </DialogTitle>
+        
+        <DialogContent>
+          {!testStarted ? (
+            <Box textAlign="center" py={4}>
+              <Typography variant="h5" gutterBottom>
+                Chuẩn bị làm bài kiểm tra
+              </Typography>
+              <Typography variant="body1" color="textSecondary" paragraph>
+                {currentTest?.course}
+              </Typography>
+              <Box display="flex" justifyContent="center" gap={2} mb={3}>
+                <Chip 
+                  icon={<Timer />} 
+                  label={`${currentTest?.duration} phút`} 
+                  color="primary" 
+                />
+                <Chip 
+                  icon={<CheckCircle />} 
+                  label={`${currentTest?.totalQuestions} câu hỏi`} 
+                  color="secondary" 
+                />
+              </Box>
+              <Alert severity="info" sx={{ mb: 2 }}>
+                <Typography variant="body2">
+                  • Bài kiểm tra có thời gian giới hạn {currentTest?.duration} phút<br/>
+                  • Gồm {currentTest?.totalQuestions} câu hỏi trắc nghiệm<br/>
+                  • Bạn có thể quay lại sửa đáp án trước khi nộp bài<br/>
+                  • Hệ thống sẽ tự động nộp bài khi hết thời gian
+                </Typography>
+              </Alert>
+            </Box>
+          ) : testCompleted ? (
+            <Box textAlign="center" py={4}>
+              <Typography variant="h4" gutterBottom color="primary">
+                Hoàn thành bài kiểm tra!
+              </Typography>
+              <Box display="flex" justifyContent="center" gap={3} my={3}>
+                <Box textAlign="center">
+                  <Typography variant="h3" color="primary">
+                    {testResults?.score}/{testResults?.maxScore}
+                  </Typography>
+                  <Typography variant="body1">Điểm số</Typography>
+                </Box>
+                <Box textAlign="center">
+                  <Typography variant="h3" color="secondary">
+                    {testResults?.percentage}%
+                  </Typography>
+                  <Typography variant="body1">Phần trăm</Typography>
+                </Box>
+                <Box textAlign="center">
+                  <Typography variant="h3" color="success.main">
+                    {testResults?.correctAnswers}/{testResults?.totalQuestions}
+                  </Typography>
+                  <Typography variant="body1">Câu đúng</Typography>
+                </Box>
+              </Box>
+              <Chip 
+                label={`Xếp loại: ${testResults?.grade}`}
+                color={testResults?.grade === "A" ? "success" : testResults?.grade === "B+" ? "primary" : "warning"}
+                size="large"
+              />
+            </Box>
+          ) : (
+            <Box>
+              {/* Progress bar */}
+              <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                <Typography variant="body2">
+                  Câu {currentQuestionIndex + 1} / {currentTest?.questions.length}
+                </Typography>
+                <Typography variant="body2" color="primary">
+                  {getAnsweredQuestions()} / {currentTest?.questions.length} câu đã trả lời
+                </Typography>
+              </Box>
+              <LinearProgress 
+                variant="determinate" 
+                value={(currentQuestionIndex + 1) / currentTest?.questions.length * 100}
+                sx={{ mb: 3 }}
+              />
+
+              {/* Question */}
+              <Typography variant="h6" gutterBottom>
+                Câu {currentQuestionIndex + 1}: {getCurrentQuestion()?.question}
+              </Typography>
+
+              {/* Options */}
+              <FormControl component="fieldset" sx={{ width: '100%', mt: 2 }}>
+                <RadioGroup
+                  value={answers[getCurrentQuestion()?.id] || ''}
+                  onChange={(e) => handleAnswerChange(getCurrentQuestion()?.id, parseInt(e.target.value))}
+                >
+                  {getCurrentQuestion()?.options.map((option, index) => (
+                    <FormControlLabel
+                      key={index}
+                      value={index}
+                      control={<Radio />}
+                      label={option}
+                      sx={{
+                        border: '1px solid #e0e0e0',
+                        borderRadius: 1,
+                        margin: '8px 0',
+                        padding: '12px',
+                        width: '100%',
+                        '&:hover': {
+                          backgroundColor: '#f5f5f5'
+                        }
+                      }}
+                    />
+                  ))}
+                </RadioGroup>
+              </FormControl>
+
+              {/* Navigation buttons */}
+              <Box display="flex" justifyContent="space-between" mt={4}>
+                <Button
+                  variant="outlined"
+                  startIcon={<ArrowBack />}
+                  onClick={handlePreviousQuestion}
+                  disabled={currentQuestionIndex === 0}
+                >
+                  Câu trước
+                </Button>
+                
+                <Box display="flex" gap={1}>
+                  {currentTest?.questions.map((_, index) => (
+                    <IconButton
+                      key={index}
+                      size="small"
+                      onClick={() => setCurrentQuestionIndex(index)}
+                      sx={{
+                        border: '1px solid',
+                        borderColor: index === currentQuestionIndex ? 'primary.main' : 'grey.300',
+                        backgroundColor: answers[currentTest.questions[index]?.id] !== undefined ? 'success.light' : 'transparent',
+                        color: answers[currentTest.questions[index]?.id] !== undefined ? 'success.contrastText' : 'inherit'
+                      }}
+                    >
+                      {index + 1}
+                    </IconButton>
+                  ))}
+                </Box>
+
+                {currentQuestionIndex === currentTest?.questions.length - 1 ? (
+                  <Button
+                    variant="contained"
+                    color="success"
+                    endIcon={<CheckCircle />}
+                    onClick={handleSubmitTest}
+                  >
+                    Nộp bài
+                  </Button>
+                ) : (
+                  <Button
+                    variant="contained"
+                    endIcon={<ArrowForward />}
+                    onClick={handleNextQuestion}
+                  >
+                    Câu tiếp
+                  </Button>
+                )}
+              </Box>
+            </Box>
+          )}
+        </DialogContent>
+        
+        <DialogActions>
+          {!testStarted ? (
+            <>
+              <Button onClick={closeTestDialog}>Hủy</Button>
+              <Button variant="contained" onClick={startTest}>
+                Bắt đầu làm bài
+              </Button>
+            </>
+          ) : testCompleted ? (
+            <Button variant="contained" onClick={closeTestDialog}>
+              Đóng
+            </Button>
+          ) : (
+            <Button 
+              variant="outlined" 
+              color="error" 
+              onClick={handleSubmitTest}
+              startIcon={<Flag />}
+            >
+              Nộp bài sớm
+            </Button>
+          )}
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
