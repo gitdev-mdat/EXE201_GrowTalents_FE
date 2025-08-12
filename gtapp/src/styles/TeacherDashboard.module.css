@@ -1,5 +1,5 @@
 .container {
-  padding: 20px;
+  padding: 20px 0px;
 }
 
 .header {
@@ -37,4 +37,4 @@
 
 .classItem:last-child {
   border-bottom: none;
-} 
+}

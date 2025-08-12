@@ -16,4 +16,4 @@ const TeacherLayout = () => {
   );
 };
 
-export default TeacherLayout; 
+export default TeacherLayout;

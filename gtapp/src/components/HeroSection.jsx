@@ -17,12 +17,12 @@ const HeroSection = () => {
           <h1 className={styles.heading}>
             GrowTalents: Trung Tâm Dạy Học Uy Tín Hàng Đầu Đăk Nông
           </h1>
-          <p className={styles.subheading}>
+          <p className={styles.subheading}>0
             <div>
               <strong>Cải cách tư duy - nâng cao năng lực </strong>
             </div>
             <div>
-              <strong>
+              <strong>+
                 Xây dựng giáo án phù hợp riêng cho từng em học sinh
               </strong>
             </div>
