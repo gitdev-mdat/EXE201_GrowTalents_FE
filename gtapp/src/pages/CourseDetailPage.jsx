@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { Collapse, Tabs } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import { CaretRightOutlined } from "@ant-design/icons";
+import { PlusOutlined, CaretRightOutlined } from "@ant-design/icons";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import styles from "../styles/CourseDetailPage.module.css"; // Import CSS Module
 import anh1 from "../assets/detail1.svg";
+
 const { TabPane } = Tabs;
 const { Panel } = Collapse;
 
@@ -28,6 +29,12 @@ const geometryItems = [
 ];
 
 const CourseDetailPage = () => {
+  const navigate = useNavigate(); // Hook để điều hướng
+
+  const handleRegisterClick = () => {
+    navigate("/login"); // Điều hướng đến trang /login
+  };
+
   return (
     <div className={styles.courseDetailContainer}>
       <div className={styles.courseLeft}>
@@ -121,14 +128,16 @@ const CourseDetailPage = () => {
             <div className={styles.detailItem}>
               <strong>Số buổi học:</strong> 72 buổi
             </div>
-            {/* <div className={styles.detailItem}>
-              <strong>Số điểm tối thiểu đạt được:</strong> 9 điểm
-            </div> */}
           </div>
 
           {/* Nút Đăng ký và Thêm vào giỏ hàng */}
           <div className={styles.buttonsContainer}>
-            <button className={styles.registerButton}>Đăng ký</button>
+            <button
+              className={styles.registerButton}
+              onClick={handleRegisterClick} // Gọi hàm điều hướng
+            >
+              Đăng ký
+            </button>
             <button className={styles.addToCartButton}>Vào giỏ</button>
           </div>
         </div>

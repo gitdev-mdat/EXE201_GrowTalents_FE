@@ -1,0 +1,445 @@
+.courseDetailContainer {
+  padding: 20px;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  gap: 20px;
+}
+
+.backBtn {
+  padding: 10px 20px;
+  background-color: #1890ff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.backBtn:hover {
+  background-color: #096dd9;
+}
+
+.header h1 {
+  margin: 0;
+  color: #333;
+  font-size: 24px;
+}
+
+.courseOverview {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 30px;
+}
+
+.courseImage {
+  position: relative;
+}
+
+.courseImage img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.statusBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #52c41a;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.courseInfo h2 {
+  margin: 0 0 15px 0;
+  color: #333;
+  font-size: 24px;
+}
+
+.subject {
+  color: #1890ff;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0 0 10px 0;
+}
+
+.teacher, .schedule, .duration {
+  color: #666;
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.progressContainer {
+  margin: 20px 0;
+}
+
+.progressContainer span {
+  display: block;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.progressBar {
+  width: 100%;
+  height: 8px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #1890ff, #52c41a);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.joinBtn, .contactBtn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.joinBtn {
+  background-color: #52c41a;
+  color: white;
+}
+
+.joinBtn:hover {
+  background-color: #389e0d;
+}
+
+.contactBtn {
+  background-color: #1890ff;
+  color: white;
+}
+
+.contactBtn:hover {
+  background-color: #096dd9;
+}
+
+.tabs {
+  display: flex;
+  background: white;
+  border-radius: 12px 12px 0 0;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.tab {
+  flex: 1;
+  padding: 15px 20px;
+  border: none;
+  background: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 3px solid transparent;
+}
+
+.tab:hover {
+  background-color: #f8f9fa;
+  color: #1890ff;
+}
+
+.tab.active {
+  color: #1890ff;
+  border-bottom-color: #1890ff;
+  background-color: #f8f9fa;
+}
+
+.tabContent {
+  background: white;
+  border-radius: 0 0 12px 12px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.overviewSection h3,
+.syllabusSection h3,
+.materialsSection h3,
+.assignmentsSection h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+  font-size: 20px;
+  border-bottom: 2px solid #1890ff;
+  padding-bottom: 10px;
+}
+
+.description, .objectives, .teacherInfo {
+  margin-bottom: 30px;
+}
+
+.description p {
+  color: #666;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+.objectives ul {
+  list-style: none;
+  padding: 0;
+}
+
+.objectives li {
+  padding: 8px 0;
+  color: #666;
+  position: relative;
+  padding-left: 20px;
+}
+
+.objectives li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #52c41a;
+  font-weight: bold;
+}
+
+.teacherCard {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.teacherCard h4 {
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.teacherCard p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.contactTeacherBtn {
+  margin-top: 15px;
+  padding: 8px 16px;
+  background-color: #1890ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.contactTeacherBtn:hover {
+  background-color: #096dd9;
+}
+
+.syllabusList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.weekCard {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #fafafa;
+}
+
+.weekHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.weekHeader h4 {
+  margin: 0;
+  color: #333;
+  font-size: 16px;
+}
+
+.weekStatus {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
+}
+
+.weekTopics h5 {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-size: 14px;
+}
+
+.weekTopics ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.weekTopics li {
+  padding: 4px 0;
+  color: #666;
+  font-size: 14px;
+  padding-left: 15px;
+  position: relative;
+}
+
+.weekTopics li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #1890ff;
+}
+
+.startLessonBtn {
+  margin-top: 15px;
+  padding: 8px 16px;
+  background-color: #52c41a;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.startLessonBtn:hover {
+  background-color: #389e0d;
+}
+
+.materialsList, .assignmentsList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.materialCard, .assignmentCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: white;
+}
+
+.materialInfo h4, .assignmentInfo h4 {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-size: 16px;
+}
+
+.materialInfo p, .assignmentInfo p {
+  margin: 4px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.materialActions, .assignmentActions {
+  display: flex;
+  gap: 10px;
+}
+
+.downloadBtn, .viewBtn, .submitBtn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.downloadBtn {
+  background-color: #52c41a;
+  color: white;
+}
+
+.downloadBtn:hover {
+  background-color: #389e0d;
+}
+
+.viewBtn {
+  background-color: #1890ff;
+  color: white;
+}
+
+.viewBtn:hover {
+  background-color: #096dd9;
+}
+
+.submitBtn {
+  background-color: #faad14;
+  color: white;
+}
+
+.submitBtn:hover {
+  background-color: #d48806;
+}
+
+.submittedBadge {
+  padding: 8px 16px;
+  background-color: #52c41a;
+  color: white;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .courseOverview {
+    grid-template-columns: 1fr;
+  }
+  
+  .tabs {
+    flex-direction: column;
+  }
+  
+  .tab {
+    border-bottom: 1px solid #e0e0e0;
+    border-right: none;
+  }
+  
+  .tab.active {
+    border-bottom-color: #1890ff;
+    border-right: 3px solid #1890ff;
+  }
+  
+  .materialCard, .assignmentCard {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .materialActions, .assignmentActions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+} 

@@ -1,0 +1,41 @@
+.container {
+  padding: 20px;
+}
+
+.header {
+  margin-bottom: 30px;
+}
+
+.filterCard {
+  margin-bottom: 30px;
+}
+
+.tabsContainer {
+  margin-bottom: 20px;
+}
+
+.contentCard {
+  margin-top: 20px;
+}
+
+.documentItem {
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.2s ease;
+}
+
+.documentItem:hover {
+  background-color: #f8f9fa;
+}
+
+.documentItem:last-child {
+  border-bottom: none;
+}
+
+.assignmentCard {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.assignmentCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+} 

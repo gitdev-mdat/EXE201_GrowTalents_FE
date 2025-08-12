@@ -1,0 +1,101 @@
+/* Sidebar container */
+.container {
+  position: fixed;
+  width: 280px;
+  height: 100%;
+  border-right: 2px solid #dcdcdc;
+  background-color: #152259;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 20px;
+}
+
+/* Logo container */
+.logoContainer {
+  width: 100%;
+  height: 20%;
+  padding: 0 20px;
+  text-align: center;
+}
+
+/* Logo */
+.logo {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+/* Tên sidebar */
+.name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+/* Các mục trong sidebar */
+.itemsContainer {
+  flex-grow: 1;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mục trong sidebar */
+.item {
+  font-size: 1.1rem;
+  color: #d1d3d8;
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+}
+
+.item:hover {
+  background-color: #1e3351;
+  color: #ffffff;
+  transform: translateX(5px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.item svg {
+  font-size: 1.5rem;
+  margin-right: 15px;
+  color: #a6b1cc;
+  transition: color 0.3s ease;
+}
+
+.item:hover svg {
+  color: #ffffff;
+}
+
+.item.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.item.active svg {
+  color: white;
+}
+
+.itemsContainer .item:last-child {
+  color: #e74c3c;
+}
+
+.itemsContainer .item:last-child:hover {
+  background-color: #f2dede;
+  color: #c0392b;
+}
+
+/* Footer */
+.footer {
+  padding: 20px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #b0b0b0;
+} 

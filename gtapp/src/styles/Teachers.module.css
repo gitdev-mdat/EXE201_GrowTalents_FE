@@ -26,7 +26,7 @@
 /* Styling từng hàng trong bảng */
 .table-body tr {
   display: grid; /* Sử dụng grid layout */
-  grid-template-columns: 0.3fr 0.5fr 1.5fr 1.5fr 2fr 0.5fr; /* Định dạng cột */
+  grid-template-columns: 0.3fr 0.5fr 1.5fr 1.5fr 2fr 0.5fr 1fr; /* Định dạng cột - thêm cột Action */
   align-items: center;
   padding: 12px 16px;
   margin-bottom: 12px; /* Khoảng cách giữa các hàng */
@@ -55,6 +55,27 @@
   white-space: nowrap; /* Không xuống dòng */
   padding: 12px 16px; /* Thêm padding cho mỗi ô */
   transition: color 0.3s ease, transform 0.3s ease; /* Thêm hiệu ứng chuyển màu cho văn bản */
+}
+
+/* Styling cho nút Tạo lịch */
+.table-body .MuiButton-root {
+  background-color: #1976d2 !important;
+  color: white !important;
+  border: 2px solid #1976d2 !important;
+  padding: 8px 16px !important;
+  border-radius: 6px !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  text-transform: none !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 2px 4px rgba(25, 118, 210, 0.2) !important;
+}
+
+.table-body .MuiButton-root:hover {
+  background-color: #1565c0 !important;
+  border-color: #1565c0 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 8px rgba(25, 118, 210, 0.3) !important;
 }
 
 /* Styling cho giới tính */
@@ -105,6 +126,36 @@
 
 .collapse-table tr:hover {
   background-color: #f3e5f5; /* Tím nhạt khi hover */
+}
+
+/* Styling cho nút Thêm lịch trong collapse */
+.collapse-content .MuiButton-contained {
+  background-color: #4caf50 !important;
+  color: white !important;
+  padding: 6px 12px !important;
+  border-radius: 4px !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  text-transform: none !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 2px 4px rgba(76, 175, 80, 0.2) !important;
+}
+
+.collapse-content .MuiButton-contained:hover {
+  background-color: #388e3c !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 3px 6px rgba(76, 175, 80, 0.3) !important;
+}
+
+/* Styling cho icon buttons trong bảng lịch */
+.collapse-table .MuiIconButton-root {
+  padding: 4px !important;
+  margin: 0 2px !important;
+  transition: all 0.2s ease !important;
+}
+
+.collapse-table .MuiIconButton-root:hover {
+  transform: scale(1.1) !important;
 }
 
 /* Buttons container */

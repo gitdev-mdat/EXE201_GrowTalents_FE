@@ -1,9 +1,15 @@
 import React from "react";
+import { useNavigate } from "react-router-dom"; // Import React Router's useNavigate
 import styles from "../styles/HeroSection.module.css";
 import student from "../assets/student.png";
-// import student from "../assets/graduate.svg";
 
 const HeroSection = () => {
+  const navigate = useNavigate(); // Hook để điều hướng
+
+  const handleButtonClick = () => {
+    navigate("/login"); // Điều hướng đến trang /login
+  };
+
   return (
     <section id="Home" className={styles.heroSection}>
       <div className={styles.heroContainer}>
@@ -26,8 +32,7 @@ const HeroSection = () => {
               </strong>
             </div>
           </p>
-          <button className={styles.ctaButton}>
-            {" "}
+          <button className={styles.ctaButton} onClick={handleButtonClick}>
             Đăng Ký Học Thử Miễn Phí <span className="icon">🎓</span>
           </button>
         </div>

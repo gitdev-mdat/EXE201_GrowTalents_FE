@@ -1,20 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import styles from "../../styles/SideBar.module.css";
+import styles from "../../styles/StudentSideBar.module.css";
 import logo from "../../assets/logo.png";
 import { HomeOutlined } from "@ant-design/icons";
 import SchoolIcon from "@mui/icons-material/School";
-import PictureInPictureIcon from "@mui/icons-material/PictureInPicture";
+import ScheduleIcon from "@mui/icons-material/Schedule";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
-import EditNoteIcon from "@mui/icons-material/EditNote";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import AssessmentIcon from "@mui/icons-material/Assessment";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PersonIcon from "@mui/icons-material/Person";
 import PaymentIcon from "@mui/icons-material/Payment";
-import AssessmentIcon from "@mui/icons-material/Assessment";
 
-const SideBar = () => {
+const StudentSideBar = () => {
   return (
     <div className={styles.container}>
       <div className={styles.logoContainer}>
@@ -22,28 +22,22 @@ const SideBar = () => {
         <div className={styles.name}>GrowTalents</div>
       </div>
       <div className={styles.itemsContainer}>
-        <Link to="/admin/dashboard" className={styles.item}>
+        <Link to="/student/dashboard" className={styles.item}>
           <HomeOutlined /> Dashboard
         </Link>
-        <Link to="/admin/schedule" className={styles.item}>
-          <AccessTimeIcon /> Schedule
+        <Link to="/student/schedule" className={styles.item}>
+          <AccessTimeIcon /> Personal Study Schedule
         </Link>
-        <Link to="/admin/teachers" className={styles.item}>
-          <PersonIcon /> Teachers
+        <Link to="/student/courses" className={styles.item}>
+          <SchoolIcon /> List Course
         </Link>
-        <Link to="/admin/students" className={styles.item}>
-          <PictureInPictureIcon /> Students/classes
+        <Link to="/student/documents" className={styles.item}>
+          <LibraryBooksIcon /> Documents / Exercises
         </Link>
-        <Link to="/admin/courses" className={styles.item}>
-          <LibraryBooksIcon /> Courses
+        <Link to="/student/test-scores" className={styles.item}>
+          <AssessmentIcon /> Test Scores / Teacher Comments
         </Link>
-        <Link to="/admin/tuition" className={styles.item}>
-          <PaymentIcon /> Tuition Recording
-        </Link>
-        <Link to="/admin/reports" className={styles.item}>
-          <AssessmentIcon /> Summary & Report Export
-        </Link>
-        <Link to="/admin/settings" className={styles.item}>
+        <Link to="/student/settings" className={styles.item}>
           <SettingsIcon /> Settings and profile
         </Link>
         <Link to="/login" className={styles.item}>
@@ -54,4 +48,4 @@ const SideBar = () => {
   );
 };
 
-export default SideBar;
+export default StudentSideBar; 

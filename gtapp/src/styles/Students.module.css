@@ -7,16 +7,31 @@
   overflow: hidden; /* Không cho phép cuộn */
 }
 
+.paper {
+  padding: 24px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  color: #1976d2;
+  font-size: 24px;
+  margin: 0;
+}
+
 /* Thanh tìm kiếm và bộ lọc */
 .filterContainer {
   display: flex;
-  gap: 15px;
-  margin-bottom: 20px;
-  align-items: center;
-  background-color: #fff; /* Nền trắng */
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ */
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
 /* Ô tìm kiếm */
@@ -47,6 +62,7 @@
   color: #333;
   cursor: pointer;
   transition: all 0.3s ease;
+  min-width: 200px;
 }
 
 .filter:hover {
@@ -61,9 +77,9 @@
 
 /* Bảng thông tin học sinh */
 .infoContainer {
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
   height: calc(
     100vh - 150px
@@ -77,32 +93,29 @@
 .studentTable {
   width: 100%;
   border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.studentTable th,
+.studentTable td {
+  padding: 12px;
   text-align: left;
-  table-layout: fixed; /* Đảm bảo chiều rộng các cột ổn định */
-  overflow-x: hidden; /* Không cho phép cuộn ngang */
+  border-bottom: 1px solid #eee;
 }
 
 .studentTable th {
-  background-color: #152259; /* Màu xanh đậm */
-  color: white; /* Màu chữ trắng */
-  padding: 14px 16px;
-  text-transform: uppercase;
-  font-size: 0.95rem;
-  border-bottom: 2px solid #f5f7fa;
+  background-color: #f5f5f5;
+  font-weight: 600;
+  color: #333;
 }
 
-.studentTable td {
-  padding: 12px 16px;
-  font-size: 0.95rem;
-  border-bottom: 1px solid #ddd;
-  vertical-align: middle;
-  white-space: nowrap; /* Giữ nguyên bố cục khi nội dung dài */
-  overflow: hidden; /* Tránh xuất hiện thanh cuộn ngang */
-  text-overflow: ellipsis; /* Dấu ba chấm nếu nội dung dài */
+.studentRow {
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-.studentTable tr:hover {
-  background-color: #e8f0fe; /* Màu sáng khi hover */
+.studentRow:hover {
+  background-color: #f9f9f9;
 }
 
 .studentImage {
@@ -134,68 +147,41 @@
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  display: block;
+  margin: 0 auto 15px;
   object-fit: cover;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .detailName {
+  text-align: center;
+  margin-bottom: 20px !important;
   color: #152259;
   font-size: 1.8rem;
   font-weight: bold;
-  text-align: center;
-  margin-bottom: 10px;
   line-height: 1.2;
 }
 
 /* Phần thông tin chi tiết (số điện thoại, địa chỉ, ngày sinh) */
+.detailInfo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
 .detailInfoCard {
-  display: flex;
-  align-items: center;
-  background-color: #f5f7fa; /* Màu nền sáng */
-  padding: 15px 20px; /* Khoảng cách trong card */
-  border-radius: 10px; /* Bo góc */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ */
-  margin-bottom: 15px; /* Khoảng cách giữa các card */
-  transition: transform 0.2s, box-shadow 0.2s; /* Hiệu ứng hover */
-  min-width: 350px;
+  background: #f8f9fa;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
 }
 
-.detailInfoCard:hover {
-  transform: translateY(-3px); /* Hiệu ứng nổi khi hover */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Tăng bóng đổ */
-}
-
-.detailInfoCard .icon {
-  font-size: 1.5rem; /* Kích thước icon lớn hơn */
-  color: #152259; /* Màu xanh đậm */
-  margin-right: 15px; /* Khoảng cách giữa icon và nội dung */
-}
-
-.detailInfoCard .label {
-  font-size: 0.9rem; /* Kích thước nhỏ hơn cho nhãn */
-  color: #555; /* Màu xám nhạt */
-}
-
-.detailInfoCard .value {
-  font-size: 1rem; /* Kích thước chữ vừa phải */
-  color: #333; /* Màu chữ chính */
-  font-weight: bold; /* In đậm giá trị */
-  margin-left: auto; /* Căn phải nội dung */
-}
-
-/* Responsive điều chỉnh khoảng cách */
-@media (max-width: 768px) {
-  .detailInfoCard {
-    flex-direction: column; /* Chuyển nội dung thành cột */
-    align-items: flex-start; /* Căn trái */
-    padding: 10px 15px; /* Giảm padding */
-  }
-
-  .detailInfoCard .value {
-    margin-left: 0; /* Xóa căn phải trên màn hình nhỏ */
-    margin-top: 5px; /* Tạo khoảng cách trên */
-  }
+.label {
+  color: #666;
+  margin-bottom: 4px;
+  font-weight: 500;
 }
 
 /* Biểu tượng School */
@@ -222,28 +208,26 @@
 .schoolIcon i {
   font-size: 1.5rem; /* Tăng kích thước icon */
 }
+
 .paginationContainer {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
   gap: 10px;
+  margin-top: 20px;
 }
 
 .paginationButton {
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
   padding: 8px 16px;
-  font-size: 14px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 4px;
   cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s, transform 0.3s;
+  transition: all 0.2s;
 }
 
 .paginationButton:hover {
-  background-color: #007bff;
-  color: white;
-  transform: scale(1.05);
+  background: #f0f0f0;
 }
 
 .pageNumbers {
@@ -251,28 +235,68 @@
   gap: 5px;
 }
 
-.pageNumbers button {
-  background-color: #fff;
-  border: 1px solid #ccc;
-  padding: 8px 16px;
-  font-size: 14px;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s, transform 0.3s;
+/* Styles for the detail dialog */
+.detailInfoCard:hover {
+  transform: translateY(-3px); /* Hiệu ứng nổi khi hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Tăng bóng đổ */
 }
 
-.pageNumbers button:hover {
-  background-color: #007bff;
-  color: white;
-  transform: scale(1.05);
+/* Class management styles */
+.classManagement {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
 }
 
-.paginationButton:disabled {
-  background-color: #e0e0e0;
-  cursor: not-allowed;
+.currentClasses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
-.paginationButton:disabled:hover {
-  background-color: #e0e0e0;
-  color: #999;
+.classChip {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.addClassSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+
+  .paper {
+    padding: 16px;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .filterContainer {
+    flex-direction: column;
+  }
+
+  .filter {
+    width: 100%;
+  }
+
+  .detailInfo {
+    grid-template-columns: 1fr;
+  }
+
+  .studentTable {
+    display: block;
+    overflow-x: auto;
+  }
 }

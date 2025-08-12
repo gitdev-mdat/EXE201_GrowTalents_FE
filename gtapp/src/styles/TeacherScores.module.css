@@ -1,0 +1,28 @@
+.container {
+  padding: 20px;
+}
+
+.header {
+  margin-bottom: 30px;
+}
+
+.filterCard {
+  margin-bottom: 30px;
+}
+
+.statsGrid {
+  margin-bottom: 30px;
+}
+
+.statCard {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tableCard {
+  margin-top: 20px;
+} 

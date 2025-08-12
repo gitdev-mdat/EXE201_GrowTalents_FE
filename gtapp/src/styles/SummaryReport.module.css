@@ -1,0 +1,51 @@
+.container {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  color: #152259;
+  font-size: 24px;
+  margin: 0;
+}
+
+.exportButtons {
+  display: flex;
+  gap: 10px;
+}
+
+.reportButtons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.chartContainer {
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .exportButtons {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .reportButtons {
+    justify-content: center;
+  }
+} 

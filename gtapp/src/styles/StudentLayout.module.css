@@ -1,0 +1,20 @@
+.layout {
+  display: flex; /* Sử dụng Flexbox để chia bố cục */
+  height: 100vh; /* Chiều cao toàn màn hình */
+  width: 100vw; /* Chiều rộng toàn màn hình */
+  overflow: hidden; /* Ẩn phần tràn, nếu có */
+}
+
+.sidebar {
+  flex-shrink: 0; /* Sidebar không co lại khi màn hình thu nhỏ */
+  width: 280px; /* Chiều rộng cố định cho Sidebar */
+  background-color: #152259; /* Màu nền Sidebar */
+  height: 100%; /* Sidebar chiếm toàn bộ chiều cao */
+}
+
+.content {
+  flex-grow: 1; /* Nội dung chiếm toàn bộ không gian còn lại */
+  overflow-y: auto; /* Thêm scroll nếu nội dung quá dài */
+  padding: 20px;
+  background: #f5f5f5; /* Màu nền nội dung */
+} 

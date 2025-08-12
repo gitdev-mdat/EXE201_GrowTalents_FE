@@ -1,0 +1,33 @@
+.container {
+  padding: 20px;
+}
+
+.header {
+  margin-bottom: 30px;
+}
+
+.quizInfoCard {
+  margin-bottom: 20px;
+}
+
+.questionsCard {
+  margin-bottom: 20px;
+}
+
+.questionItem {
+  padding: 16px 0;
+  transition: background-color 0.2s ease;
+}
+
+.questionItem:hover {
+  background-color: #f8f9fa;
+}
+
+.summaryCard {
+  position: sticky;
+  top: 20px;
+}
+
+.summaryCard .MuiCardContent-root {
+  padding: 20px;
+} 

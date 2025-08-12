@@ -1,0 +1,230 @@
+.container {
+  padding: 20px;
+}
+
+.paper {
+  padding: 24px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  color: #1976d2;
+  font-size: 24px;
+  margin: 0;
+}
+
+/* Buttons container */
+.buttons-container {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.action-button {
+  min-width: 120px;
+}
+
+/* Table styles */
+.table-container {
+  margin-bottom: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table-head {
+  background-color: #f5f5f5;
+}
+
+.table-head th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+  color: #333;
+  padding: 16px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.table-body {
+  transition: background-color 0.2s ease;
+}
+
+.table-body:hover {
+  background-color: #f8f9fa;
+}
+
+.table-body td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.icon-button {
+  color: #1976d2;
+}
+
+.icon-button:hover {
+  background-color: rgba(25, 118, 210, 0.1);
+}
+
+/* Collapse content */
+.collapse-content {
+  background-color: #fafafa;
+  border-radius: 8px;
+  margin: 8px;
+  padding: 16px;
+}
+
+.collapse-table {
+  background-color: white;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.collapse-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #495057;
+  padding: 12px 8px;
+  font-size: 0.875rem;
+}
+
+.collapse-table td {
+  padding: 8px;
+  font-size: 0.875rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+/* Status chip styles */
+.statusChip {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.active {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.inactive {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+/* Pagination */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+  padding: 16px;
+}
+
+/* Dialog styles */
+.dialogContent {
+  padding: 24px;
+}
+
+.formField {
+  margin-bottom: 16px;
+}
+
+/* Action buttons */
+.actionButton {
+  margin: 0 4px;
+}
+
+/* Schedule button */
+.schedule-button {
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.schedule-button:hover {
+  background-color: #1565c0;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+
+  .paper {
+    padding: 16px;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .buttons-container {
+    flex-direction: column;
+  }
+
+  .action-button {
+    width: 100%;
+  }
+
+  .collapse-content {
+    margin: 4px;
+    padding: 12px;
+  }
+}
+
+/* Loading and empty states */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6c757d;
+}
+
+.empty-state-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+/* Tooltip styles */
+.tooltip {
+  font-size: 0.75rem;
+}
+
+/* Form validation styles */
+.error-text {
+  color: #d32f2f;
+  font-size: 0.75rem;
+  margin-top: 4px;
+}
+
+.input-error {
+  border-color: #d32f2f;
+}
+
+.input-error:focus {
+  border-color: #d32f2f;
+  box-shadow: 0 0 0 2px rgba(211, 47, 47, 0.2);
+} 
