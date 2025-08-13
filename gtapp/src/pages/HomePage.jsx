@@ -4,6 +4,7 @@ import CoursesSection from "../components/CoursesSection";
 import AchievementSection from "../components/AchievementSection";
 import ContactSection from "../components/ContactSection";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 export default function HomePage() {
   return (
@@ -25,6 +26,8 @@ export default function HomePage() {
       <div id="contact">
         <ContactSection />
       </div>
+      
+      <Footer />
     </>
   );
 }
