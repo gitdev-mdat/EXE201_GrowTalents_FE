@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Snackbar,
-  Grid,
-} from "@mui/material";
+import styles from "../styles/ContactSection.module.css";
 import givequestion from "../assets/givequestion.jpg";
 
 export default function ContactSection() {
@@ -16,7 +9,7 @@ export default function ContactSection() {
     email: "",
     message: "",
   });
-  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -25,143 +18,109 @@ export default function ContactSection() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form data submitted:", formData);
-    setOpenSnackbar(true);
+    setShowSuccess(true);
     setFormData({ name: "", phone: "", email: "", message: "" });
+    
+    // Hide success message after 4 seconds
+    setTimeout(() => setShowSuccess(false), 4000);
   };
 
   return (
-    <Box
-      sx={{
-        backgroundColor: "#f9fbfc",
-        borderRadius: 3,
-        p: { xs: 2, md: 5 },
-        boxShadow: "0 6px 16px rgba(0,0,0,0.06)",
-        maxWidth: "100%",
-        mx: "auto",
-        mt: 4,
-      }}
-    >
-      <Grid container spacing={4} alignItems="center">
-        {/* Ảnh minh hoạ bên trái */}
-        <Grid item xs={12} md={6}>
-          <Box
-            component="img"
-            src={givequestion}
-            alt="Liên hệ Grow Talents"
-            sx={{
-              width: "100%",
-              maxHeight: 500,
-              objectFit: "cover",
-              borderRadius: 2,
-            }}
-          />
-        </Grid>
+    <section id="contact" className={styles.contactSection}>
+      <div className={styles.container}>
+        <h2 className={styles.title}>Liên Hệ Với Chúng Tôi</h2>
+        
+        <div className={styles.contactContent}>
+          {/* Image Container */}
+          <div className={styles.imageContainer}>
+            <img 
+              src={givequestion} 
+              alt="Liên hệ Grow Talents" 
+              className={styles.contactImage}
+            />
+          </div>
 
-        {/* Form bên phải */}
-        <Grid item xs={12} md={6}>
-          <Typography
-            variant="h5"
-            sx={{
-              fontWeight: 700,
-              mb: 2,
-              color: "#0d4dd2",
-              textAlign: { xs: "center", md: "left" },
-            }}
-          >
-            Để lại lời nhắn cho Grow Talents 💬
-          </Typography>
-          <Typography
-            sx={{
-              mb: 3,
-              color: "#555",
-              textAlign: { xs: "center", md: "left" },
-            }}
-          >
-            Nếu bạn có câu hỏi, muốn đăng ký học hoặc cần tư vấn, hãy gửi lời
-            nhắn cho chúng tôi. Grow Talents sẽ phản hồi trong thời gian sớm
-            nhất!
-          </Typography>
+          {/* Form Container */}
+          <div className={styles.formContainer}>
+            <div className={styles.formHeader}>
+              <h3 className={styles.formTitle}>
+                Để lại lời nhắn cho Grow Talents
+              </h3>
+              <p className={styles.formDescription}>
+                Nếu bạn có câu hỏi, muốn đăng ký học hoặc cần tư vấn, hãy gửi lời
+                nhắn cho chúng tôi. Grow Talents sẽ phản hồi trong thời gian sớm
+                nhất!
+              </p>
+            </div>
 
-          <form onSubmit={handleSubmit}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  required
-                  name="name"
-                  label="Họ và tên"
-                  variant="outlined"
-                  value={formData.name}
-                  onChange={handleChange}
-                />
-              </Grid>
+            <form onSubmit={handleSubmit} className={styles.contactForm}>
+              <div className={styles.formRow}>
+                <div className={styles.inputGroup}>
+                  <label className={styles.label}> Họ và tên</label>
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    value={formData.name}
+                    onChange={handleChange}
+                    className={styles.input}
+                    placeholder="Nhập họ và tên của bạn"
+                  />
+                </div>
 
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  required
-                  name="phone"
-                  label="Số điện thoại"
-                  variant="outlined"
-                  value={formData.phone}
-                  onChange={handleChange}
-                />
-              </Grid>
+                <div className={styles.inputGroup}>
+                  <label className={styles.label}> Số điện thoại</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    required
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className={styles.input}
+                    placeholder="Nhập số điện thoại"
+                  />
+                </div>
+              </div>
 
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  required
-                  name="email"
-                  label="Email"
+              <div className={styles.inputGroup}>
+                <label className={styles.label}> Email</label>
+                <input
                   type="email"
-                  variant="outlined"
+                  name="email"
+                  required
                   value={formData.email}
                   onChange={handleChange}
+                  className={styles.input}
+                  placeholder="Nhập địa chỉ email"
                 />
-              </Grid>
+              </div>
 
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  required
+              <div className={styles.inputGroup}>
+                <label className={styles.label}> Lời nhắn / Nhu cầu đăng ký học</label>
+                <textarea
                   name="message"
-                  label="Lời nhắn / Nhu cầu đăng ký học"
-                  multiline
-                  rows={3}
-                  variant="outlined"
+                  required
+                  rows="4"
                   value={formData.message}
                   onChange={handleChange}
+                  className={styles.textarea}
+                  placeholder="Hãy cho chúng tôi biết bạn muốn học môn gì, lớp nào, hoặc có câu hỏi gì..."
                 />
-              </Grid>
+              </div>
 
-              <Grid item xs={12} sx={{ textAlign: "center" }}>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  sx={{
-                    backgroundColor: "#0d4dd2",
-                    "&:hover": { backgroundColor: "#0d4dd2" },
-                    px: 4,
-                    py: 1.5,
-                    fontWeight: 600,
-                    fontSize: "1rem",
-                  }}
-                >
-                  Gửi lời nhắn
-                </Button>
-              </Grid>
-            </Grid>
-          </form>
-        </Grid>
-      </Grid>
+              <button type="submit" className={styles.submitButton}>
+                Gửi lời nhắn
+              </button>
+            </form>
 
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={4000}
-        onClose={() => setOpenSnackbar(false)}
-        message="Đã gửi lời nhắn! Chúng tôi sẽ liên hệ sớm nhất có thể."
-      />
-    </Box>
+            {showSuccess && (
+              <div className={styles.successMessage}>
+                ✅ Đã gửi lời nhắn! Chúng tôi sẽ liên hệ sớm nhất có thể.
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
