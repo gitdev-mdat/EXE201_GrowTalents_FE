@@ -1,10 +1,33 @@
 .heroSection {
   position: relative;
   overflow: hidden;
-  /* background: linear-gradient(to right, #4a90e2, #00579c); */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-attachment: fixed;
   padding-inline: 4rem;
   padding-top: 6rem;
   height: 100vh;
+}
+
+/* Thêm floating particles effect */
+.heroSection::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 20%, rgba(255, 107, 107, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(78, 205, 196, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(69, 183, 209, 0.1) 0%, transparent 50%);
+  animation: float 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-10px) rotate(1deg); }
+  66% { transform: translateY(5px) rotate(-1deg); }
 }
 
 .heroContainer {
@@ -30,12 +53,26 @@
 } */
 .textContainer {
   width: 60%;
-  background: rgba(255, 255, 255, 0.05); /* lớp mờ */
-  border: 1px solid rgba(255, 255, 255, 0.2); /* viền nhẹ */
-  backdrop-filter: blur(6px); /* làm mờ background phía sau */
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); /* đổ bóng tinh tế */
-  border-radius: 20px;
-  padding: 30px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+  border: 2px solid rgba(102, 126, 234, 0.3);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 15px 35px rgba(102, 126, 234, 0.2), 
+              0 5px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 25px;
+  padding: 35px;
+  position: relative;
+  overflow: hidden;
+}
+
+.textContainer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffa726);
+  border-radius: 25px 25px 0 0;
 }
 
 /* Hiệu ứng slide-in */
@@ -57,11 +94,21 @@
   line-height: 1.4;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #003366;
+  background: linear-gradient(45deg, #667eea, #764ba2, #ff6b6b);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 3s ease-in-out infinite;
   position: relative;
   z-index: 2;
-  /* text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 0, 0, 0.5);  */
   transition: transform 0.3s ease;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* Hiệu ứng hover cho heading */
@@ -102,20 +149,48 @@
   margin-bottom: 1rem;
   font-size: 1.6rem;
   font-weight: 600;
-  color: #007acc;
-  /* color: white; */
+  color: #4a5568;
   transition: transform 0.3s ease;
   position: relative;
-  padding-left: 40px; /* để nhường chỗ cho icon */
+  padding-left: 40px;
+  padding: 12px 20px 12px 50px;
+  border-radius: 15px;
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(78, 205, 196, 0.1));
+  border-left: 4px solid transparent;
+  background-clip: padding-box;
 }
+.subheading div strong {
+  color: #2d3748;
+  font-weight: 700;
+  padding: 0px 15px;
+}
+
+.subheading div:nth-child(1) { border-left-color: #ff6b6b; }
+.subheading div:nth-child(2) { border-left-color: #4ecdc4; }
+.subheading div:nth-child(3) { border-left-color: #45b7d1; }
 
 .subheading div::before {
   content: "🎯";
   position: absolute;
-  left: 0;
+  left: 15px;
   font-size: 1.8rem;
-  color: #ffdd00; /* vàng nổi bật */
-  animation: pulse 2s infinite ease-in-out;
+  animation: bounce 2s infinite ease-in-out;
+}
+
+.subheading div:nth-child(1)::before { content: "🚀"; }
+.subheading div:nth-child(2)::before { content: "⭐"; }
+.subheading div:nth-child(3)::before { content: "🎯"; }
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-8px);
+  }
+  60% {
+    transform: translateY(-4px);
+  }
 }
 
 @keyframes pulse {
@@ -134,8 +209,9 @@
 }
 
 .subheading div:hover {
-  transform: translateX(8px);
-  color: #ffd700; /* vàng nhạt khi hover */
+  transform: translateX(8px) scale(1.02);
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(78, 205, 196, 0.2));
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .imageContainer {
@@ -152,78 +228,176 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 10px;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.15);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3),
+              0 10px 20px rgba(0, 0, 0, 0.1);
+  border: 3px solid rgba(255, 255, 255, 0.8);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.studentImage:hover {
+  transform: scale(1.05) rotate(2deg);
+  box-shadow: 0 25px 50px rgba(102, 126, 234, 0.4),
+              0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
 /* Nút CTA  */
 .ctaButton {
   position: relative;
   transition: all 0.3s ease-in-out;
-  padding-block: 1rem;
-  padding-inline: 2rem;
-  background-color: rgb(0 107 179); /* Màu xanh dương cho nền */
-  border-radius: 9999px;
+  padding-block: 1.2rem;
+  padding-inline: 2.5rem;
+  background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 50%, #45b7d1 100%);
+  background-size: 300% 300%;
+  border-radius: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffff; /* Màu chữ trắng */
-  gap: 10px;
+  color: #ffffff;
+  gap: 12px;
   font-weight: bold;
-  border: 3px solid #ffffff4d;
+  border: 3px solid rgba(255, 255, 255, 0.8);
   outline: none;
   overflow: hidden;
-  font-size: 1.2rem; /* Tăng kích thước chữ trong button */
+  font-size: 1.3rem;
   cursor: pointer;
+  animation: gradientMove 3s ease infinite;
+  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3),
+              0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.ctaButton:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(255, 107, 107, 0.4),
+              0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .ctaButton .icon {
-  width: 60px;
-  height: 60px;
+  font-size: 1.5rem;
   transition: all 0.3s ease-in-out;
-  animation: iconEffect 2s ease-out infinite; /* Di chuyển biểu tượng khi hiệu ứng xảy ra */
+  animation: iconFloat 2s ease-in-out infinite;
+}
+
+@keyframes iconFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-5px) rotate(5deg);
+  }
+  50% {
+    transform: translateY(-2px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-3px) rotate(-5deg);
+  }
 }
 
 .ctaButton::before {
   content: "";
   position: absolute;
-  width: 100px;
+  width: 0;
   height: 100%;
-  background-image: linear-gradient(
-    120deg,
-    rgba(255, 255, 255, 0) 30%,
-    rgba(255, 255, 255, 0.8),
-    rgba(255, 255, 255, 0) 70%
-  );
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
   top: 0;
-  left: -100px;
-  opacity: 0.6;
-  animation: shine 1.5s ease-out infinite; /* Shine effect */
+  left: 0;
+  transition: width 0.3s ease;
 }
 
-/* Di chuyển biểu tượng icon */
-@keyframes iconEffect {
+.ctaButton:hover::before {
+  width: 100%;
+  animation: shimmer 0.6s ease-in-out;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Xóa các animation cũ không cần thiết */
+@keyframes pulse {
   0% {
-    transform: translateX(0);
+    transform: scale(1);
+    opacity: 0.8;
   }
   50% {
-    transform: translateX(5px); /* Di chuyển icon một chút */
+    transform: scale(1.2);
+    opacity: 1;
   }
   100% {
-    transform: translateX(0);
+    transform: scale(1);
+    opacity: 0.8;
   }
 }
 
-@keyframes shine {
-  0% {
-    left: -100px;
+/* Responsive Design cho mobile và tablet */
+@media (max-width: 768px) {
+  .heroSection {
+    padding-inline: 2rem;
+    padding-top: 4rem;
+    height: auto;
+    min-height: 100vh;
   }
-
-  60% {
-    left: 100%;
+  
+  .heroContainer {
+    flex-direction: column;
+    text-align: center;
   }
+  
+  .textContainer {
+    width: 100%;
+    margin-bottom: 2rem;
+    padding: 25px;
+  }
+  
+  .heading {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .subheading {
+    font-size: 1.4rem;
+  }
+  
+  .subheading div {
+    font-size: 1.3rem;
+    padding: 10px 15px 10px 45px;
+  }
+  
+  .imageContainer {
+    width: 80%;
+    height: 300px;
+  }
+  
+  .ctaButton {
+    font-size: 1.1rem;
+    padding-inline: 2rem;
+    padding-block: 1rem;
+  }
+}
 
-  to {
-    left: 100%;
+@media (max-width: 480px) {
+  .heroSection {
+    padding-inline: 1rem;
+  }
+  
+  .heading {
+    font-size: 1.8rem;
+  }
+  
+  .subheading div {
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .imageContainer {
+    width: 90%;
+    height: 250px;
   }
 }
