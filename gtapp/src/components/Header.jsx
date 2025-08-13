@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { BellOutlined, DownOutlined } from "@ant-design/icons";
 import styles from "../styles/Header.module.css";
 
 const Header = () => {
+  const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
 
@@ -22,6 +24,10 @@ const Header = () => {
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  const handleLoginClick = () => {
+    navigate("/login");
   };
 
   return (
@@ -65,6 +71,15 @@ const Header = () => {
         >
           📞 Liên hệ
         </a>
+      </div>
+      
+      <div className={styles.authSection}>
+        <button 
+          className={styles.loginButton}
+          onClick={handleLoginClick}
+        >
+          Đăng nhập
+        </button>
       </div>
     </div>
   );
