@@ -156,7 +156,7 @@
   flex-wrap: wrap;
 }
 
-.downloadBtn, .viewBtn, .submitBtn {
+.downloadBtn, .viewBtn, .submitBtn, .startBtn {
   padding: 8px 16px;
   border: none;
   border-radius: 6px;
@@ -165,6 +165,10 @@
   transition: all 0.2s ease;
   flex: 1;
   min-width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
 
 .downloadBtn {
@@ -192,6 +196,26 @@
 
 .submitBtn:hover {
   background-color: #cf1322;
+}
+
+.startBtn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: 600;
+  padding: 12px 20px;
+  font-size: 14px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.startBtn:hover {
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.btnIcon {
+  font-size: 16px;
+  display: inline-block;
 }
 
 .emptyState {
@@ -453,12 +477,19 @@
 }
 
 .confirmBtn {
-  background-color: #1890ff;
+  background: linear-gradient(135deg, #52c41a 0%, #389e0d 100%);
   color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(82, 196, 26, 0.4);
 }
 
 .confirmBtn:hover:not(:disabled) {
-  background-color: #096dd9;
+  background: linear-gradient(135deg, #389e0d 0%, #237804 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(82, 196, 26, 0.6);
 }
 
 .confirmBtn:disabled {
