@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -6,6 +6,8 @@ import {
   Navigate,
 } from "react-router-dom";
 import { ConfigProvider } from "antd";
+import { CircularProgress, Box, CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import ErrorBoundary from "./components/ErrorBoundary";
 import HomePage from "./pages/HomePage";
 import CourseDetailPage from "./pages/CourseDetailPage";
 import LoginPage from "./pages/LoginPage";
@@ -47,13 +49,48 @@ import QuizCreator from "./components/teacher/QuizCreator";
 // import AchievementSection from "./components/AchievementSection";
 // import ContactSection from "./components/ContactSection";
 
+// Loading component for Suspense
+const LoadingSpinner = () => (
+  <Box
+    display="flex"
+    justifyContent="center"
+    alignItems="center"
+    minHeight="100vh"
+    flexDirection="column"
+  >
+    <CircularProgress size={60} />
+    <Box mt={2} fontSize="1.2rem" color="text.secondary">
+      Đang tải...
+    </Box>
+  </Box>
+);
+
+// Material-UI theme configuration
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#1976d2',
+    },
+    secondary: {
+      main: '#dc004e',
+    },
+  },
+  typography: {
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+  },
+});
+
 function App() {
   return (
-    <ConfigProvider>
-      <Router>
-        <Routes>
-          {/* Route chuyển hướng từ "/" đến "/home" */}
-          <Route path="/" element={<Navigate to="/home" replace />} />
+    <ErrorBoundary>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <ConfigProvider>
+          <Router>
+            <Suspense fallback={<LoadingSpinner />}>
+              <Routes>
+            {/* Route chuyển hướng từ "/" đến "/home" */}
+            <Route path="/" element={<Navigate to="/home" replace />} />
 
           {/* Routes không liên quan đến admin */}
           <Route path="/home" element={<HomePage />} />
@@ -104,9 +141,12 @@ function App() {
             <Route path="schedule" element={<TeacherSchedule />} />
             <Route path="settings" element={<TeacherSettings />} />
           </Route>
-        </Routes>
-      </Router>
-    </ConfigProvider>
+            </Routes>
+          </Suspense>
+        </Router>
+      </ConfigProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 
