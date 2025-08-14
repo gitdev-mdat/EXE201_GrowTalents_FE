@@ -23,20 +23,15 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  IconButton,
-  Tooltip,
-  Alert,
-  Divider
+  Alert
 } from '@mui/material';
 import {
   Schedule,
   Add,
   Today,
   AccessTime,
-  Room,
   Group,
-  RequestPage,
-  Visibility
+  RequestPage
 } from '@mui/icons-material';
 import styles from '../../styles/TeacherSchedule.module.css';
 
@@ -50,7 +45,7 @@ const TeacherSchedule = () => {
       currentSchedule: 'Thứ 2, 08:00 - 09:30, Toán 10A',
       requestedChange: 'Đổi sang Thứ 3, 14:00 - 15:30',
       reason: 'Có việc cá nhân cần xử lý',
-      status: 'Chờ duyệt'
+      status: 'Không duyệt'
     },
     {
       id: 2,
@@ -62,74 +57,17 @@ const TeacherSchedule = () => {
     }
   ]);
 
-  // Mock data for schedule
+  // Mock data for schedule (removed room)
   const scheduleData = [
-    {
-      id: 1,
-      day: 'Thứ 2',
-      time: '08:00 - 09:30',
-      subject: 'Toán 10A',
-      room: 'Phòng 101',
-      students: 40,
-      type: 'Lý thuyết'
-    },
-    {
-      id: 2,
-      day: 'Thứ 2',
-      time: '10:00 - 11:30',
-      subject: 'Vật lý 11B',
-      room: 'Phòng 102',
-      students: 35,
-      type: 'Thực hành'
-    },
-    {
-      id: 3,
-      day: 'Thứ 3',
-      time: '08:00 - 09:30',
-      subject: 'Hóa học 12A',
-      room: 'Phòng 103',
-      students: 30,
-      type: 'Lý thuyết'
-    },
-    {
-      id: 4,
-      day: 'Thứ 3',
-      time: '14:00 - 15:30',
-      subject: 'Toán 10A',
-      room: 'Phòng 101',
-      students: 40,
-      type: 'Bài tập'
-    },
-    {
-      id: 5,
-      day: 'Thứ 4',
-      time: '08:00 - 09:30',
-      subject: 'Tiếng Anh 10C',
-      room: 'Phòng 104',
-      students: 38,
-      type: 'Lý thuyết'
-    },
-    {
-      id: 6,
-      day: 'Thứ 5',
-      time: '10:00 - 11:30',
-      subject: 'Vật lý 11B',
-      room: 'Phòng 102',
-      students: 35,
-      type: 'Lý thuyết'
-    },
-    {
-      id: 7,
-      day: 'Thứ 6',
-      time: '08:00 - 09:30',
-      subject: 'Hóa học 12A',
-      room: 'Phòng 103',
-      students: 30,
-      type: 'Thực hành'
-    }
+    { id: 1, day: 'Thứ 2', time: '08:00 - 09:30', subject: 'Toán 10A', students: 40, type: 'Lý thuyết' },
+    { id: 2, day: 'Thứ 2', time: '10:00 - 11:30', subject: 'Vật lý 11B', students: 35, type: 'Thực hành' },
+    { id: 3, day: 'Thứ 3', time: '08:00 - 09:30', subject: 'Hóa học 12A', students: 30, type: 'Lý thuyết' },
+    { id: 4, day: 'Thứ 3', time: '14:00 - 15:30', subject: 'Toán 10A', students: 40, type: 'Bài tập' },
+    { id: 5, day: 'Thứ 4', time: '08:00 - 09:30', subject: 'Tiếng Anh 10C', students: 38, type: 'Lý thuyết' },
+    { id: 6, day: 'Thứ 5', time: '10:00 - 11:30', subject: 'Vật lý 11B', students: 35, type: 'Lý thuyết' },
+    { id: 7, day: 'Thứ 6', time: '08:00 - 09:30', subject: 'Hóa học 12A', students: 30, type: 'Thực hành' }
   ];
 
-  // Mock data for classes
   const classes = [
     { id: 1, name: 'Toán 10A', students: 40 },
     { id: 2, name: 'Vật lý 11B', students: 35 },
@@ -144,14 +82,7 @@ const TeacherSchedule = () => {
     '16:00 - 17:30'
   ];
 
-  const days = [
-    'Thứ 2',
-    'Thứ 3', 
-    'Thứ 4',
-    'Thứ 5',
-    'Thứ 6',
-    'Thứ 7'
-  ];
+  const days = ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
 
   const handleWeekChange = (event) => {
     setSelectedWeek(event.target.value);
@@ -164,41 +95,31 @@ const TeacherSchedule = () => {
   const handleSaveRequest = () => {
     console.log('Saving schedule change request');
     setOpenRequestDialog(false);
-    // Here you would typically save to backend
   };
 
   const getTypeColor = (type) => {
     switch (type) {
-      case 'Lý thuyết':
-        return 'primary';
-      case 'Thực hành':
-        return 'secondary';
-      case 'Bài tập':
-        return 'success';
-      default:
-        return 'default';
+      case 'Lý thuyết': return 'primary';
+      case 'Thực hành': return 'secondary';
+      case 'Bài tập': return 'success';
+      default: return 'default';
     }
   };
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'Chờ duyệt':
-        return 'warning';
-      case 'Đã duyệt':
-        return 'success';
-      case 'Từ chối':
-        return 'error';
-      default:
-        return 'default';
+      case 'Không duyệt': return 'error';
+      case 'Đã duyệt': return 'success';
+      case 'Từ chối': return 'error';
+      default: return 'default';
     }
   };
 
   const getScheduleStats = () => {
     const totalClasses = scheduleData.length;
     const totalStudents = scheduleData.reduce((sum, item) => sum + item.students, 0);
-    const totalHours = scheduleData.length * 1.5; // 1.5 hours per class
+    const totalHours = scheduleData.length * 1.5;
     const uniqueSubjects = new Set(scheduleData.map(item => item.subject)).size;
-    
     return { totalClasses, totalStudents, totalHours, uniqueSubjects };
   };
 
@@ -344,10 +265,8 @@ const TeacherSchedule = () => {
                   <TableCell>Thứ</TableCell>
                   <TableCell>Thời gian</TableCell>
                   <TableCell>Môn học</TableCell>
-                  <TableCell>Phòng học</TableCell>
                   <TableCell>Số học sinh</TableCell>
                   <TableCell>Loại</TableCell>
-                  <TableCell>Thao tác</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -371,12 +290,6 @@ const TeacherSchedule = () => {
                     </TableCell>
                     <TableCell>
                       <Box display="flex" alignItems="center">
-                        <Room sx={{ mr: 1, fontSize: 16 }} />
-                        {schedule.room}
-                      </Box>
-                    </TableCell>
-                    <TableCell>
-                      <Box display="flex" alignItems="center">
                         <Group sx={{ mr: 1, fontSize: 16 }} />
                         {schedule.students}
                       </Box>
@@ -387,16 +300,6 @@ const TeacherSchedule = () => {
                         color={getTypeColor(schedule.type)}
                         size="small"
                       />
-                    </TableCell>
-                    <TableCell>
-                      <Tooltip title="Xem chi tiết">
-                        <IconButton
-                          size="small"
-                          color="primary"
-                        >
-                          <Visibility />
-                        </IconButton>
-                      </Tooltip>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -463,75 +366,100 @@ const TeacherSchedule = () => {
 
       {/* Schedule Change Request Dialog */}
       <Dialog open={openRequestDialog} onClose={() => setOpenRequestDialog(false)} maxWidth="md" fullWidth>
-        <DialogTitle>
-          Đề xuất thay đổi lịch giảng dạy
-        </DialogTitle>
+        <DialogTitle>Đề xuất thay đổi lịch giảng dạy</DialogTitle>
         <DialogContent>
-          <Grid container spacing={3} sx={{ mt: 1 }}>
-            <Grid item xs={12} md={6}>
-              <FormControl fullWidth>
-                <InputLabel>Chọn lịch cần thay đổi</InputLabel>
-                <Select label="Chọn lịch cần thay đổi">
-                  {scheduleData.map((schedule) => (
-                    <MenuItem key={schedule.id} value={schedule.id}>
-                      {schedule.day} - {schedule.time} - {schedule.subject}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                type="date"
-                label="Ngày muốn thay đổi"
-                InputLabelProps={{ shrink: true }}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <FormControl fullWidth>
-                <InputLabel>Thời gian mới</InputLabel>
-                <Select label="Thời gian mới">
-                  {timeSlots.map((time) => (
-                    <MenuItem key={time} value={time}>
-                      {time}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <FormControl fullWidth>
-                <InputLabel>Loại thay đổi</InputLabel>
-                <Select label="Loại thay đổi">
-                  <MenuItem value="time">Thay đổi thời gian</MenuItem>
-                  <MenuItem value="room">Thay đổi phòng học</MenuItem>
-                  <MenuItem value="both">Thay đổi cả thời gian và phòng</MenuItem>
-                  <MenuItem value="cancel">Hủy buổi học</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                multiline
-                rows={4}
-                label="Lý do thay đổi"
-                placeholder="Vui lòng giải thích lý do cần thay đổi lịch..."
-                required
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                multiline
-                rows={2}
-                label="Ghi chú bổ sung"
-                placeholder="Thông tin bổ sung nếu cần..."
-              />
-            </Grid>
-          </Grid>
-        </DialogContent>
+  <Grid container spacing={3} sx={{ mt: 1 }}>
+    {/* Chọn Thứ */}
+    <Grid item xs={12} md={4}>
+      <FormControl fullWidth>
+        <InputLabel>Chọn Thứ</InputLabel>
+        <Select label="Chọn Thứ">
+          {days.map((day) => (
+            <MenuItem key={day} value={day}>
+              {day}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </Grid>
+
+    {/* Chọn Giờ */}
+    <Grid item xs={12} md={4}>
+      <FormControl fullWidth>
+        <InputLabel>Chọn Giờ</InputLabel>
+        <Select label="Chọn Giờ">
+          {timeSlots.map((time) => (
+            <MenuItem key={time} value={time}>
+              {time}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </Grid>
+
+    {/* Chọn Môn học / Lớp */}
+    <Grid item xs={12} md={4}>
+      <FormControl fullWidth>
+        <InputLabel>Chọn Môn học / Lớp</InputLabel>
+        <Select label="Chọn Môn học / Lớp">
+          {classes.map((cls) => (
+            <MenuItem key={cls.id} value={cls.name}>
+              {cls.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </Grid>
+
+    {/* Ngày muốn thay đổi */}
+    <Grid item xs={12} md={6}>
+      <TextField
+        fullWidth
+        type="date"
+        label="Ngày muốn thay đổi"
+        InputLabelProps={{ shrink: true }}
+      />
+    </Grid>
+
+    {/* Thời gian mới */}
+    <Grid item xs={12} md={6}>
+      <FormControl fullWidth>
+        <InputLabel>Thời gian mới</InputLabel>
+        <Select label="Thời gian mới">
+          {timeSlots.map((time) => (
+            <MenuItem key={time} value={time}>
+              {time}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </Grid>
+
+    {/* Lý do */}
+    <Grid item xs={12}>
+      <TextField
+        fullWidth
+        multiline
+        rows={4}
+        label="Lý do thay đổi"
+        placeholder="Vui lòng giải thích lý do cần thay đổi lịch..."
+        required
+      />
+    </Grid>
+
+    {/* Ghi chú bổ sung */}
+    <Grid item xs={12}>
+      <TextField
+        fullWidth
+        multiline
+        rows={2}
+        label="Ghi chú bổ sung"
+        placeholder="Thông tin bổ sung nếu cần..."
+      />
+    </Grid>
+  </Grid>
+</DialogContent>
+
         <DialogActions>
           <Button onClick={() => setOpenRequestDialog(false)}>Hủy</Button>
           <Button onClick={handleSaveRequest} variant="contained">
@@ -543,4 +471,4 @@ const TeacherSchedule = () => {
   );
 };
 
-export default TeacherSchedule; 
+export default TeacherSchedule;
