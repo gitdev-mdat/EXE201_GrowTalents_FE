@@ -1,5 +1,5 @@
 .aboutUsSection {
-  padding: 4rem 2rem;
+  padding: 4rem 1rem;
   background: linear-gradient(135deg, #f8fbff 0%, #e6f3ff 50%, #f0f8ff 100%);
   position: relative;
   overflow: hidden;
@@ -22,7 +22,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   gap: 3rem;
   flex-wrap: wrap;
@@ -199,7 +199,7 @@
 
 @media (max-width: 768px) {
   .aboutUsSection {
-    padding: 3rem 1rem;
+    padding: 3rem 0.5rem;
   }
 
   .container {
@@ -245,7 +245,7 @@
 
 @media (max-width: 480px) {
   .aboutUsSection {
-    padding: 2rem 0.5rem;
+    padding: 2rem 0.25rem;
   }
 
   .videoContainer,
