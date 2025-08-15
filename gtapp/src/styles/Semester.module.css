@@ -1,0 +1,121 @@
+.container {
+  padding: 1.5rem;
+  background-color: #f8f9fc;
+  min-height: 100vh;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.card h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #152259;
+  margin-bottom: 1rem;
+}
+
+.yearRow {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-end; /* căn đáy để label và input khớp nhau */
+  flex-wrap: wrap;
+}
+
+.yearBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.addYearRow {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.addYearRow .ant-input,
+.addYearRow .ant-btn,
+.yearBlock .ant-select-selector {
+  height: 40px !important; /* đồng bộ chiều cao */
+}
+
+.yearSelect,
+.yearInput {
+  min-width: 160px;
+  height: 40px;
+  padding: 0 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: all 0.2s ease;
+}
+
+.yearSelect:focus,
+.yearInput:focus {
+  outline: none;
+  border-color: #152259;
+  box-shadow: 0 0 0 2px rgba(21, 34, 89, 0.1);
+}
+
+.yearButton {
+  height: 40px;
+  padding: 0 1.25rem;
+  background-color: #152259;
+  color: white;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.yearButton:hover {
+  background-color: #1d3274;
+}
+
+/* Table */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.table th {
+  background-color: #152259;
+  color: white;
+  padding: 10px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.table td {
+  padding: 10px;
+  border-top: 1px solid #eee;
+  vertical-align: middle;
+}
+
+/* Status Badge */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: white;
+}
+
+.ongoing {
+  background-color: #28a745;
+}
+
+.upcoming {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.finished {
+  background-color: #6c757d;
+}

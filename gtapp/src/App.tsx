@@ -6,7 +6,13 @@ import {
   Navigate,
 } from "react-router-dom";
 import { ConfigProvider } from "antd";
-import { CircularProgress, Box, CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import {
+  CircularProgress,
+  Box,
+  CssBaseline,
+  ThemeProvider,
+  createTheme,
+} from "@mui/material";
 import ErrorBoundary from "./components/ErrorBoundary";
 import HomePage from "./pages/HomePage";
 import CourseDetailPage from "./pages/CourseDetailPage";
@@ -42,6 +48,7 @@ import TeacherDocuments from "./components/teacher/Documents";
 import TeacherSchedule from "./components/teacher/Schedule";
 import TeacherSettings from "./components/teacher/Settings";
 import QuizCreator from "./components/teacher/QuizCreator";
+import Semester from "./components/admin/Semester";
 
 // import HeroSection from "./components/HeroSection";
 // import AboutUsSection from "./components/AboutUsSection";
@@ -69,10 +76,10 @@ const LoadingSpinner = () => (
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#1976d2',
+      main: "#1976d2",
     },
     secondary: {
-      main: '#dc004e',
+      main: "#dc004e",
     },
   },
   typography: {
@@ -89,62 +96,68 @@ function App() {
           <Router>
             <Suspense fallback={<LoadingSpinner />}>
               <Routes>
-            {/* Route chuyển hướng từ "/" đến "/home" */}
-            <Route path="/" element={<Navigate to="/home" replace />} />
+                {/* Route chuyển hướng từ "/" đến "/home" */}
+                <Route path="/" element={<Navigate to="/home" replace />} />
 
-          {/* Routes không liên quan đến admin */}
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/home/course-detail" element={<CourseDetailPage />} />
-          <Route path="/login" element={<LoginPage />} />
+                {/* Routes không liên quan đến admin */}
+                <Route path="/home" element={<HomePage />} />
+                <Route
+                  path="/home/course-detail"
+                  element={<CourseDetailPage />}
+                />
+                <Route path="/login" element={<LoginPage />} />
 
-          {/* Route cha cho admin */}
-          <Route path="/admin" element={<AdminLayout />}>
-            {/* Redirect từ /admin đến /admin/dashboard */}
-            <Route index element={<Navigate to="dashboard" replace />} />
-            {/* Route con của admin */}
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="teachers" element={<TeacherList />} />
-            <Route path="students" element={<Students />} />
-            <Route path="courses" element={<Courses />} />
-            <Route path="schedule" element={<Schedule />} />
-            <Route path="tuition" element={<TuitionRecord />} />
-            <Route path="reports" element={<SummaryReport />} />
-            <Route path="settings" element={<Settings />} />
-          </Route>
+                {/* Route cha cho admin */}
+                <Route path="/admin" element={<AdminLayout />}>
+                  {/* Redirect từ /admin đến /admin/dashboard */}
+                  <Route index element={<Navigate to="dashboard" replace />} />
+                  {/* Route con của admin */}
+                  <Route path="dashboard" element={<Dashboard />} />
+                  <Route path="teachers" element={<TeacherList />} />
+                  <Route path="students" element={<Students />} />
+                  <Route path="courses" element={<Courses />} />
+                  <Route path="semester" element={<Semester />} />
+                  <Route path="tuition" element={<TuitionRecord />} />
+                  <Route path="reports" element={<SummaryReport />} />
+                  <Route path="settings" element={<Settings />} />
+                </Route>
 
-          {/* Route cha cho student */}
-          <Route path="/student" element={<StudentLayout />}>
-            {/* Redirect từ /student đến /student/dashboard */}
-            <Route index element={<Navigate to="dashboard" replace />} />
-            {/* Route con của student */}
-            <Route path="dashboard" element={<StudentDashboard />} />
-            <Route path="courses" element={<CourseList />} />
-            <Route path="courses/:courseId" element={<CourseDetail />} />
-            <Route path="courses/:courseId/learn" element={<CourseLearning />} />
-            <Route path="schedule" element={<StudySchedule />} />
-            <Route path="documents" element={<Documents />} />
-            <Route path="test-scores" element={<TestScores />} />
-            <Route path="test-detail/:testId" element={<TestDetail />} />
-            <Route path="settings" element={<StudentSettings />} />
-          </Route>
+                {/* Route cha cho student */}
+                <Route path="/student" element={<StudentLayout />}>
+                  {/* Redirect từ /student đến /student/dashboard */}
+                  <Route index element={<Navigate to="dashboard" replace />} />
+                  {/* Route con của student */}
+                  <Route path="dashboard" element={<StudentDashboard />} />
+                  <Route path="courses" element={<CourseList />} />
+                  <Route path="courses/:courseId" element={<CourseDetail />} />
+                  <Route
+                    path="courses/:courseId/learn"
+                    element={<CourseLearning />}
+                  />
+                  <Route path="schedule" element={<StudySchedule />} />
+                  <Route path="documents" element={<Documents />} />
+                  <Route path="test-scores" element={<TestScores />} />
+                  <Route path="test-detail/:testId" element={<TestDetail />} />
+                  <Route path="settings" element={<StudentSettings />} />
+                </Route>
 
-          {/* Route cha cho teacher */}
-          <Route path="/teacher" element={<TeacherLayout />}>
-            {/* Redirect từ /teacher đến /teacher/dashboard */}
-            <Route index element={<Navigate to="dashboard" replace />} />
-            {/* Route con của teacher */}
-            <Route path="dashboard" element={<TeacherDashboard />} />
-            <Route path="attendance" element={<TeacherAttendance />} />
-            <Route path="scores" element={<TeacherScores />} />
-            <Route path="quiz-creator" element={<QuizCreator />} />
-            <Route path="documents" element={<TeacherDocuments />} />
-            <Route path="schedule" element={<TeacherSchedule />} />
-            <Route path="settings" element={<TeacherSettings />} />
-          </Route>
-            </Routes>
-          </Suspense>
-        </Router>
-      </ConfigProvider>
+                {/* Route cha cho teacher */}
+                <Route path="/teacher" element={<TeacherLayout />}>
+                  {/* Redirect từ /teacher đến /teacher/dashboard */}
+                  <Route index element={<Navigate to="dashboard" replace />} />
+                  {/* Route con của teacher */}
+                  <Route path="dashboard" element={<TeacherDashboard />} />
+                  <Route path="attendance" element={<TeacherAttendance />} />
+                  <Route path="scores" element={<TeacherScores />} />
+                  <Route path="quiz-creator" element={<QuizCreator />} />
+                  <Route path="documents" element={<TeacherDocuments />} />
+                  <Route path="schedule" element={<TeacherSchedule />} />
+                  <Route path="settings" element={<TeacherSettings />} />
+                </Route>
+              </Routes>
+            </Suspense>
+          </Router>
+        </ConfigProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );
