@@ -1,9 +1,14 @@
-import React from "react";
-import SideBar from "./SideBar";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import styles from "../../styles/AdminLayout.module.css";
+import SideBar from "./SideBar";
 
 const AdminLayout = () => {
+  if (
+    localStorage.getItem("token") == null &&
+    localStorage.getItem("role") !== "ADMIN"
+  ) {
+    return <Navigate to="/login" />;
+  }
   return (
     <div className={styles.layout}>
       <div className={styles.sidebar}>

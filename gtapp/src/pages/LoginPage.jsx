@@ -1,36 +1,71 @@
-import React, { useState } from "react";
-import { FaGoogle, FaFacebookF, FaEnvelope, FaHome, FaTimes, FaEye, FaEyeSlash } from "react-icons/fa";
-import styles from "../styles/LoginPage.module.css";
+import { jwtDecode } from "jwt-decode";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash, FaHome } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
+import { login } from "../services/userService";
+import styles from "../styles/LoginPage.module.css";
 
 const LoginPage = () => {
   const [visible, setVisible] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
-  
+
   const handleQuit = () => {
     setVisible(false);
   };
 
   const handleGoHome = () => {
-    navigate('/home');
+    navigate("/home");
   };
 
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleNavigate = (role) => {
+    if (role == "ADMIN") {
+      navigate("/admin");
+    } else if (role == "STUDENT") {
+      navigate("/student");
+    } else if (role == "TEACHER") {
+      navigate("/teacher");
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login attempt:', formData);
+    const authenticationRequest = {
+      username: formData.email,
+      password: formData.password,
+    };
+    try {
+      const response = await login(authenticationRequest);
+      if (response) {
+        localStorage.setItem("token", response.data?.data?.token);
+        localStorage.setItem(
+          "role",
+          jwtDecode(response.data?.data?.token)?.role
+        );
+        localStorage.setItem(
+          "userId",
+          jwtDecode(response.data?.data?.token)?.sub
+        );
+        handleNavigate(jwtDecode(response.data?.data?.token)?.role);
+        toast.success("Đăng nhập thành công!");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response?.data?.message || "Đăng nhập thất bại!");
+    }
   };
 
   return (
@@ -41,11 +76,18 @@ const LoginPage = () => {
           <div className={styles.imageSection}>
             <div className={styles.imageOverlay}>
               <div className={styles.brandLogo}>
-                <img src={logo} alt="GrowTalents Logo" className={styles.logoImage} />
+                <img
+                  src={logo}
+                  alt="GrowTalents Logo"
+                  className={styles.logoImage}
+                />
               </div>
               <div className={styles.heroContent}>
                 <h3>Chào mừng bạn quay trở lại!</h3>
-                <p>Bắt đầu hành trình học tập và phát triển tài năng cùng GrowTalents</p>
+                <p>
+                  Bắt đầu hành trình học tập và phát triển tài năng cùng
+                  GrowTalents
+                </p>
               </div>
             </div>
             <div className={styles.backgroundImage}></div>
@@ -70,7 +112,7 @@ const LoginPage = () => {
                 </div>
 
                 {/* Social login buttons */}
-                <div className={styles.socialButtons}>
+                {/* <div className={styles.socialButtons}>
                   <button className={styles.socialBtn}>
                     <FaGoogle color="#DB4437" />
                     <span>Google</span>
@@ -79,7 +121,7 @@ const LoginPage = () => {
                     <FaFacebookF color="#1877F2" />
                     <span>Facebook</span>
                   </button>
-                </div>
+                </div> */}
 
                 <div className={styles.divider}>
                   <span>hoặc</span>
@@ -89,7 +131,7 @@ const LoginPage = () => {
                 <form onSubmit={handleSubmit} className={styles.loginForm}>
                   <div className={styles.inputGroup}>
                     <label htmlFor="email">Email hoặc số điện thoại</label>
-                    <input 
+                    <input
                       type="text"
                       id="email"
                       name="email"
@@ -123,9 +165,10 @@ const LoginPage = () => {
                   </div>
 
                   <div className={styles.formOptions}>
-                    <label className={styles.checkbox}>
-                    </label>
-                    <a href="#" className={styles.forgotPassword}>Quên mật khẩu?</a>
+                    <label className={styles.checkbox}></label>
+                    <a href="#" className={styles.forgotPassword}>
+                      Quên mật khẩu?
+                    </a>
                   </div>
 
                   <button type="submit" className={styles.loginButton}>
@@ -135,7 +178,9 @@ const LoginPage = () => {
 
                 <div className={styles.signupPrompt}>
                   <span>Chưa có tài khoản? </span>
-                  <a href="#" className={styles.signupLink}>Đăng ký ngay</a>
+                  <a href="#" className={styles.signupLink}>
+                    Đăng ký ngay
+                  </a>
                 </div>
               </div>
             </div>

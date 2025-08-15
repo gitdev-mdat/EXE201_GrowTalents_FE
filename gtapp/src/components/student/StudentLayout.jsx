@@ -1,9 +1,12 @@
 import React from "react";
 import StudentSideBar from "./StudentSideBar";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import styles from "../../styles/StudentLayout.module.css";
 
 const StudentLayout = () => {
+  if (localStorage.getItem("token") == null) {
+    return <Navigate to="/login" />;
+  }
   return (
     <div className={styles.layout}>
       <div className={styles.sidebar}>
@@ -16,4 +19,4 @@ const StudentLayout = () => {
   );
 };
 
-export default StudentLayout; 
+export default StudentLayout;

@@ -1,18 +1,16 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import styles from "../../styles/SideBar.module.css";
-import logo from "../../assets/logo.png";
 import { HomeOutlined } from "@ant-design/icons";
-import SchoolIcon from "@mui/icons-material/School";
-import PictureInPictureIcon from "@mui/icons-material/PictureInPicture";
-import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
-import EditNoteIcon from "@mui/icons-material/EditNote";
-import SettingsIcon from "@mui/icons-material/Settings";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import PersonIcon from "@mui/icons-material/Person";
-import PaymentIcon from "@mui/icons-material/Payment";
 import AssessmentIcon from "@mui/icons-material/Assessment";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
+import PaymentIcon from "@mui/icons-material/Payment";
+import PersonIcon from "@mui/icons-material/Person";
+import PictureInPictureIcon from "@mui/icons-material/PictureInPicture";
+import SettingsIcon from "@mui/icons-material/Settings";
+import { Link } from "react-router-dom";
+import logo from "../../assets/logo.png";
+import { logout } from "../../services/userService";
+import styles from "../../styles/SideBar.module.css";
 
 const SideBar = () => {
   return (
@@ -46,7 +44,7 @@ const SideBar = () => {
         <Link to="/admin/settings" className={styles.item}>
           <SettingsIcon /> Settings and profile
         </Link>
-        <Link to="/login" className={styles.item}>
+        <Link onClick={logout} to="/login" className={styles.item}>
           <ExitToAppIcon /> Log out
         </Link>
       </div>
