@@ -25,8 +25,8 @@ const SideBar = () => {
         <Link to="/admin/dashboard" className={styles.item}>
           <HomeOutlined /> Dashboard
         </Link>
-        <Link to="/admin/schedule" className={styles.item}>
-          <AccessTimeIcon /> Schedule
+        <Link to="/admin/semester" className={styles.item}>
+          <AccessTimeIcon /> Academic Year/Semester
         </Link>
         <Link to="/admin/teachers" className={styles.item}>
           <PersonIcon /> Teachers
