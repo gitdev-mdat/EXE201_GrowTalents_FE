@@ -15,7 +15,7 @@ const LoginPage = () => {
         <div className={styles.container}>
           <span className={styles.quit} onClick={handleQuit}>
             {" "}
-            X{" "}
+            {" "}
           </span>
           <div className={styles.logoContainer}>
             <img src={logo} alt="Logo" className={styles.logo} />
