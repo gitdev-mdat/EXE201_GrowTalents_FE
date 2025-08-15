@@ -4,7 +4,7 @@ import video from "../assets/growtalents.mp4";
 
 const AboutUsSection = () => {
   return (
-    <section id="AboutUs" className={styles.aboutUsSection}>
+    <section id="about-us" className={styles.aboutUsSection}>
       <div className={styles.container}>
         {/* Video Container */}
         <div className={styles.videoContainer}>
@@ -12,7 +12,7 @@ const AboutUsSection = () => {
             Giới Thiệu Trung Tâm Grow Talents
           </h3>
           <div className={styles.videoWrapper}>
-            <video className={styles.videoPlayer} controls>
+            <video className={styles.videoPlayer} controls poster="">
               <source src={video} type="video/mp4" />
               Trình duyệt của bạn không hỗ trợ video.
             </video>

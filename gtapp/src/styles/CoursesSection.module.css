@@ -1,191 +1,468 @@
 /* General Styles */
 .coursesSection {
-  padding: 1rem 2rem;
-  /* background-color: #f4f8ff; */
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fbff 50%, #e6f3ff 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.coursesSection::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(102, 126, 234, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 85% 85%, rgba(69, 183, 209, 0.03) 0%, transparent 50%);
+  pointer-events: none;
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
   text-align: center;
+  position: relative;
+  z-index: 1;
 }
 
 /* Tiêu đề phần khóa học */
 .title {
   font-size: 3rem;
-  font-weight: 700;
-  color: #003366;
-  margin-bottom: 2rem;
+  font-weight: 800;
+  background: linear-gradient(45deg, #667eea, #45b7d1, #4ecdc4);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: titleGradient 3s ease-in-out infinite;
+  margin-bottom: 3rem;
   font-family: "Poppins", sans-serif;
+  position: relative;
+}
+
+.title::after {
+  content: "📚";
+  position: absolute;
+  right: -50px;
+  top: 0;
+  font-size: 2.5rem;
+  animation: bounce 2s infinite;
+}
+
+@keyframes titleGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
 }
 
 /* Nút lựa chọn cấp học */
 .levelSelection {
   display: flex;
   justify-content: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
 }
 
 .levelButton {
-  background-color: #4a90e2;
-  color: white;
-  padding: 0.5rem 2rem;
-  font-size: 1.1rem;
-  border: none;
-  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+  color: #4a5568;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 2px solid rgba(102, 126, 234, 0.3);
+  border-radius: 25px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.levelButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+  transition: left 0.3s ease;
 }
 
 .levelButton:hover {
-  background-color: #0066cc;
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(69, 183, 209, 0.1));
+  border-color: rgba(102, 126, 234, 0.5);
+  color: #667eea;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+}
+
+.levelButton:hover::before {
+  left: 100%;
 }
 
 .selected {
-  background-color: #0066cc;
+  background: linear-gradient(135deg, #667eea, #45b7d1);
+  color: white;
+  border-color: #667eea;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.selected:hover {
+  background: linear-gradient(135deg, #5a6fd8, #3ba3c7);
+  color: white;
 }
 
 /* Tiêu đề từng cấp học */
 .levelTitle {
-  font-size: 2.5rem;
-  font-weight: 600;
-  color: #003366;
-  margin-bottom: 1.5rem;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.levelTitle::before {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, #667eea, #45b7d1);
+  border-radius: 2px;
 }
 
 /* Danh sách khóa học */
 .coursesList {
-  display: flex;
-  /* flex-wrap: wrap; */
-  justify-content: space-around;
-  gap: 1rem;
-  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
 }
 
 /* Card khóa học */
 .courseCard {
-  background: #fff;
-  border-radius: 15px;
-  padding: 1rem;
-  width: 30%;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease,
-    background-color 0.3s ease;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.8));
+  border-radius: 25px;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(102, 126, 234, 0.1);
+  box-shadow: 0 15px 35px rgba(102, 126, 234, 0.08),
+              0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
   text-align: center;
   font-family: "Roboto", sans-serif;
   position: relative;
   overflow: hidden;
-  border: 2px solid transparent;
+}
+
+.courseCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea, #45b7d1, #4ecdc4);
+  border-radius: 25px 25px 0 0;
 }
 
 .courseCard:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-  background-color: #f0f8ff;
-  border: 2px solid #4a90e2;
+  transform: translateY(-10px) scale(1.02);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 1), rgba(248, 251, 255, 0.95));
+  border-color: rgba(102, 126, 234, 0.3);
+  box-shadow: 0 25px 50px rgba(102, 126, 234, 0.15),
+              0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
 .courseImage {
   width: 100%;
-  height: 200px;
-  margin-bottom: 1rem;
-  border-radius: 10px;
-  transition: transform 0.3s ease;
+  height: 220px;
+  margin-bottom: 1.5rem;
+  border-radius: 18px;
+  transition: all 0.3s ease;
   object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.1);
 }
 
 .courseImage:hover {
-  transform: scale(1.05);
+  transform: scale(1.05) rotate(2deg);
+  box-shadow: 0 12px 30px rgba(102, 126, 234, 0.2);
 }
 
 .courseTitle {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 700;
   margin-bottom: 1rem;
-  color: #003366;
+  background: linear-gradient(45deg, #667eea, #45b7d1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+}
+
+.courseTitle::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, #667eea, #45b7d1);
+  border-radius: 1px;
 }
 
 .courseDescription {
   font-size: 1rem;
-  color: #777;
+  color: #4a5568;
   margin-bottom: 1.5rem;
+  line-height: 1.6;
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
 .courseInstructor {
-  font-size: 1rem;
-  color: #555;
-  font-style: italic;
+  font-size: 0.95rem;
+  color: #667eea;
+  font-weight: 600;
   margin-bottom: 1rem;
+  padding: 8px 16px;
+  background: rgba(102, 126, 234, 0.1);
+  border-radius: 15px;
+  border-left: 3px solid #667eea;
 }
 
 .coursePrice {
-  font-size: 1.1rem;
-  color: #00cc00;
-  font-weight: bold;
-  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: #4ecdc4;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  padding: 10px;
+  background: rgba(78, 205, 196, 0.1);
+  border-radius: 12px;
+  border: 2px dashed #4ecdc4;
 }
 
 .courseButton {
-  padding: 1rem 2rem;
-  font-size: 1.1rem;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
   color: #fff;
-  background-color: #4a90e2;
+  background: linear-gradient(135deg, #667eea, #45b7d1);
   border: none;
-  border-radius: 20px;
+  border-radius: 25px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.courseButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.3s ease;
 }
 
 .courseButton:hover {
-  background-color: #0066cc;
-  transform: scale(1.1);
+  background: linear-gradient(135deg, #5a6fd8, #3ba3c7);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+}
+
+.courseButton:hover::before {
+  left: 100%;
 }
 
 .levelInfo {
   font-size: 0.9rem;
-  color: #4a90e2;
+  color: #667eea;
   margin-top: 10px;
+  padding: 6px 12px;
+  background: rgba(102, 126, 234, 0.1);
+  border-radius: 12px;
+  display: inline-block;
 }
 
 .badge {
   position: absolute;
-  top: 10px;
-  left: 10px;
-  background-color: #ff5f5f;
+  top: 15px;
+  right: 15px;
+  background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
   color: white;
-  padding: 5px 10px;
+  padding: 6px 12px;
   border-radius: 20px;
-  font-weight: bold;
+  font-weight: 700;
+  font-size: 0.8rem;
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 /* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
+.courseCard {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.courseCard:nth-child(1) { animation-delay: 0.1s; }
+.courseCard:nth-child(2) { animation-delay: 0.2s; }
+.courseCard:nth-child(3) { animation-delay: 0.3s; }
+.courseCard:nth-child(4) { animation-delay: 0.4s; }
+.courseCard:nth-child(5) { animation-delay: 0.5s; }
+
 /* Responsive - Thích ứng với màn hình nhỏ */
 @media (max-width: 768px) {
-  .coursesList {
-    flex-direction: column;
-    gap: 1.5rem;
+  .coursesSection {
+    padding: 3rem 1rem;
   }
 
-  .courseCard {
-    width: 100%;
+  .title {
+    font-size: 2.2rem;
+  }
+
+  .title::after {
+    right: -35px;
+    font-size: 2rem;
+  }
+
+  .coursesList {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .levelSelection {
+    gap: 1rem;
   }
 
   .levelButton {
-    font-size: 1rem;
-    padding: 0.5rem 1.5rem;
+    font-size: 0.9rem;
+    padding: 10px 20px;
+  }
+
+  .levelTitle {
+    font-size: 1.8rem;
+  }
+
+  .courseCard {
+    padding: 1.2rem;
+  }
+
+  .courseImage {
+    height: 180px;
+  }
+
+  .courseTitle {
+    font-size: 1.4rem;
+  }
+
+  .courseDescription {
+    font-size: 0.95rem;
+  }
+
+  .courseButton {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .coursesSection {
+    padding: 2rem 0.5rem;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .title::after {
+    right: -30px;
+    font-size: 1.5rem;
+  }
+
+  .levelSelection {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .levelButton {
+    width: 100%;
+    max-width: 250px;
+  }
+
+  .levelTitle {
+    font-size: 1.5rem;
+  }
+
+  .courseCard {
+    padding: 1rem;
+    border-radius: 20px;
+  }
+
+  .courseImage {
+    height: 160px;
+  }
+
+  .courseTitle {
+    font-size: 1.3rem;
+  }
+
+  .courseInstructor,
+  .coursePrice {
+    font-size: 0.9rem;
   }
 }

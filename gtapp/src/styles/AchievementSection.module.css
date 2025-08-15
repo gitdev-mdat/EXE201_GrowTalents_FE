@@ -1,59 +1,374 @@
+/* Prevent horizontal scroll */
+* {
+  box-sizing: border-box;
+}
+
 .achievementSection {
-  padding: 50px 20px;
-  background-color: #f8f9fa;
-  text-align: center;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 1rem;
+background: linear-gradient(135deg, #f8fbff 0%, #e6f3ff 50%, #f0f8ff 100%); 
+  position: relative;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .sectionTitle {
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 2.5rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 1.5rem;
   color: #333;
-  margin-bottom: 40px;
+  position: relative;
 }
 
-.achievementGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 30px;
+.sectionTitle::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  border-radius: 2px;
+}
+
+.sliderContainer {
+  position: relative;
+  height: 460px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.navButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid #007bff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 50;
+  font-size: 1.1rem;
+  color: #007bff;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+}
+
+.navButton:hover {
+  background: #007bff;
+  color: white;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
+}
+
+.prevButton {
+  left: 10px;
+}
+
+.nextButton {
+  right: 10px;
+}
+
+.sliderWrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  max-width: 100%;
+  padding: 40px 0;
+  box-sizing: border-box;
 }
 
 .achievementCard {
-  background-color: #ffffff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  padding: 20px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: absolute;
+  width: 280px;
+  height: 380px;
+  transition: all 0.6s ease;
+  cursor: pointer;
+  max-width: calc(100vw - 40px);
+  box-sizing: border-box;
 }
 
-.achievementCard:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+.achievementCard.activeCard {
+  cursor: default;
+}
+
+.cardContent {
+  width: 100%;
+  height: 100%;
+  background: white;
+  border-radius: 20px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.cardContent:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.iconContainer {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.iconContainer::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(0, 123, 255, 0.1), rgba(0, 123, 255, 0.05));
+  border-radius: 50%;
+  z-index: 1;
 }
 
 .icon {
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   color: #007bff;
-  background-color: #e9f2ff;
-  padding: 15px;
-  border-radius: 50%;
-  margin-bottom: 20px;
+  z-index: 2;
+  position: relative;
+}
+
+.achievementInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .number {
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 2.2rem;
+  font-weight: 900;
   color: #333;
-  margin-bottom: 10px;
+  margin-bottom: 0.3rem;
+  line-height: 1;
 }
 
 .description {
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: #666;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+  max-width: 220px;
+}
+
+.imageContainer {
+  width: 100%;
+  height: 160px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
 .image {
-  margin-top: 20px;
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.imageContainer:hover .image {
+  transform: scale(1.05);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.paginationDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(0, 123, 255, 0.3);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.paginationDot.activeDot {
+  background: #007bff;
+  width: 32px;
+  border-radius: 6px;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+}
+
+.paginationDot:hover {
+  background: rgba(0, 123, 255, 0.6);
+  transform: scale(1.2);
+}
+
+.categoryBadge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .achievementSection {
+    padding: 1.5rem 0.5rem;
+  }
+  
+  .sectionTitle {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .sliderContainer {
+    height: 350px;
+  }
+  
+  .achievementCard {
+    width: 250px;
+    height: 320px;
+  }
+  
+  .cardContent {
+    padding: 1.25rem;
+  }
+  
+  .iconContainer {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .icon {
+    font-size: 1.8rem;
+  }
+  
+  .number {
+    font-size: 1.9rem;
+  }
+  
+  .description {
+    font-size: 0.85rem;
+    max-width: 180px;
+  }
+  
+  .imageContainer {
+    height: 130px;
+  }
+  
+  .navButton {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  
+  .prevButton {
+    left: 5px;
+  }
+  
+  .nextButton {
+    right: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .achievementSection {
+    padding: 1.5rem 0.25rem;
+  }
+  
+  .sectionTitle {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .sliderContainer {
+    height: 300px;
+  }
+  
+  .achievementCard {
+    width: 220px;
+    height: 280px;
+  }
+  
+  .cardContent {
+    padding: 1rem;
+  }
+  
+  .iconContainer {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 0.8rem;
+  }
+  
+  .icon {
+    font-size: 1.5rem;
+  }
+  
+  .number {
+    font-size: 1.6rem;
+  }
+  
+  .description {
+    font-size: 0.8rem;
+    max-width: 160px;
+    margin-bottom: 0.8rem;
+  }
+  
+  .imageContainer {
+    height: 110px;
+  }
+  
+  .categoryBadge {
+    font-size: 0.7rem;
+    padding: 0.4rem 0.8rem;
+  }
 }

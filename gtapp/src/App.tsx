@@ -21,7 +21,6 @@ import AdminLayout from "./components/admin/AdminLayout";
 import Students from "./components/admin/Students";
 import Courses from "./components/admin/Courses";
 import Dashboard from "./components/admin/Dashboard";
-import Schedule from "./components/admin/Schedule";
 import TeacherList from "./components/admin/TeacherList";
 import TuitionRecord from "./components/admin/TuitionRecord";
 import SummaryReport from "./components/admin/SummaryReport";

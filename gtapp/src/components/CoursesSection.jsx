@@ -122,7 +122,7 @@ const CoursesSection = () => {
   };
 
   return (
-    <section className={styles.coursesSection}>
+    <section id="courses" className={styles.coursesSection}>
       <div className={styles.container}>
         <h2 className={styles.title}>Các Khoá Học Của Chúng Tôi</h2>
 
@@ -155,17 +155,17 @@ const CoursesSection = () => {
                   alt={`${course.name} Course`}
                   className={styles.courseImage}
                 />
-                <h4 className={styles.courseTitle}>{course.name}</h4>
+                <h4 className={styles.courseTitle}>📖 {course.name}</h4>
                 <p className={styles.courseDescription}>{course.description}</p>
                 <div className={styles.courseInstructor}>
-                  Giảng viên: {course.instructor}
+                   Giảng viên: {course.instructor}
                 </div>
                 <p className={styles.coursePrice}>{course.price}</p>
                 <button
                   className={styles.courseButton}
-                  onClick={() => handleViewDetails(course)} // Gọi hàm điều hướng
+                  onClick={() => handleViewDetails(course)}
                 >
-                  Xem Chi Tiết
+                  🔍 Xem Chi Tiết
                 </button>
               </div>
             ))}
