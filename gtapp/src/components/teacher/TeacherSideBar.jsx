@@ -10,6 +10,7 @@ import UploadFileIcon from "@mui/icons-material/UploadFile";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import { logout } from "../../services/userService";
 
 const TeacherSideBar = () => {
   return (
@@ -29,7 +30,7 @@ const TeacherSideBar = () => {
           <GradeIcon /> Enter score
         </Link>
         <Link to="/teacher/documents" className={styles.item}>
-          <UploadFileIcon />    Upload documents / assign homework
+          <UploadFileIcon /> Upload documents / assign homework
         </Link>
         <Link to="/teacher/schedule" className={styles.item}>
           <ScheduleIcon /> Teaching schedule
@@ -37,7 +38,7 @@ const TeacherSideBar = () => {
         <Link to="/teacher/settings" className={styles.item}>
           <SettingsIcon /> Settings & Profile
         </Link>
-        <Link to="/login" className={styles.item}>
+        <Link onClick={logout} to="/login" className={styles.item}>
           <ExitToAppIcon /> Log out
         </Link>
       </div>
@@ -45,4 +46,4 @@ const TeacherSideBar = () => {
   );
 };
 
-export default TeacherSideBar; 
+export default TeacherSideBar;
