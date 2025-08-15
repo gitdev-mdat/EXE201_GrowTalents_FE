@@ -44,7 +44,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 const TeacherScores = () => {
   const navigate = useNavigate();
   const [selectedClass, setSelectedClass] = useState('');
-  const [selectedTest, setSelectedTest] = useState('');
+  const [selectedTest, setSelectedTest] = useState(null); 
   const [openDialog, setOpenDialog] = useState(false);
   const [editingScores, setEditingScores] = useState({});
   const [isEditing, setIsEditing] = useState(false);
@@ -85,6 +85,10 @@ const TeacherScores = () => {
     setSelectedTest(event.target.value);
   };
 
+  const handleViewScores = (testId) => {
+    setSelectedTest(testId);
+  };
+
   const handleScoreChange = (studentId, score) => {
     setEditingScores(prev => ({
       ...prev,
@@ -105,16 +109,12 @@ const TeacherScores = () => {
     console.log('Saving scores:', editingScores);
     setIsEditing(false);
     setEditingScores({});
-    // Here you would typically save to backend
+    // Save to backend here
   };
 
   const handleCancelEdit = () => {
     setIsEditing(false);
     setEditingScores({});
-  };
-
-  const handleCreateQuiz = () => {
-    navigate('/teacher/quiz-creator');
   };
 
   const getScoreStatus = (score) => {
@@ -136,17 +136,14 @@ const TeacherScores = () => {
 
   const stats = getScoreStats();
 
-  // Mock: Số học sinh đã làm bài cho mỗi test (giả lập)
   const getStudentsDoneCount = (testId) => {
     return testId % 2 === 0 ? 8 : 5;
   };
-  // Mock: Danh sách học sinh đã làm bài cho mỗi test (giả lập)
+
   const getStudentsDoneList = (testId) => {
-    // Lẻ: 5 học sinh đầu, chẵn: 8 học sinh đầu
     return testId % 2 === 0 ? students.slice(0, 8) : students.slice(0, 5);
   };
 
-  // State để mở rộng từng test
   const [expandedTestId, setExpandedTestId] = useState(null);
   const handleExpandTest = (testId) => {
     setExpandedTestId(expandedTestId === testId ? null : testId);
@@ -155,7 +152,7 @@ const TeacherScores = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <Typography variant="h4" component="h1" gutterBottom>
+        <Typography variant="h4" gutterBottom>
           Nhập điểm bài kiểm tra
         </Typography>
         <Typography variant="subtitle1" color="textSecondary">
@@ -178,6 +175,7 @@ const TeacherScores = () => {
                   <TableCell>Ngày kiểm tra</TableCell>
                   <TableCell>Điểm tối đa</TableCell>
                   <TableCell>Số học sinh đã làm</TableCell>
+                  <TableCell>Xem điểm</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -199,10 +197,19 @@ const TeacherScores = () => {
                           size="small"
                         />
                       </TableCell>
+                      <TableCell>
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          onClick={() => handleViewScores(test.id)}
+                        >
+                          Xem điểm
+                        </Button>
+                      </TableCell>
                     </TableRow>
                     {expandedTestId === test.id && (
                       <TableRow>
-                        <TableCell colSpan={5} style={{ background: '#f9f9f9', paddingLeft: 48 }}>
+                        <TableCell colSpan={6} style={{ background: '#f9f9f9', paddingLeft: 48 }}>
                           <Typography variant="subtitle2" gutterBottom>
                             Học sinh đã làm bài:
                           </Typography>
@@ -228,294 +235,103 @@ const TeacherScores = () => {
         </CardContent>
       </Card>
 
-      {/* Filters */}
-      <Card className={styles.filterCard}>
-        <CardContent>
-          <Grid container spacing={3} alignItems="center">
-            <Grid item xs={12} md={4}>
-              <FormControl fullWidth>
-                <InputLabel>Chọn lớp</InputLabel>
-                <Select
-                  value={selectedClass}
-                  label="Chọn lớp"
-                  onChange={handleClassChange}
-                >
-                  {classes.map((cls) => (
-                    <MenuItem key={cls.id} value={cls.id}>
-                      {cls.name} ({cls.students} học sinh)
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <FormControl fullWidth>
-                <InputLabel>Chọn bài kiểm tra</InputLabel>
-                <Select
-                  value={selectedTest}
-                  label="Chọn bài kiểm tra"
-                  onChange={handleTestChange}
-                >
-                  {tests.map((test) => (
-                    <MenuItem key={test.id} value={test.id}>
-                      {test.name} (Tối đa: {test.maxScore} điểm)
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} md={4}>
+      {/* Scores Table - chỉ hiển thị khi đã chọn bài kiểm tra */}
+      {selectedTest && (
+        <Card className={styles.tableCard}>
+          <CardContent>
+            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+              <Typography variant="h6">
+                Bảng điểm - {tests.find(t => t.id === selectedTest)?.name}
+              </Typography>
+
               <Box display="flex" gap={1}>
-                <Button
-                  variant="contained"
-                  startIcon={<Add />}
-                  onClick={handleCreateQuiz}
-                  fullWidth
-                >
-                  Tạo bài kiểm tra trắc nghiệm
-                </Button>
                 {!isEditing ? (
-                  <Button
-                    variant="outlined"
-                    startIcon={<Edit />}
-                    onClick={handleEditScores}
-                  >
+                  <Button variant="outlined" startIcon={<Edit />} onClick={handleEditScores}>
                     Sửa điểm
                   </Button>
                 ) : (
-                  <Box display="flex" gap={1}>
-                    <Button
-                      variant="contained"
-                      startIcon={<Save />}
-                      onClick={handleSaveScores}
-                      color="success"
-                    >
+                  <>
+                    <Button variant="contained" startIcon={<Save />} onClick={handleSaveScores} color="success">
                       Lưu
                     </Button>
-                    <Button
-                      variant="outlined"
-                      startIcon={<Cancel />}
-                      onClick={handleCancelEdit}
-                      color="error"
-                    >
+                    <Button variant="outlined" startIcon={<Cancel />} onClick={handleCancelEdit} color="error">
                       Hủy
                     </Button>
-                  </Box>
+                  </>
                 )}
               </Box>
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
+            </Box>
 
-      {/* Statistics */}
-      <Grid container spacing={3} className={styles.statsGrid}>
-        <Grid item xs={12} md={3}>
-          <Card className={styles.statCard}>
-            <CardContent>
-              <Box display="flex" alignItems="center">
-                <TrendingUp sx={{ color: 'success.main', fontSize: 40, mr: 2 }} />
-                <Box>
-                  <Typography variant="h4" color="success.main">
-                    {stats.average}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    Điểm trung bình
-                  </Typography>
-                </Box>
-              </Box>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={3}>
-          <Card className={styles.statCard}>
-            <CardContent>
-              <Box display="flex" alignItems="center">
-                <Grade sx={{ color: 'primary.main', fontSize: 40, mr: 2 }} />
-                <Box>
-                  <Typography variant="h4" color="primary.main">
-                    {stats.max}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    Điểm cao nhất
-                  </Typography>
-                </Box>
-              </Box>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={3}>
-          <Card className={styles.statCard}>
-            <CardContent>
-              <Box display="flex" alignItems="center">
-                <TrendingDown sx={{ color: 'error.main', fontSize: 40, mr: 2 }} />
-                <Box>
-                  <Typography variant="h4" color="error.main">
-                    {stats.min}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    Điểm thấp nhất
-                  </Typography>
-                </Box>
-              </Box>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={3}>
-          <Card className={styles.statCard}>
-            <CardContent>
-              <Box display="flex" alignItems="center">
-                <Grade sx={{ color: 'warning.main', fontSize: 40, mr: 2 }} />
-                <Box>
-                  <Typography variant="h4" color="warning.main">
-                    {stats.percentage}%
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    Tỷ lệ đạt ({stats.passed}/{students.length})
-                  </Typography>
-                </Box>
-              </Box>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>STT</TableCell>
+                    <TableCell>Học sinh</TableCell>
+                    <TableCell>Điểm</TableCell>
+                    <TableCell>Trạng thái</TableCell>
+                    <TableCell>Ghi chú</TableCell>
+                    {isEditing && <TableCell>Thao tác</TableCell>}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {students.map((student, index) => {
+                    const scoreStatus = getScoreStatus(student.score);
+                    const currentScore = isEditing ? editingScores[student.id] || student.score : student.score;
 
-      {/* Scores Table */}
-      <Card className={styles.tableCard}>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
-            Bảng điểm - {selectedTest ? tests.find(t => t.id === selectedTest)?.name : 'Chọn bài kiểm tra'}
-          </Typography>
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>STT</TableCell>
-                  <TableCell>Học sinh</TableCell>
-                  <TableCell>Điểm</TableCell>
-                  <TableCell>Trạng thái</TableCell>
-                  <TableCell>Ghi chú</TableCell>
-                  {isEditing && <TableCell>Thao tác</TableCell>}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {students.map((student, index) => {
-                  const scoreStatus = getScoreStatus(student.score);
-                  const currentScore = isEditing ? editingScores[student.id] || student.score : student.score;
-                  
-                  return (
-                    <TableRow key={student.id}>
-                      <TableCell>{index + 1}</TableCell>
-                      <TableCell>
-                        <Box display="flex" alignItems="center">
-                          <Avatar sx={{ mr: 2, bgcolor: 'primary.main' }}>
-                            {student.avatar}
-                          </Avatar>
-                          <Typography>{student.name}</Typography>
-                        </Box>
-                      </TableCell>
-                      <TableCell>
-                        {isEditing ? (
-                          <TextField
-                            type="number"
-                            value={currentScore}
-                            onChange={(e) => handleScoreChange(student.id, parseFloat(e.target.value) || 0)}
-                            inputProps={{ 
-                              min: 0, 
-                              max: tests.find(t => t.id === selectedTest)?.maxScore || 10,
-                              step: 0.1
-                            }}
-                            size="small"
-                            variant="outlined"
-                          />
-                        ) : (
-                          <Typography variant="h6" color="primary">
-                            {currentScore}
-                          </Typography>
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        <Chip
-                          label={scoreStatus.label}
-                          color={scoreStatus.color}
-                          icon={<Grade />}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <TextField
-                          size="small"
-                          placeholder="Ghi chú..."
-                          variant="outlined"
-                        />
-                      </TableCell>
-                      {isEditing && (
+                    return (
+                      <TableRow key={student.id}>
+                        <TableCell>{index + 1}</TableCell>
                         <TableCell>
-                          <Tooltip title="Cập nhật điểm">
-                            <IconButton color="primary" size="small">
-                              <Save />
-                            </IconButton>
-                          </Tooltip>
+                          <Box display="flex" alignItems="center">
+                            <Avatar sx={{ mr: 2, bgcolor: 'primary.main' }}>{student.avatar}</Avatar>
+                            <Typography>{student.name}</Typography>
+                          </Box>
                         </TableCell>
-                      )}
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </CardContent>
-      </Card>
-
-      {/* Create New Test Dialog */}
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>
-        <DialogTitle>Tạo bài kiểm tra mới</DialogTitle>
-        <DialogContent>
-          <Grid container spacing={3} sx={{ mt: 1 }}>
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Tên bài kiểm tra"
-                placeholder="VD: Kiểm tra 15 phút - Chương 1"
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                type="number"
-                label="Điểm tối đa"
-                inputProps={{ min: 1, max: 10 }}
-                defaultValue={10}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <FormControl fullWidth>
-                <InputLabel>Chọn lớp</InputLabel>
-                <Select label="Chọn lớp">
-                  {classes.map((cls) => (
-                    <MenuItem key={cls.id} value={cls.id}>
-                      {cls.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                type="date"
-                label="Ngày kiểm tra"
-                InputLabelProps={{ shrink: true }}
-              />
-            </Grid>
-          </Grid>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Hủy</Button>
-          <Button variant="contained">Tạo bài kiểm tra</Button>
-        </DialogActions>
-      </Dialog>
+                        <TableCell>
+                          {isEditing ? (
+                            <TextField
+                              type="number"
+                              value={currentScore}
+                              onChange={(e) => handleScoreChange(student.id, parseFloat(e.target.value) || 0)}
+                              inputProps={{
+                                min: 0,
+                                max: tests.find(t => t.id === selectedTest)?.maxScore || 10,
+                                step: 0.1
+                              }}
+                              size="small"
+                              variant="outlined"
+                            />
+                          ) : (
+                            <Typography variant="h6" color="primary">{currentScore}</Typography>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <Chip label={scoreStatus.label} color={scoreStatus.color} icon={<Grade />} />
+                        </TableCell>
+                        <TableCell>
+                          <TextField size="small" placeholder="Ghi chú..." variant="outlined" />
+                        </TableCell>
+                        {isEditing && (
+                          <TableCell>
+                            <Tooltip title="Cập nhật điểm">
+                              <IconButton color="primary" size="small">
+                                <Save />
+                              </IconButton>
+                            </Tooltip>
+                          </TableCell>
+                        )}
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };
 
-export default TeacherScores; 
+export default TeacherScores;

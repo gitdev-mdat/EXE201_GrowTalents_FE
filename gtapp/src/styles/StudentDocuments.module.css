@@ -38,6 +38,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   gap: 20px;
+  align-items: stretch;
 }
 
 .documentCard {
@@ -46,6 +47,9 @@
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .documentCard:hover {
@@ -89,6 +93,9 @@
 
 .documentContent {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
 }
 
 .documentContent h3 {
@@ -152,23 +159,30 @@
 
 .documentActions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid #f0f0f0;
 }
 
 .downloadBtn, .viewBtn, .submitBtn, .startBtn {
-  padding: 8px 16px;
+  padding: 10px 20px;
   border: none;
-  border-radius: 6px;
-  font-size: 13px;
+  border-radius: 8px;
+  font-size: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
-  flex: 1;
-  min-width: 80px;
+  min-width: 140px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
+  white-space: nowrap;
+  font-weight: 500;
 }
 
 .downloadBtn {
@@ -202,9 +216,12 @@
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   font-weight: 600;
-  padding: 12px 20px;
-  font-size: 14px;
+  padding: 12px 24px;
+  font-size: 15px;
+  min-width: 180px;
+  height: 48px;
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  border-radius: 10px;
 }
 
 .startBtn:hover {
@@ -216,6 +233,8 @@
 .btnIcon {
   font-size: 16px;
   display: inline-block;
+  line-height: 1;
+  vertical-align: middle;
 }
 
 .emptyState {
@@ -527,5 +546,20 @@
 
   .cancelBtn, .confirmBtn {
     width: 100%;
+  }
+
+  .documentActions {
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .startBtn {
+    min-width: 100%;
+    margin-top: 10px;
+  }
+
+  .downloadBtn, .viewBtn, .submitBtn {
+    min-width: 120px;
+    flex: 1;
   }
 } 
