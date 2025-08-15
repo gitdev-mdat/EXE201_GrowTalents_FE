@@ -13,6 +13,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PersonIcon from "@mui/icons-material/Person";
 import PaymentIcon from "@mui/icons-material/Payment";
+import { logout } from "../../services/userService";
 
 const StudentSideBar = () => {
   return (
@@ -40,7 +41,7 @@ const StudentSideBar = () => {
         <Link to="/student/settings" className={styles.item}>
           <SettingsIcon /> Settings and profile
         </Link>
-        <Link to="/login" className={styles.item}>
+        <Link onClick={logout} to="/login" className={styles.item}>
           <ExitToAppIcon /> Log out
         </Link>
       </div>
@@ -48,4 +49,4 @@ const StudentSideBar = () => {
   );
 };
 
-export default StudentSideBar; 
+export default StudentSideBar;
