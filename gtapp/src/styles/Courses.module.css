@@ -1,249 +1,218 @@
-/* General container */
+/* ============ Layout chung ============ */
 .container {
   display: flex;
   flex-direction: column;
   gap: 30px;
   padding: 2rem;
-  background-color: #f4f7fc; /* Nền sáng và nhẹ nhàng */
-  border-radius: 12px;
-  height: 100vh;
-  box-sizing: border-box;
-  font-family: "Roboto", sans-serif; /* Sử dụng font dễ đọc */
-  color: #2e3a59; /* Màu chữ tối để dễ đọc */
+  background-color: #f5f7fc;
+  border-radius: 16px;
+  min-height: 100vh;
+  color: #2e3a59;
+  font-family: "Roboto", sans-serif;
 }
 
-/* Search and Filter Section */
+/* === Search section layout === */
 .search-section {
   display: flex;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
 }
 
-/* Inputs and Select elements */
 .search-section input,
 .search-section select {
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  height: 42px;
+  min-width: 220px; /* tăng độ rộng */
+  padding: 0 16px; /* rộng rãi hơn */
   font-size: 1rem;
-}
-
-/* Search Button */
-.search-section button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.search-section button:hover {
-  background-color: #45a049;
-}
-
-/* Add Course Button */
-.add-course-btn {
-  background-color: #6c7cff;
-  color: white;
-  padding: 12px 20px;
+  border: 1px solid #cfd4e4;
   border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
+  background: #fff;
+  color: #333;
+}
+
+.search-section button {
+  height: 42px;
+  padding: 0 26px;
   border: none;
-  transition: background-color 0.3s ease;
-  width: 180px; /* Chiều rộng nút Add Courses */
-  margin-top: 20px;
-  align-self: flex-start; /* Đặt về phía trái */
+  background-color: #152259;
+  color: white;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-.add-course-btn:hover {
-  background-color: #5561d1; /* Màu tối hơn khi hover */
-}
-
-/* Course Cards Grid */
+/* ============ Cards Grid ============ */
 .course-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-bottom: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 1.5rem;
 }
 
-/* Each course card */
+/* ============ Card ============ */
 .course-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  background: #ffffff;
+  border-radius: 12px;
   overflow: hidden;
-  transition: transform 0.2s;
+  box-shadow: 0 4px 15px rgba(21, 34, 89, 0.08);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .course-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(21, 34, 89, 0.15);
 }
 
 .image {
   width: 100%;
-  height: 200px;
+  height: 180px;
   object-fit: cover;
+  background: #e3e6f5; /* placeholder color */
 }
 
 .content {
-  padding: 1rem;
+  padding: 1rem 1.2rem 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .title {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #333;
+  color: #152259;
+  margin-bottom: 0.3rem;
 }
 
 .info {
   font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 0.2rem;
+}
+
+.description {
+  font-size: 0.85rem;
   color: #666;
-  margin-bottom: 0.3rem;
+  margin: 0.25rem 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .schedule {
   display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
-  margin: 0.5rem 0;
-  padding: 0.5rem;
-  background-color: #f8f9fa;
-  border-radius: 4px;
-  font-size: 0.9rem;
+  align-items: center;
+  gap: 0.4rem;
+  background: #f5f7fc;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  margin-top: auto;
+  color: #666;
 }
 
 .scheduleIcon {
   color: #666;
-  margin-top: 0.2rem;
-  flex-shrink: 0;
-}
-
-.scheduleText {
-  color: #666;
-  line-height: 1.4;
 }
 
 .status-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 1rem;
+  margin-top: 0.8rem;
 }
 
-.button-group {
-  display: flex;
-  gap: 0.5rem;
+.status-ACTIVE {
+  background: #e3f2fd;
+  color: #1976d2;
 }
 
-.status-ongoing,
-.status-pending,
-.status-completed {
-  padding: 0.3rem 0.6rem;
-  border-radius: 4px;
+.status-INACTIVE {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.status-COMPLETED {
+  background: #e8f5e9;
+  color: #388e3c;
+}
+
+.status-ACTIVE,
+.status-INACTIVE,
+.status-COMPLETED {
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
   font-size: 0.8rem;
   font-weight: 500;
 }
 
-.status-ongoing {
-  background-color: #e3f2fd;
-  color: #1976d2;
+.button-group {
+  display: flex;
+  gap: 0.35rem;
 }
 
-.status-pending {
-  background-color: #fff3e0;
-  color: #f57c00;
-}
-
-.status-completed {
-  background-color: #e8f5e9;
-  color: #388e3c;
-}
-
-.view-class-button,
-.edit-button {
+.button-group button {
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  padding: 0.3rem 0.6rem;
-  border: none;
-  border-radius: 4px;
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
   font-size: 0.8rem;
+  color: #fff;
   cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.view-class-button {
-  background-color: #1976d2;
-  color: white;
-}
-
-.view-class-button:hover {
-  background-color: #1565c0;
+  border: none;
+  transition: opacity 0.2s;
 }
 
 .edit-button {
-  background-color: #f57c00;
-  color: white;
+  background: #f57c00;
 }
-
 .edit-button:hover {
-  background-color: #ef6c00;
+  opacity: 0.9;
 }
 
-/* Pagination */
+.view-class-button {
+  background: #1976d2;
+}
+.view-class-button:hover {
+  opacity: 0.9;
+}
+
+/* ============ Pagination ============ */
 .pagination {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 0.5rem;
   margin-top: 2rem;
 }
 
 .pagination button {
-  padding: 0.5rem 1rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background-color: white;
+  padding: 0.45rem 1rem;
+  border: 1px solid #cfd4e4;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background 0.2s, color 0.2s;
 }
 
 .pagination button:hover:not(.disabled) {
-  background-color: #f5f5f5;
+  background: #f4f7fc;
 }
 
 .pagination button.active {
-  background-color: #4CAF50;
-  color: white;
-  border-color: #4CAF50;
+  background: #152259;
+  color: #fff;
+  border-color: #152259;
 }
 
 .pagination button.disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-/* Responsive Design */
-@media (max-width: 1024px) {
-  .course-card {
-    width: calc(50% - 20px); /* Hai card mỗi dòng trên màn hình trung bình */
-  }
-}
-
-@media (max-width: 768px) {
-  .course-card {
-    width: 100%; /* Một card mỗi dòng trên màn hình nhỏ */
-  }
-
-  .pagination {
-    flex-direction: column;
-  }
-
-  .pagination button {
-    width: 100%;
-  }
 }
