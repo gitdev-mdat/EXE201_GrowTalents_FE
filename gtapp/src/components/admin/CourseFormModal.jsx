@@ -4,11 +4,9 @@ import ImageUploader from "../../firebase/ImageUploader";
 import CurrencyInput from "../reusable/CurrencyInput";
 
 import courseService from "../../services/courseService";
-import { message } from "antd";
+import { message, Tooltip } from "antd";
 import { CourseType } from "../../constants/course";
-import { Tooltip } from "antd";
-import { InfoCircleOutlined } from "@ant-design/icons";
-import { CloseOutlined } from "@ant-design/icons";
+import { InfoCircleOutlined, CloseOutlined } from "@ant-design/icons";
 
 const CourseFormModal = ({
   isOpen,
@@ -25,19 +23,31 @@ const CourseFormModal = ({
     type: "MATH",
   });
 
+  const isEditMode = !!initialData?.courseId;
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     if (initialData) {
       setFormData({
-        title: initialData.nameCourse,
-        fee: initialData.tuitionFee,
-        imageUrl: initialData.imageUrl,
-        duration: initialData.duration,
-        description: initialData.description,
-        type: initialData.type,
+        title: initialData.nameCourse || "",
+        fee: initialData.tuitionFee || "",
+        imageUrl: initialData.imageUrl || "",
+        duration: initialData.duration || "",
+        description: initialData.description || "",
+        type: initialData.type || "MATH",
+      });
+    } else {
+      // reset khi thêm mới
+      setFormData({
+        title: "",
+        fee: "",
+        imageUrl: "",
+        duration: "",
+        description: "",
+        type: "MATH",
       });
     }
   }, [initialData]);
-  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,8 +56,7 @@ const CourseFormModal = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (loading) return; // tránh double click
+    if (loading) return;
     setLoading(true);
 
     try {
@@ -57,16 +66,25 @@ const CourseFormModal = ({
         duration: Number(formData.duration),
         description: formData.description,
         courseType: formData.type,
-        imageUrl: formData.imageUrl,
+        imageUrl: formData.imageUrl || "",
         createdByAdminId: "ADMIN_001",
       };
 
-      const res = await courseService.createCourse(payload);
-      message.success("Tạo khoá học thành công");
-      onSubmitDone?.(res.data);
+      if (isEditMode) {
+        // update
+        console.log("id: ", initialData.courseId, "payload: ", payload);
+        await courseService.updateCourse(initialData.courseId, payload);
+        message.success("Cập nhật khoá học thành công");
+      } else {
+        // create
+        await courseService.createCourse(payload);
+        message.success("Tạo khoá học thành công");
+      }
+
+      onSubmitDone?.(); // reload list
       onClose();
-    } catch (e) {
-      message.error(e.message || "Tạo khoá học thất bại");
+    } catch (err) {
+      message.error(err.message || "Thao tác thất bại");
     } finally {
       setLoading(false);
     }
@@ -78,12 +96,13 @@ const CourseFormModal = ({
     <div className={styles.modalOverlay}>
       <div className={styles.modal}>
         <CloseOutlined className={styles.closeIcon} onClick={onClose} />
-        <h2>{initialData ? "Chỉnh sửa khóa học" : "Thêm khóa học mới"}</h2>
+        <h2>{isEditMode ? "Chỉnh sửa khóa học" : "Thêm khóa học mới"}</h2>
 
         <form onSubmit={handleSubmit}>
           <div className={styles.formGroup}>
             <label>Hình ảnh khóa học:</label>
             <ImageUploader
+              defaultUrl={formData.imageUrl}
               onUploadSuccess={(url) =>
                 setFormData((prev) => ({ ...prev, imageUrl: url }))
               }
@@ -101,7 +120,6 @@ const CourseFormModal = ({
                 />
               </Tooltip>
             </label>
-
             <input
               type="text"
               name="title"
@@ -177,10 +195,10 @@ const CourseFormModal = ({
               className={styles.submitButton}
               disabled={loading}
             >
-              {initialData
+              {loading
+                ? "Đang xử lý..."
+                : isEditMode
                 ? "Cập nhật"
-                : loading
-                ? "Đang tạo..."
                 : "Thêm khóa học"}
             </button>
           </div>

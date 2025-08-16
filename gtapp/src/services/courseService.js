@@ -22,6 +22,24 @@ const courseService = {
       throw error?.response?.data || error;
     }
   },
+  updateCourse: async (id, payload) => {
+    try {
+      const res = await course.updateCourse(id, payload);
+      return res.data.data;
+    } catch (error) {
+      console.error("không update được", error);
+      throw error?.response?.data || error;
+    }
+  },
+  deleteCourse: async (id) => {
+    try {
+      const res = await course.deleteCourse(id);
+      return res.data;
+    } catch (error) {
+      console.error("Không xoá được", error);
+      throw error?.response?.data || error;
+    }
+  },
 };
 
 export default courseService;

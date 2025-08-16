@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from "react";
+import React, { useRef, useState, useCallback, useEffect } from "react";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "./firebaseConfig";
 import { Button, message, Modal, Tooltip, Progress, Typography } from "antd";
@@ -33,6 +33,7 @@ const removeVietnameseTones = (str = "") =>
  * - onUploadSuccess?: (url) => {}  // callback sau khi upload xong
  */
 export default function ImageUploader({
+  defaultUrl = "", // <== thêm defaultUrl
   folder = "uploads/images",
   objectId = "UNKNOWN",
   objectName = "NO_NAME",
@@ -47,6 +48,12 @@ export default function ImageUploader({
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [downloadUrl, setDownloadUrl] = useState("");
+
+  useEffect(() => {
+    if (defaultUrl) {
+      setLocalPreview(defaultUrl);
+    }
+  }, [defaultUrl]);
 
   const pickFile = () => {
     if (fileInputRef.current) {

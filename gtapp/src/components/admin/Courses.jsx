@@ -4,7 +4,7 @@ import { FaEye, FaEdit, FaClock } from "react-icons/fa";
 import CourseFormModal from "./CourseFormModal";
 import courseService from "../../services/courseService";
 import { CourseType } from "../../constants/course";
-
+import DeleteConfirm from "../reusable/DeleteConfirm";
 const Courses = () => {
   const [courses, setCourses] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -120,6 +120,7 @@ const Courses = () => {
                 <FaClock className={styles.scheduleIcon} />
                 <span>Chưa cấu hình</span>
               </div>
+
               <div className={styles["status-container"]}>
                 <label className={styles[`status-${c.status}`]}>
                   {c.status}
@@ -131,11 +132,13 @@ const Courses = () => {
                   >
                     <FaEdit /> Edit
                   </button>
-                  {(c.status === "ACTIVE" || c.status === "COMPLETED") && (
-                    <button className={styles["view-class-button"]}>
-                      <FaEye /> View Class
-                    </button>
-                  )}
+                  <DeleteConfirm
+                    title="Xoá khoá học này?"
+                    onConfirm={async () => {
+                      await courseService.deleteCourse(c.courseId);
+                      fetchCourses();
+                    }}
+                  />
                 </div>
               </div>
             </div>
