@@ -1,209 +1,137 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../../styles/Courses.module.css";
-import math from "../../assets/Math1.svg";
-import chemis from "../../assets/chemistry.svg";
-import english from "../../assets/english1.svg";
 import { FaEye, FaEdit, FaClock } from "react-icons/fa";
 import CourseFormModal from "./CourseFormModal";
-
-const allCourses = [
-  {
-    id: 1,
-    img: math,
-    title: "Toán cơ bản từ lý thuyết đến thực hành",
-    creator: "Phạm Quốc Nga",
-    lastEdit: "16/12/2024",
-    status: "Đang diễn ra",
-    fee: "2,000,000",
-    mainTeacher: "Phạm Quốc Nga",
-    startDate: "2024-01-01",
-    schedule: {
-      "Thứ 2": ["7:00 - 9:00", "13:00 - 15:00"],
-      "Thứ 4": ["9:00 - 11:00", "15:00 - 17:00"],
-      "Thứ 6": ["17:00 - 19:00"],
-    },
-  },
-  {
-    id: 2,
-    img: chemis,
-    title: "Hoá học cơ bản từ lý thuyết đến thực hành",
-    creator: "Phạm Quốc Liên",
-    lastEdit: "15/12/2024",
-    status: "Chưa bắt đầu",
-    fee: "1,800,000",
-    mainTeacher: "Phạm Quốc Liên",
-    startDate: "2024-02-01",
-    schedule: {
-      "Thứ 3": ["9:00 - 11:00", "15:00 - 17:00"],
-      "Thứ 5": ["7:00 - 9:00", "13:00 - 15:00"],
-      "Thứ 7": ["19:00 - 21:00"],
-    },
-  },
-  {
-    id: 3,
-    img: english,
-    title: "Tiếng Anh cơ bản từ lý thuyết đến thực hành",
-    creator: "Phạm Quốc Nga",
-    lastEdit: "16/12/2024",
-    status: "Đã hoàn thành",
-    fee: "2,200,000",
-    mainTeacher: "Phạm Quốc Nga",
-    startDate: "2023-12-01",
-    schedule: {
-      "Thứ 2": ["17:00 - 19:00"],
-      "Thứ 4": ["19:00 - 21:00"],
-      "Thứ 6": ["7:00 - 9:00", "13:00 - 15:00"],
-    },
-  },
-  // Thêm các khóa học khác để kiểm tra phân trang
-];
+import courseService from "../../services/courseService";
+import { CourseType } from "../../constants/course";
 
 const Courses = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("Tất cả");
+  const [courses, setCourses] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCourse, setEditingCourse] = useState(null);
-  const [courses, setCourses] = useState(allCourses);
 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("Tất cả");
+  const [selectedType, setSelectedType] = useState("Tất cả");
+
+  const [currentPage, setCurrentPage] = useState(1);
   const coursesPerPage = 6;
 
-  const indexOfLastCourse = currentPage * coursesPerPage;
-  const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
-
-  const filteredCourses = courses.filter((course) => {
-    const isStatusMatch =
-      selectedStatus === "Tất cả" || course.status === selectedStatus;
-    const isSearchMatch = course.title
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
-
-    return isStatusMatch && isSearchMatch;
-  });
-
-  const currentCourses = filteredCourses.slice(
-    indexOfFirstCourse,
-    indexOfLastCourse
-  );
-
-  const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
+  const fetchCourses = async () => {
+    const params = {
+      q: searchTerm || undefined,
+      status: selectedStatus === "Tất cả" ? undefined : selectedStatus,
+      type: selectedType === "Tất cả" ? undefined : selectedType,
+    };
+    const res = await courseService.fetchCourses(params);
+    setCourses(res);
   };
 
-  const totalPages = Math.ceil(filteredCourses.length / coursesPerPage);
+  useEffect(() => {
+    fetchCourses();
+  }, []);
 
-  const handleAddCourse = () => {
+  const handleAdd = () => {
     setEditingCourse(null);
     setIsModalOpen(true);
   };
 
-  const handleEditCourse = (course) => {
-    setEditingCourse(course);
+  const handleEdit = (c) => {
+    setEditingCourse({
+      ...c,
+      nameCourse: c.nameCourse,
+      tuitionFee: c.tuitionFee,
+      description: c.description,
+      duration: c.duration,
+      type: c.type,
+      imageUrl: c.imageUrl,
+    });
     setIsModalOpen(true);
   };
 
-  const handleSubmitCourse = (formData) => {
-    if (editingCourse) {
-      // Update existing course
-      setCourses((prevCourses) =>
-        prevCourses.map((course) =>
-          course.id === editingCourse.id
-            ? {
-                ...course,
-                ...formData,
-                lastEdit: new Date().toLocaleDateString("vi-VN"),
-              }
-            : course
-        )
-      );
-    } else {
-      // Add new course
-      const newCourse = {
-        id: courses.length + 1,
-        ...formData,
-        status: "Chưa bắt đầu",
-        creator: "Phạm Quốc Nga", // Default creator
-        lastEdit: new Date().toLocaleDateString("vi-VN"),
-      };
-      setCourses((prevCourses) => [...prevCourses, newCourse]);
-    }
+  const handleSubmitDone = () => {
+    fetchCourses();
   };
 
-  const formatSchedule = (schedule) => {
-    return Object.entries(schedule)
-      .map(([day, times]) => `${day}: ${times.join(", ")}`)
-      .join(" | ");
-  };
+  const paginate = (p) => setCurrentPage(p);
+
+  const indexOfLast = currentPage * coursesPerPage;
+  const indexOfFirst = indexOfLast - coursesPerPage;
+  const currentCourses = courses.slice(indexOfFirst, indexOfLast);
+
+  const totalPages = Math.ceil(courses.length / coursesPerPage);
 
   return (
     <div className={styles.container}>
+      {/* Search + Filter */}
       <div className={styles["search-section"]}>
         <input
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search by name"
+          placeholder="Tìm theo tên"
         />
         <select
           value={selectedStatus}
           onChange={(e) => setSelectedStatus(e.target.value)}
         >
           <option value="Tất cả">Tất cả trạng thái</option>
-          <option value="Đang diễn ra">Đang diễn ra</option>
-          <option value="Chưa bắt đầu">Chưa bắt đầu</option>
-          <option value="Đã hoàn thành">Đã hoàn thành</option>
+          <option value="ACTIVE">Đang diễn ra</option>
+          <option value="INACTIVE">Chưa bắt đầu</option>
+          <option value="COMPLETED">Đã hoàn thành</option>
         </select>
-        <button onClick={handleAddCourse}>Thêm khóa học</button>
+        <select
+          value={selectedType}
+          onChange={(e) => setSelectedType(e.target.value)}
+        >
+          <option value="Tất cả">Tất cả loại</option>
+          {Object.entries(CourseType).map(([k, v]) => (
+            <option key={k} value={k}>
+              {v}
+            </option>
+          ))}
+        </select>
+        <button onClick={handleAdd}>Thêm khóa học</button>
       </div>
 
+      {/* LIST */}
       <div className={styles["course-list"]}>
-        {currentCourses.map((course, index) => (
-          <div className={styles["course-card"]} key={index}>
-            <img src={course.img} className={styles.image} alt={course.title} />
+        {currentCourses.map((c) => (
+          <div key={c.courseId} className={styles["course-card"]}>
+            <img
+              src={
+                c.imageUrl ||
+                "https://via.placeholder.com/300x200?text=No+Image"
+              }
+              alt={c.nameCourse}
+              className={styles.image}
+            />
             <div className={styles.content}>
-              <div className={styles.title}>{course.title}</div>
-              <div className={styles.info}>Người tạo: {course.creator}</div>
+              <div className={styles.title}>{c.nameCourse}</div>
+              <div className={styles.info}>Người tạo: {c.createdBy}</div>
+              <div className={styles.info}>Loại: {CourseType[c.type]}</div>
               <div className={styles.info}>
-                Chỉnh sửa lần cuối: {course.lastEdit}
+                Học phí: {c.tuitionFee.toLocaleString("vi-VN")} ₫
               </div>
-              <div className={styles.info}>Học phí: {course.fee} VNĐ</div>
+              <div className={styles.description}>Mô tả: {c.description}</div>
               <div className={styles.info}>
-                Giáo viên: {course.mainTeacher}
-              </div>
-              <div className={styles.info}>
-                Ngày bắt đầu: {course.startDate}
+                Thời lượng: {c.duration} phút/buổi
               </div>
               <div className={styles.schedule}>
                 <FaClock className={styles.scheduleIcon} />
-                <div className={styles.scheduleText}>
-                  {formatSchedule(course.schedule)}
-                </div>
+                <span>Chưa cấu hình</span>
               </div>
               <div className={styles["status-container"]}>
-                <label
-                  className={
-                    styles[
-                      `status-${
-                        course.status === "Đang diễn ra"
-                          ? "ongoing"
-                          : course.status === "Chưa bắt đầu"
-                          ? "pending"
-                          : "completed"
-                      }`
-                    ]
-                  }
-                >
-                  {course.status}
+                <label className={styles[`status-${c.status}`]}>
+                  {c.status}
                 </label>
-
                 <div className={styles["button-group"]}>
                   <button
                     className={styles["edit-button"]}
-                    onClick={() => handleEditCourse(course)}
+                    onClick={() => handleEdit(c)}
                   >
                     <FaEdit /> Edit
                   </button>
-                  {(course.status === "Đang diễn ra" ||
-                    course.status === "Đã hoàn thành") && (
+                  {(c.status === "ACTIVE" || c.status === "COMPLETED") && (
                     <button className={styles["view-class-button"]}>
                       <FaEye /> View Class
                     </button>
@@ -220,32 +148,31 @@ const Courses = () => {
         <button
           onClick={() => paginate(currentPage - 1)}
           disabled={currentPage === 1}
-          className={currentPage === 1 ? styles.disabled : ""}
         >
           Previous
         </button>
-        {Array.from({ length: totalPages }, (_, index) => (
+        {Array.from({ length: totalPages }, (_, i) => (
           <button
-            key={index}
-            onClick={() => paginate(index + 1)}
-            className={currentPage === index + 1 ? styles.active : ""}
+            key={i}
+            onClick={() => paginate(i + 1)}
+            className={currentPage === i + 1 ? styles.active : ""}
           >
-            {index + 1}
+            {i + 1}
           </button>
         ))}
         <button
           onClick={() => paginate(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className={currentPage === totalPages ? styles.disabled : ""}
         >
           Next
         </button>
       </div>
 
+      {/* Modal */}
       <CourseFormModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onSubmit={handleSubmitCourse}
+        onSubmitDone={handleSubmitDone}
         initialData={editingCourse}
       />
     </div>

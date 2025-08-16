@@ -1,10 +1,7 @@
 .modalOverlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,128 +9,110 @@
 }
 
 .modal {
-  background: white;
+  position: relative;
+  background: #ffffff;
   padding: 2rem;
-  border-radius: 8px;
+  border-radius: 12px;
   width: 90%;
-  max-width: 800px;
+  max-width: 720px;
   max-height: 90vh;
   overflow-y: auto;
+  box-shadow: 0 8px 24px rgba(21, 34, 89, 0.25);
 }
 
 .modal h2 {
   margin-bottom: 1.5rem;
-  color: #333;
+  color: #152259;
+  font-weight: 700;
+  font-size: 1.6rem;
   text-align: center;
+}
+/* Close X */
+.closeIcon {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #666;
+  transition: color 0.2s;
+}
+
+.closeIcon:hover {
+  color: #152259;
+}
+
+/* ------ FORM LAYOUT: Vertical (hàng dọc) ------ */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
 }
 
 .formGroup {
-  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .formGroup label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: #555;
-}
-
-.formGroup input {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-.fileInput {
-  margin-bottom: 1rem;
-}
-
-.imagePreview {
-  max-width: 200px;
-  max-height: 200px;
-  margin-top: 0.5rem;
-  border-radius: 4px;
-}
-
-.scheduleContainer {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-top: 0.5rem;
-}
-
-.daySchedule {
-  background-color: #f8f9fa;
-  padding: 1rem;
-  border-radius: 6px;
-  border: 1px solid #e9ecef;
-}
-
-.daySchedule h4 {
-  margin: 0 0 0.5rem 0;
-  color: #333;
-  font-size: 1rem;
+  margin-bottom: 0.35rem;
+  color: #444;
   font-weight: 600;
 }
 
-.timeSlots {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+.formGroup input,
+.formGroup select,
+.formGroup textarea {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #cfd4e4;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  resize: vertical;
+  background: #fff;
 }
 
-.timeSlot {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.3rem;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s;
+.imageUploaderWrapper {
+  border: 1px dashed #cfd4e4;
+  padding: 16px;
+  border-radius: 8px;
+  background: #f4f6ff;
 }
 
-.timeSlot:hover {
-  background-color: #e9ecef;
-}
-
-.timeSlot input[type="checkbox"] {
-  width: auto;
-  margin: 0;
-}
-
+/* ------ BUTTONS ------ */
 .buttonGroup {
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
-  margin-top: 1.5rem;
+  margin-top: 1.4rem;
 }
 
 .submitButton {
-  background-color: #4CAF50;
-  color: white;
-  padding: 0.5rem 1rem;
+  background-color: #152259;
+  color: #fff;
+  padding: 0.55rem 1.2rem;
+  border-radius: 6px;
   border: none;
-  border-radius: 4px;
   cursor: pointer;
   font-size: 1rem;
+  transition: opacity 0.2s;
 }
 
 .submitButton:hover {
-  background-color: #45a049;
+  opacity: 0.9;
 }
 
 .cancelButton {
-  background-color: #f44336;
-  color: white;
-  padding: 0.5rem 1rem;
+  background-color: #ef5350;
+  color: #fff;
+  padding: 0.55rem 1.2rem;
+  border-radius: 6px;
   border: none;
-  border-radius: 4px;
   cursor: pointer;
   font-size: 1rem;
+  transition: opacity 0.2s;
 }
 
 .cancelButton:hover {
-  background-color: #da190b;
-} 
+  opacity: 0.9;
+}

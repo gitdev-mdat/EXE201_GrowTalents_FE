@@ -1,90 +1,75 @@
 import React, { useState, useEffect } from "react";
 import styles from "../../styles/CourseFormModal.module.css";
+import ImageUploader from "../../firebase/ImageUploader";
+import CurrencyInput from "../reusable/CurrencyInput";
 
-const TIME_SLOTS = [
-  "7:00 - 8:30",
-  "8:30 - 10:00",
-  "10:00 - 11:30",
-  "11:30 - 13:00",
-  "13:00 - 14:30",
-  "14:30 - 16:00",
-  "16:00 - 17:30",
-  "17:30 - 19:00",
-  "19:00 - 20:30",
-  "20:30 - 22:00",
-];
+import courseService from "../../services/courseService";
+import { message } from "antd";
+import { CourseType } from "../../constants/course";
+import { Tooltip } from "antd";
+import { InfoCircleOutlined } from "@ant-design/icons";
+import { CloseOutlined } from "@ant-design/icons";
 
-const DAYS_OF_WEEK = [
-  "Thứ 2",
-  "Thứ 3",
-  "Thứ 4",
-  "Thứ 5",
-  "Thứ 6",
-  "Thứ 7",
-];
-
-const CourseFormModal = ({ isOpen, onClose, onSubmit, initialData = null }) => {
+const CourseFormModal = ({
+  isOpen,
+  onClose,
+  onSubmitDone,
+  initialData = null,
+}) => {
   const [formData, setFormData] = useState({
     title: "",
     fee: "",
-    mainTeacher: "",
-    startDate: "",
-    image: null,
-    imagePreview: null,
-    schedule: DAYS_OF_WEEK.reduce((acc, day) => {
-      acc[day] = [];
-      return acc;
-    }, {}),
+    imageUrl: "",
+    duration: "",
+    description: "",
+    type: "MATH",
   });
 
   useEffect(() => {
     if (initialData) {
       setFormData({
-        ...initialData,
-        imagePreview: initialData.img,
-        schedule: initialData.schedule || DAYS_OF_WEEK.reduce((acc, day) => {
-          acc[day] = [];
-          return acc;
-        }, {}),
+        title: initialData.nameCourse,
+        fee: initialData.tuitionFee,
+        imageUrl: initialData.imageUrl,
+        duration: initialData.duration,
+        description: initialData.description,
+        type: initialData.type,
       });
     }
   }, [initialData]);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setFormData((prev) => ({
-        ...prev,
-        image: file,
-        imagePreview: URL.createObjectURL(file),
-      }));
-    }
-  };
-
-  const handleTimeSlotChange = (day, timeSlot, checked) => {
-    setFormData((prev) => ({
-      ...prev,
-      schedule: {
-        ...prev.schedule,
-        [day]: checked
-          ? [...prev.schedule[day], timeSlot]
-          : prev.schedule[day].filter((slot) => slot !== timeSlot),
-      },
-    }));
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(formData);
-    onClose();
+
+    if (loading) return; // tránh double click
+    setLoading(true);
+
+    try {
+      const payload = {
+        nameCourse: formData.title,
+        tuitionFee: Number(formData.fee),
+        duration: Number(formData.duration),
+        description: formData.description,
+        courseType: formData.type,
+        imageUrl: formData.imageUrl,
+        createdByAdminId: "ADMIN_001",
+      };
+
+      const res = await courseService.createCourse(payload);
+      message.success("Tạo khoá học thành công");
+      onSubmitDone?.(res.data);
+      onClose();
+    } catch (e) {
+      message.error(e.message || "Tạo khoá học thất bại");
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -92,105 +77,111 @@ const CourseFormModal = ({ isOpen, onClose, onSubmit, initialData = null }) => {
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modal}>
+        <CloseOutlined className={styles.closeIcon} onClick={onClose} />
         <h2>{initialData ? "Chỉnh sửa khóa học" : "Thêm khóa học mới"}</h2>
+
         <form onSubmit={handleSubmit}>
           <div className={styles.formGroup}>
             <label>Hình ảnh khóa học:</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className={styles.fileInput}
+            <ImageUploader
+              onUploadSuccess={(url) =>
+                setFormData((prev) => ({ ...prev, imageUrl: url }))
+              }
+              folder="courses"
+              objectName={formData.title || "NO_NAME"}
             />
-            {formData.imagePreview && (
-              <img
-                src={formData.imagePreview}
-                alt="Preview"
-                className={styles.imagePreview}
-              />
-            )}
           </div>
 
           <div className={styles.formGroup}>
-            <label>Tên khóa học:</label>
+            <label>
+              Tên khóa học:
+              <Tooltip title="Nên đặt tên kèm lớp/bậc học. VD: Toán nâng cao – Lớp 8">
+                <InfoCircleOutlined
+                  style={{ marginLeft: 4, color: "#888", cursor: "pointer" }}
+                />
+              </Tooltip>
+            </label>
+
             <input
               type="text"
               name="title"
               value={formData.title}
               onChange={handleChange}
-              required
             />
           </div>
 
           <div className={styles.formGroup}>
-            <label>Học phí:</label>
-            <input
-              type="number"
-              name="fee"
-              value={formData.fee}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label>Giáo viên phụ trách:</label>
-            <input
-              type="text"
-              name="mainTeacher"
-              value={formData.mainTeacher}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label>Ngày bắt đầu:</label>
-            <input
-              type="date"
-              name="startDate"
-              value={formData.startDate}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label>Lịch học:</label>
-            <div className={styles.scheduleContainer}>
-              {DAYS_OF_WEEK.map((day) => (
-                <div key={day} className={styles.daySchedule}>
-                  <h4>{day}</h4>
-                  <div className={styles.timeSlots}>
-                    {TIME_SLOTS.map((timeSlot) => (
-                      <label key={timeSlot} className={styles.timeSlot}>
-                        <input
-                          type="checkbox"
-                          checked={formData.schedule[day]?.includes(timeSlot) || false}
-
-                          onChange={(e) =>
-                            handleTimeSlotChange(day, timeSlot, e.target.checked)
-                          }
-                        />
-                        {timeSlot}
-                      </label>
-                    ))}
-                  </div>
-                </div>
+            <label>Loại khóa:</label>
+            <select name="type" value={formData.type} onChange={handleChange}>
+              {Object.entries(CourseType).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
               ))}
+            </select>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label>Học phí 1 tháng:</label>
+            <div style={{ position: "relative" }}>
+              <CurrencyInput
+                name="fee"
+                value={formData.fee}
+                onChange={(val) =>
+                  setFormData((prev) => ({ ...prev, fee: val }))
+                }
+                style={{ paddingRight: "36px" }}
+              />
+              <span
+                style={{
+                  position: "absolute",
+                  right: "10px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  color: "#555",
+                }}
+              >
+                ₫
+              </span>
             </div>
           </div>
 
+          <div className={styles.formGroup}>
+            <label>
+              Thời lượng mỗi buổi (phút):
+              <Tooltip title="Ví dụ 90 phút cho 1 buổi học">
+                <InfoCircleOutlined style={{ marginLeft: 4, color: "#888" }} />
+              </Tooltip>
+            </label>
+            <input
+              type="number"
+              name="duration"
+              value={formData.duration}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label>Mô tả khóa học:</label>
+            <textarea
+              rows="3"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+            />
+          </div>
+
           <div className={styles.buttonGroup}>
-            <button type="submit" className={styles.submitButton}>
-              {initialData ? "Cập nhật" : "Thêm khóa học"}
-            </button>
             <button
-              type="button"
-              onClick={onClose}
-              className={styles.cancelButton}
+              type="submit"
+              className={styles.submitButton}
+              disabled={loading}
             >
-              Hủy
+              {initialData
+                ? "Cập nhật"
+                : loading
+                ? "Đang tạo..."
+                : "Thêm khóa học"}
             </button>
           </div>
         </form>
@@ -199,4 +190,4 @@ const CourseFormModal = ({ isOpen, onClose, onSubmit, initialData = null }) => {
   );
 };
 
-export default CourseFormModal; 
+export default CourseFormModal;

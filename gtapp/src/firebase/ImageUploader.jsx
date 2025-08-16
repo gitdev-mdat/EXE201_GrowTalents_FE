@@ -154,8 +154,14 @@ export default function ImageUploader({
   };
 
   return (
-    <div className="grid gap-3 w-full max-w-md">
-      {/* Hidden input */}
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "16px",
+        width: "100%",
+      }}
+    >
       <input
         ref={fileInputRef}
         type="file"
@@ -168,111 +174,113 @@ export default function ImageUploader({
       <div
         onDrop={onDrop}
         onDragOver={onDragOver}
-        className="rounded-2xl border border-dashed border-gray-300 p-5 bg-white hover:border-gray-400 transition-all"
-        style={{ cursor: "pointer" }}
         onClick={pickFile}
+        style={{
+          border: "2px dashed #cfd4e4",
+          padding: "20px",
+          borderRadius: "12px",
+          background: "#f5f7ff",
+          textAlign: "center",
+          cursor: "pointer",
+          transition: "border-color .2s",
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#152259")}
+        onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#cfd4e4")}
       >
-        <div className="flex flex-col items-center gap-2 text-center">
-          <div className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-100">
-            <InboxOutlined />
-          </div>
-          <div className="text-sm text-gray-600">
-            Kéo & thả ảnh vào đây, hoặc{" "}
-            <Text underline strong>
-              bấm để chọn
-            </Text>
-          </div>
-          <div className="text-xs text-gray-400">
-            Chấp nhận: {accept} • Tối đa {maxSizeMB}MB
-          </div>
-        </div>
-      </div>
-
-      {/* Preview + Actions */}
-      {localPreview && (
-        <div className="grid gap-2">
-          <div
-            className="rounded-2xl overflow-hidden border border-gray-200 shadow-sm"
+        <InboxOutlined style={{ fontSize: "28px", color: "#152259" }} />
+        <p style={{ margin: "8px 0", color: "#333" }}>
+          Kéo & thả ảnh vào đây <br /> hoặc{" "}
+          <span
             style={{
-              aspectRatio: "1.6/1", // card đẹp
-              backgroundColor: "#fafafa",
+              color: "#152259",
+              textDecoration: "underline",
+              fontWeight: 600,
             }}
           >
-            <img
-              src={localPreview}
-              alt="Preview"
-              className="w-full h-full object-cover"
-              onClick={() => setShowPreview(true)}
-              style={{ cursor: "zoom-in" }}
-            />
-          </div>
+            bấm để chọn
+          </span>
+        </p>
+        <small style={{ color: "#666" }}>
+          Chấp nhận: {accept} • Tối đa {maxSizeMB}MB
+        </small>
+      </div>
 
-          <div className="flex items-center gap-8">
-            <div className="flex items-center gap-8">
-              <Tooltip title="Xem lớn">
-                <Button
-                  icon={<EyeOutlined />}
-                  onClick={() => setShowPreview(true)}
-                >
-                  Preview
-                </Button>
-              </Tooltip>
-              <Tooltip title="Xoá lựa chọn">
-                <Button
-                  danger
-                  icon={<DeleteOutlined />}
-                  onClick={reset}
-                  disabled={uploading}
-                >
-                  Remove
-                </Button>
-              </Tooltip>
-            </div>
+      {/* Preview */}
+      {localPreview && (
+        <div
+          style={{
+            border: "1px solid #e0e0e0",
+            borderRadius: "12px",
+            padding: "12px",
+          }}
+        >
+          <img
+            src={localPreview}
+            alt="Preview"
+            style={{
+              width: "100%",
+              height: "200px",
+              objectFit: "cover",
+              borderRadius: "8px",
+              cursor: "zoom-in",
+              marginBottom: "10px",
+            }}
+            onClick={() => setShowPreview(true)}
+          />
 
-            <div className="flex-1" />
-
+          <div
+            style={{ display: "flex", justifyContent: "flex-end", gap: "14px" }}
+          >
+            <Button icon={<EyeOutlined />} onClick={() => setShowPreview(true)}>
+              Xem
+            </Button>
+            <Button
+              danger
+              icon={<DeleteOutlined />}
+              onClick={reset}
+              disabled={uploading}
+            >
+              Xóa
+            </Button>
             <Button
               type="primary"
               icon={<CloudUploadOutlined />}
               onClick={upload}
               loading={uploading}
             >
-              Tải ảnh lên
+              Upload
             </Button>
           </div>
 
-          {uploading || progress > 0 ? (
-            <div className="mt-1">
-              <Progress
-                percent={progress}
-                status={uploading ? "active" : "normal"}
-              />
-            </div>
-          ) : null}
+          {uploading && (
+            <Progress percent={progress} style={{ marginTop: "10px" }} />
+          )}
         </div>
       )}
 
-      {/* Download URL */}
+      {/* Uploaded Link */}
       {downloadUrl && (
-        <div className="p-3 rounded-xl border border-green-200 bg-green-50 break-all">
-          <div className="flex items-center gap-2 text-green-700">
-            <LinkOutlined />
-            <a
-              href={downloadUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="underline"
-            >
-              Link ảnh đã upload
-            </a>
-          </div>
-          <div className="text-xs text-gray-500 mt-1">
-            Tip: lưu URL này vào DB của cậu nhé.
-          </div>
+        <div
+          style={{
+            background: "#f0fff4",
+            border: "1px solid #c6f6d5",
+            padding: "12px",
+            borderRadius: "8px",
+            color: "#22543d",
+          }}
+        >
+          <LinkOutlined style={{ marginRight: "6px" }} />
+          <a
+            href={downloadUrl}
+            target="_blank"
+            rel="noreferrer"
+            style={{ color: "#22543d", textDecoration: "underline" }}
+          >
+            Đã upload – click xem ảnh
+          </a>
         </div>
       )}
 
-      {/* Preview Modal */}
       <Modal
         open={showPreview}
         footer={null}
@@ -283,7 +291,7 @@ export default function ImageUploader({
         <img
           src={localPreview}
           alt="Preview Large"
-          style={{ width: "100%", maxHeight: "80vh", objectFit: "contain" }}
+          style={{ width: "100%", objectFit: "contain" }}
         />
       </Modal>
     </div>
