@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import studentApi from "../../api/studentAPI";
 import Grid from "@mui/material/Grid";
 import styles from "../../styles/Students.module.css";
 import { Add, Remove, Edit } from "@mui/icons-material";
@@ -76,7 +77,7 @@ const initialStudents = [
 ];
 
 const Students = () => {
-  const [students, setStudents] = useState(initialStudents);
+  const [students, setStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(students[0]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -97,6 +98,45 @@ const Students = () => {
     setSelectedStudent(student);
     setOpenDialog(true);
   };
+
+  useEffect(() => {
+    const fetchInitData = async () => {
+      try {
+        const res = await studentApi.getAll();
+        if (res && res.data && Array.isArray(res.data.data)) {
+          // Map API data to local student format
+          const mappedStudents = res.data.data.map((item, idx) => ({
+            id: item.userId || idx + 1,
+            name: item.userName || "",
+            email: item.userEmail || "",
+            phone: item.userPhone || "",
+            parentName: item.userParentName || "",
+            parentPhone: item.userParentPhone || "",
+            status: item.userStatus || "",
+            description: item.description || "",
+            // Các trường dưới đây có thể cần fetch thêm hoặc để rỗng
+            class: "",
+            grade: "",
+            gender: "",
+            address: "",
+            dob: "",
+            currentClasses: [],
+            availableClasses: []
+          }));
+          setStudents(mappedStudents);
+          if (mappedStudents.length > 0) {
+            setSelectedStudent(mappedStudents[0]);
+          }
+        }
+      } catch (error) {
+        // fallback nếu lỗi
+        console.error("Failed to fetch students:", error);
+        setStudents(initialStudents);
+        setSelectedStudent(initialStudents[0]);
+      }
+    };
+    fetchInitData();
+  }, []);
 
   const filteredStudents = students.filter((student) => {
     const matchesSearch =
