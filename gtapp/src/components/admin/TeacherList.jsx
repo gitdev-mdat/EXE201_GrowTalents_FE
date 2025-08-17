@@ -62,7 +62,6 @@ function createData(id, name, subject, emailAddress, phoneNumber) {
     ],
     teachingSchedule: [
   {
-    id: 1,
         day: "Thứ 2",
         time: "08:00 - 09:30",
         subject: `${subject} 10A`,
@@ -71,7 +70,6 @@ function createData(id, name, subject, emailAddress, phoneNumber) {
         students: 35
   },
   {
-    id: 2,
         day: "Thứ 3",
         time: "10:00 - 11:30",
         subject: `${subject} 11B`,
@@ -106,21 +104,6 @@ function Row(props) {
         <TableCell>{row.subject}</TableCell>
         <TableCell>{row.emailAddress}</TableCell>
         <TableCell>{row.phoneNumber}</TableCell>
-        <TableCell>
-          <Button
-            variant="contained"
-            size="small"
-            startIcon={<Schedule />}
-            onClick={() => onAddSchedule(row)}
-            color="primary"
-            sx={{ 
-              bgcolor: '#1976d2',
-              '&:hover': { bgcolor: '#1565c0' }
-            }}
-          >
-            Tạo lịch
-          </Button>
-        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
@@ -286,38 +269,33 @@ Row.propTypes = {
 // Sample rows of teachers
 const initialRows = [
   createData(
-    1,
     "PhamQuocNga",
     "Vật Lý",
     "phamquocngadaknong@gmail.com",
     "0123456789"
   ),
   createData(
-    2,
     "PhamQuocViet",
     "Toán",
     "phamquocvietdaknong@gmail.com",
     "0123456789"
   ),
-  createData(3, "PhamQuocHiep", "Hoá", "phamquochiepdaknong@gmail.com", "0123456789"),
+  createData("PhamQuocHiep", "Hoá", "phamquochiepdaknong@gmail.com", "0123456789"),
   createData(
-    4,
     "PhamQuocHiep1",
     "Anh",
     "phamquochiep1daknong@gmail.com",
     "0123456789"
   ),
-  createData(5, "PhamQuocHiep", "Hoá", "phamquochiepdaknong@gmail.com", "0123456789"),
+  createData("PhamQuocHiep", "Hoá", "phamquochiepdaknong@gmail.com", "0123456789"),
   createData(
-    6,
     "PhamQuocHiep1",
     "Anh",
     "phamquochiep1daknong@gmail.com",
     "0123456789"
   ),
-  createData(7, "PhamQuocHiep", "Hoá", "phamquochiepdaknong@gmail.com", "0123456789"),
+  createData("PhamQuocHiep", "Hoá", "phamquochiepdaknong@gmail.com", "0123456789"),
   createData(
-    8,
     "PhamQuocHiep1",
     "Anh",
     "phamquochiep1daknong@gmail.com",
@@ -564,7 +542,7 @@ export default function TeacherList() {
   // Handle export CSV
   const handleExportCSV = () => {
     const csvContent = [
-      ['ID', 'Họ và Tên', 'Chuyên môn', 'Email', 'Số điện thoại'],
+      ['Họ và Tên', 'Chuyên môn', 'Email', 'Số điện thoại'],
       ...rows.map(row => [row.id, row.name, row.subject, row.emailAddress, row.phoneNumber])
     ].map(row => row.join(',')).join('\n');
 
@@ -625,12 +603,10 @@ export default function TeacherList() {
           <TableHead className={styles["table-head"]}>
             <TableRow>
               <TableCell />
-              <TableCell>Id</TableCell>
               <TableCell>Họ và Tên</TableCell>
               <TableCell>Chuyên môn</TableCell>
               <TableCell align="left">Email</TableCell>
               <TableCell align="left">Số điện thoại</TableCell>
-              <TableCell>Tạo lịch</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

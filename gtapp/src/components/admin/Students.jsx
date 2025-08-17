@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import styles from "../../styles/Students.module.css";
-import { Phone, LocationOn, Cake, School, Add, Remove, Edit } from "@mui/icons-material";
+import { Add, Remove, Edit } from "@mui/icons-material";
 import StudentFormDialog from "./StudentFormDialog";
 import {
   TextField,
@@ -18,7 +18,6 @@ import {
   Box,
   Typography,
   IconButton,
-  Tooltip,
   Paper,
   Table,
   TableBody,
@@ -40,7 +39,10 @@ const initialStudents = [
     phone: "0982123124",
     address: "187/11 đường số 28, phường 6, Gò Vấp",
     dob: "2003-09-02",
-    currentClasses: ["Giao tiếp tiếng Anh", "Toán nâng cao"],
+    currentClasses: [
+      { className: "Giao tiếp tiếng Anh", semester: "1", year: "2023-2024" },
+      { className: "Toán nâng cao", semester: "2", year: "2023-2024" },
+    ],
     availableClasses: ["Vật lý cơ bản", "Hóa học nâng cao"]
   },
   {
@@ -53,7 +55,9 @@ const initialStudents = [
     phone: "0912345678",
     address: "123 Lê Lợi, Phường 1, Quận 3",
     dob: "2004-05-15",
-    currentClasses: ["Toán nâng cao"],
+    currentClasses: [
+      { className: "Toán nâng cao", semester: "1", year: "2023-2024" }
+    ],
     availableClasses: ["Tiếng Anh giao tiếp", "Vật lý cơ bản"]
   },
   {
@@ -68,73 +72,36 @@ const initialStudents = [
     dob: "2005-12-12",
     currentClasses: [],
     availableClasses: []
-  },
-  {
-    id: 4,
-    name: "Lê Văn D",
-    email: "levanDdaknong@gmail.com",
-    class: "Lý nâng cao",
-    grade: "Khối 8",
-    gender: "Nam",
-    phone: "0908765432",
-    address: "456 Hoàng Hoa Thám, Phường 6, Quận 10",
-    dob: "2005-12-12",
-    currentClasses: [],
-    availableClasses: []
-  },
-  {
-    id: 5,
-    name: "Lê Văn E",
-    email: "levanedaknong@gmail.com",
-    class: "Lý nâng cao",
-    grade: "Khối 8",
-    gender: "Nam",
-    phone: "0908765432",
-    address: "456 Hoàng Hoa Thám, Phường 6, Quận 10",
-    dob: "2005-12-12",
-    currentClasses: [],
-    availableClasses: []
-  },
-  {
-    id: 6,
-    name: "Lê Văn G",
-    email: "levangdaknong@gmail.com",
-    class: "Lý nâng cao",
-    grade: "Khối 8",
-    gender: "Nam",
-    phone: "0908765432",
-    address: "456 Hoàng Hoa Thám, Phường 6, Quận 10",
-    dob: "2005-12-12",
-    currentClasses: [],
-    availableClasses: []
-  },
+  }
 ];
 
 const Students = () => {
-  // State lưu trữ danh sách học sinh
   const [students, setStudents] = useState(initialStudents);
-  // State lưu trữ thông tin học sinh được chọn
   const [selectedStudent, setSelectedStudent] = useState(students[0]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGrade, setSelectedGrade] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
-  const [selectedClass, setSelectedClass] = useState("");
+
   // Modal thêm/sửa học sinh
   const [openForm, setOpenForm] = useState(false);
   const [editingStudent, setEditingStudent] = useState(null);
 
-  // Hàm xử lý khi bấm vào học sinh
+  // State cho thêm lớp
+  const [selectedClass, setSelectedClass] = useState("");
+  const [selectedSemester, setSelectedSemester] = useState("");
+  const [selectedYear, setSelectedYear] = useState("");
+
   const handleStudentClick = (student) => {
     setSelectedStudent(student);
     setOpenDialog(true);
   };
 
-  // Lọc học sinh dựa trên từ khóa tìm kiếm và khối
   const filteredStudents = students.filter((student) => {
-    const matchesSearch = student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         student.email.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch =
+      student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      student.email.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesGrade = selectedGrade === "" || student.grade === selectedGrade;
     return matchesSearch && matchesGrade;
   });
@@ -144,67 +111,92 @@ const Students = () => {
     page * rowsPerPage + rowsPerPage
   );
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
+  const handleChangePage = (event, newPage) => setPage(newPage);
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
-  // Hàm thêm học sinh vào lớp
+  // Thêm lớp (có kỳ và năm)
   const handleAddToClass = () => {
-    if (selectedClass && selectedStudent) {
+    if (selectedClass && selectedSemester && selectedYear && selectedStudent) {
+      const newClass = {
+        className: selectedClass,
+        semester: selectedSemester,
+        year: selectedYear,
+      };
+
       const updatedStudent = {
         ...selectedStudent,
-        currentClasses: [...(selectedStudent.currentClasses || []), selectedClass],
-        availableClasses: (selectedStudent.availableClasses || []).filter(c => c !== selectedClass)
+        currentClasses: [...(selectedStudent.currentClasses || []), newClass],
+        availableClasses: (selectedStudent.availableClasses || []).filter(
+          (c) => c !== selectedClass
+        ),
       };
+
       setSelectedStudent(updatedStudent);
       setSelectedClass("");
-      setStudents((prev) => prev.map(s => s.id === updatedStudent.id ? updatedStudent : s));
+      setSelectedSemester("");
+      setSelectedYear("");
+      setStudents((prev) =>
+        prev.map((s) => (s.id === updatedStudent.id ? updatedStudent : s))
+      );
     }
   };
 
-  // Hàm xóa học sinh khỏi lớp
-  const handleRemoveFromClass = (className) => {
+  // Xóa lớp
+  const handleRemoveFromClass = (classObj) => {
     if (selectedStudent) {
       const updatedStudent = {
         ...selectedStudent,
-        currentClasses: (selectedStudent.currentClasses || []).filter(c => c !== className),
-        availableClasses: [...(selectedStudent.availableClasses || []), className]
+        currentClasses: (selectedStudent.currentClasses || []).filter(
+          (c) =>
+            !(
+              c.className === classObj.className &&
+              c.semester === classObj.semester &&
+              c.year === classObj.year
+            )
+        ),
+        availableClasses: [
+          ...(selectedStudent.availableClasses || []),
+          classObj.className,
+        ],
       };
+
       setSelectedStudent(updatedStudent);
-      setStudents((prev) => prev.map(s => s.id === updatedStudent.id ? updatedStudent : s));
+      setStudents((prev) =>
+        prev.map((s) => (s.id === updatedStudent.id ? updatedStudent : s))
+      );
     }
   };
 
-  // Mở modal thêm học sinh mới
+  // Thêm học sinh mới
   const handleOpenAdd = () => {
     setEditingStudent(null);
     setOpenForm(true);
   };
 
-  // Mở modal sửa học sinh
+  // Sửa học sinh
   const handleOpenEdit = (student) => {
     setEditingStudent(student);
     setOpenForm(true);
   };
 
-  // Xử lý thêm/sửa học sinh
+  // Submit form thêm/sửa
   const handleSubmitStudent = (data) => {
     if (editingStudent) {
-      // Sửa
-      setStudents((prev) => prev.map(s => s.id === editingStudent.id ? { ...s, ...data } : s));
+      setStudents((prev) =>
+        prev.map((s) =>
+          s.id === editingStudent.id ? { ...s, ...data } : s
+        )
+      );
     } else {
-      // Thêm mới
       const newStudent = {
         ...data,
-        id: students.length ? Math.max(...students.map(s => s.id)) + 1 : 1,
+        id: students.length ? Math.max(...students.map((s) => s.id)) + 1 : 1,
         currentClasses: [],
         availableClasses: [],
-        grade: "Khối 6", // mặc định
+        grade: "Khối 6",
         class: "",
       };
       setStudents((prev) => [...prev, newStudent]);
@@ -216,15 +208,13 @@ const Students = () => {
       <Paper className={styles.paper}>
         {/* Header */}
         <div className={styles.header}>
-          <Typography variant="h5" component="h1">
-            Quản lý học sinh
-          </Typography>
+          <Typography variant="h5">Quản lý học sinh</Typography>
           <Button variant="contained" color="primary" onClick={handleOpenAdd}>
             Thêm học sinh mới
           </Button>
         </div>
 
-        {/* Search and Filter */}
+        {/* Search & Filter */}
         <div className={styles.filterContainer}>
           <TextField
             className={styles.search}
@@ -280,7 +270,11 @@ const Students = () => {
                     >
                       Xem chi tiết
                     </Button>
-                    <IconButton color="primary" onClick={() => handleOpenEdit(student)} size="small">
+                    <IconButton
+                      color="primary"
+                      onClick={() => handleOpenEdit(student)}
+                      size="small"
+                    >
                       <Edit fontSize="small" />
                     </IconButton>
                   </TableCell>
@@ -319,28 +313,28 @@ const Students = () => {
               <Grid item xs={12}>
                 <Box className={styles.detailInfo}>
                   <div className={styles.detailInfoCard}>
-                    <Typography variant="subtitle1" className={styles.label}>Họ và tên:</Typography>
-                    <Typography variant="body1">{selectedStudent.name}</Typography>
+                    <Typography variant="subtitle1">Họ và tên:</Typography>
+                    <Typography>{selectedStudent.name}</Typography>
                   </div>
                   <div className={styles.detailInfoCard}>
-                    <Typography variant="subtitle1" className={styles.label}>Email:</Typography>
-                    <Typography variant="body1">{selectedStudent.email}</Typography>
+                    <Typography variant="subtitle1">Email:</Typography>
+                    <Typography>{selectedStudent.email}</Typography>
                   </div>
                   <div className={styles.detailInfoCard}>
-                    <Typography variant="subtitle1" className={styles.label}>Số điện thoại:</Typography>
-                    <Typography variant="body1">{selectedStudent.phone}</Typography>
+                    <Typography variant="subtitle1">Số điện thoại:</Typography>
+                    <Typography>{selectedStudent.phone}</Typography>
                   </div>
                   <div className={styles.detailInfoCard}>
-                    <Typography variant="subtitle1" className={styles.label}>Địa chỉ:</Typography>
-                    <Typography variant="body1">{selectedStudent.address}</Typography>
+                    <Typography variant="subtitle1">Địa chỉ:</Typography>
+                    <Typography>{selectedStudent.address}</Typography>
                   </div>
                   <div className={styles.detailInfoCard}>
-                    <Typography variant="subtitle1" className={styles.label}>Ngày sinh:</Typography>
-                    <Typography variant="body1">{selectedStudent.dob}</Typography>
+                    <Typography variant="subtitle1">Ngày sinh:</Typography>
+                    <Typography>{selectedStudent.dob}</Typography>
                   </div>
                   <div className={styles.detailInfoCard}>
-                    <Typography variant="subtitle1" className={styles.label}>Khối:</Typography>
-                    <Typography variant="body1">{selectedStudent.grade}</Typography>
+                    <Typography variant="subtitle1">Khối:</Typography>
+                    <Typography>{selectedStudent.grade}</Typography>
                   </div>
                 </Box>
 
@@ -350,11 +344,11 @@ const Students = () => {
                     Lớp học hiện tại
                   </Typography>
                   <Box className={styles.currentClasses}>
-                    {(selectedStudent.currentClasses || []).map((className) => (
+                    {(selectedStudent.currentClasses || []).map((c, idx) => (
                       <Chip
-                        key={className}
-                        label={className}
-                        onDelete={() => handleRemoveFromClass(className)}
+                        key={idx}
+                        label={`${c.className} - Kỳ ${c.semester}, Năm ${c.year}`}
+                        onDelete={() => handleRemoveFromClass(c)}
                         deleteIcon={<Remove />}
                         className={styles.classChip}
                       />
@@ -365,7 +359,8 @@ const Students = () => {
                     Thêm vào lớp học
                   </Typography>
                   <Box className={styles.addClassSection}>
-                    <FormControl fullWidth>
+                    {/* Chọn lớp */}
+                    <FormControl fullWidth sx={{ mb: 2 }}>
                       <InputLabel>Chọn lớp</InputLabel>
                       <Select
                         value={selectedClass}
@@ -379,12 +374,39 @@ const Students = () => {
                         ))}
                       </Select>
                     </FormControl>
+
+                    {/* Chọn kỳ học */}
+                    <FormControl fullWidth sx={{ mb: 2 }}>
+                      <InputLabel>Kỳ học</InputLabel>
+                      <Select
+                        value={selectedSemester}
+                        onChange={(e) => setSelectedSemester(e.target.value)}
+                        label="Kỳ học"
+                      >
+                        <MenuItem value="1">Kỳ 1</MenuItem>
+                        <MenuItem value="2">Kỳ 2</MenuItem>
+                      </Select>
+                    </FormControl>
+
+                    {/* Chọn năm học */}
+                    <FormControl fullWidth sx={{ mb: 2 }}>
+                      <InputLabel>Năm học</InputLabel>
+                      <Select
+                        value={selectedYear}
+                        onChange={(e) => setSelectedYear(e.target.value)}
+                        label="Năm học"
+                      >
+                        <MenuItem value="2023-2024">2023-2024</MenuItem>
+                        <MenuItem value="2024-2025">2024-2025</MenuItem>
+                        <MenuItem value="2025-2026">2025-2026</MenuItem>
+                      </Select>
+                    </FormControl>
+
                     <Button
                       variant="contained"
                       startIcon={<Add />}
                       onClick={handleAddToClass}
-                      disabled={!selectedClass}
-                      sx={{ mt: 1 }}
+                      disabled={!selectedClass || !selectedSemester || !selectedYear}
                     >
                       Thêm vào lớp
                     </Button>
@@ -399,7 +421,7 @@ const Students = () => {
         </DialogActions>
       </Dialog>
 
-      {/* Student Form Dialog (Add/Edit) */}
+      {/* Student Form Dialog */}
       <StudentFormDialog
         open={openForm}
         onClose={() => setOpenForm(false)}
