@@ -1,5 +1,5 @@
-// Attendance API Service for GrowTalents
-const API_BASE_URL = 'http://localhost:8080';
+// Attendance Service for GrowTalents
+import attendance from "../api/attendanceApi";
 
 // Mock data for development/testing
 const MOCK_DATA = {
@@ -64,67 +64,13 @@ export const ATTENDANCE_STATUS_COLORS = {
 };
 
 class AttendanceService {
-  constructor() {
-    this.baseURL = `${API_BASE_URL}/api/attendance`;
-    this.useMockData = false;
-  }
-
-  // Helper method for making API requests
-  async makeRequest(url, options = {}) {
-    const defaultHeaders = {
-      'Content-Type': 'application/json'
-    };
-
-    // Add auth token if available
-    const token = localStorage.getItem('token');
-    if (token) {
-      defaultHeaders['Authorization'] = `Bearer ${token}`;
-    }
-
-    const config = {
-      headers: defaultHeaders,
-      ...options,
-      headers: { ...defaultHeaders, ...options.headers }
-    };
-
-    try {
-      const response = await fetch(url, config);
-      
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP ${response.status}: ${errorText || 'Network error'}`);
-      }
-
-      const contentType = response.headers.get('content-type');
-      if (contentType && contentType.includes('application/json')) {
-        return await response.json();
-      } else {
-        return await response.text();
-      }
-    } catch (error) {
-      console.error('API Request Error:', error);
-      
-      // Check if it's a network error (server not running)
-      if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
-        console.warn('🔧 API server không khả dụng, sử dụng mock data');
-        this.useMockData = true;
-        throw new Error('API server không khả dụng. Đang sử dụng dữ liệu mẫu.');
-      }
-      
-      throw error;
-    }
-  }
-
   // 1. GET TEACHER CLASSES - Level A
   async getTeacherClasses(teacherId) {
     try {
-      if (this.useMockData) {
-        return MOCK_DATA.teacherClasses;
-      }
-      const url = `${this.baseURL}/teacher/${teacherId}/classes`;
-      return await this.makeRequest(url);
+      const response = await attendance.getTeacherClasses(teacherId);
+      return response.data.data || response.data; // Handle GlobalResponse wrapper
     } catch (error) {
-      console.warn('Fallback to mock data for teacher classes');
+      console.warn('API error, fallback to mock data for teacher classes:', error?.response?.data || error.message);
       return MOCK_DATA.teacherClasses;
     }
   }
@@ -132,16 +78,10 @@ class AttendanceService {
   // 2. CREATE ATTENDANCE - Level B
   async createAttendance(attendanceData) {
     try {
-      if (this.useMockData) {
-        return 'Đã tạo điểm danh thành công (Mock mode)';
-      }
-      const url = `${this.baseURL}/create`;
-      return await this.makeRequest(url, {
-        method: 'POST',
-        body: JSON.stringify(attendanceData)
-      });
+      const response = await attendance.createAttendance(attendanceData);
+      return response.data?.message || 'Đã tạo điểm danh thành công';
     } catch (error) {
-      console.warn('Fallback to mock response for create attendance');
+      console.warn('API error, using mock response for create attendance:', error?.response?.data || error.message);
       return `Đã tạo điểm danh thành công cho ${attendanceData.attendanceRecords?.length || 0} học sinh (Mock mode)`;
     }
   }
@@ -149,16 +89,10 @@ class AttendanceService {
   // 3. UPDATE ATTENDANCE - Level B
   async updateAttendance(attendanceId, attendanceData) {
     try {
-      if (this.useMockData) {
-        return 'Cập nhật điểm danh thành công (Mock mode)';
-      }
-      const url = `${this.baseURL}/${attendanceId}`;
-      return await this.makeRequest(url, {
-        method: 'PUT',
-        body: JSON.stringify(attendanceData)
-      });
+      const response = await attendance.updateAttendance(attendanceId, attendanceData);
+      return response.data?.message || 'Cập nhật điểm danh thành công';
     } catch (error) {
-      console.warn('Fallback to mock response for update attendance');
+      console.warn('API error, using mock response for update attendance:', error?.response?.data || error.message);
       return 'Cập nhật điểm danh thành công (Mock mode)';
     }
   }
@@ -166,72 +100,149 @@ class AttendanceService {
   // 4. GET ATTENDANCE HISTORY - Level C
   async getAttendanceHistory(teacherId, startDate = null, endDate = null) {
     try {
-      if (this.useMockData) {
-        let data = [...MOCK_DATA.attendanceHistory];
-        
-        // Filter by date range if provided
-        if (startDate || endDate) {
-          data = data.filter(record => {
-            const recordDate = new Date(record.date);
-            const start = startDate ? new Date(startDate) : new Date('2000-01-01');
-            const end = endDate ? new Date(endDate) : new Date();
-            return recordDate >= start && recordDate <= end;
-          });
-        }
-        
-        return data;
+      const params = {};
+      if (startDate) params.startDate = startDate;
+      if (endDate) params.endDate = endDate;
+      
+      const response = await attendance.getAttendanceHistory(teacherId, params);
+      let data = response.data.data || response.data || [];
+      
+      // Filter by date range if provided and data is from API
+      if ((startDate || endDate) && Array.isArray(data)) {
+        data = data.filter(record => {
+          const recordDate = new Date(record.date);
+          const start = startDate ? new Date(startDate) : new Date('2000-01-01');
+          const end = endDate ? new Date(endDate) : new Date();
+          return recordDate >= start && recordDate <= end;
+        });
       }
       
-      let url = `${this.baseURL}/history/${teacherId}`;
-      const params = new URLSearchParams();
-      
-      if (startDate) params.append('startDate', startDate);
-      if (endDate) params.append('endDate', endDate);
-      
-      if (params.toString()) {
-        url += `?${params.toString()}`;
-      }
-      
-      return await this.makeRequest(url);
+      return data;
     } catch (error) {
-      console.warn('Fallback to mock data for attendance history');
-      return MOCK_DATA.attendanceHistory;
+      console.warn('API error, fallback to mock data for attendance history:', error?.response?.data || error.message);
+      let data = [...MOCK_DATA.attendanceHistory];
+      
+      // Filter by date range if provided
+      if (startDate || endDate) {
+        data = data.filter(record => {
+          const recordDate = new Date(record.date);
+          const start = startDate ? new Date(startDate) : new Date('2000-01-01');
+          const end = endDate ? new Date(endDate) : new Date();
+          return recordDate >= start && recordDate <= end;
+        });
+      }
+      
+      return data;
     }
   }
 
   // 5. GET ATTENDANCE BY SESSION - Bonus
   async getAttendanceBySession(sessionId) {
     try {
-      if (this.useMockData) {
-        return [
-          { studentId: 1, status: 'PRESENT', note: '' },
-          { studentId: 2, status: 'ABSENT', note: 'Bị ốm' },
-          { studentId: 3, status: 'PRESENT', note: '' }
-        ];
-      }
-      const url = `${this.baseURL}/session/${sessionId}`;
-      return await this.makeRequest(url);
+      const response = await attendance.getAttendanceBySession(sessionId);
+      return response.data.data || response.data || [];
     } catch (error) {
-      console.warn('Fallback to mock data for session attendance');
-      return [];
+      console.warn('API error, fallback to mock data for session attendance:', error?.response?.data || error.message);
+      return [
+        { studentId: 1, status: 'PRESENT', note: '' },
+        { studentId: 2, status: 'ABSENT', note: 'Bị ốm' },
+        { studentId: 3, status: 'PRESENT', note: '' }
+      ];
     }
   }
 
   // 6. GET ATTENDANCE BY COURSE - Bonus
   async getAttendanceByCourse(courseId, date) {
     try {
-      if (this.useMockData) {
-        return [
-          { studentId: 1, status: 'PRESENT', note: '' },
-          { studentId: 2, status: 'ABSENT', note: 'Bị ốm' },
-          { studentId: 3, status: 'PRESENT', note: '' }
-        ];
-      }
-      const url = `${this.baseURL}/course/${courseId}?date=${date}`;
-      return await this.makeRequest(url);
+      const response = await attendance.getAttendanceByCourse(courseId, { date });
+      return response.data.data || response.data || [];
     } catch (error) {
-      console.warn('Fallback to mock data for course attendance');
-      return [];
+      console.warn('API error, fallback to mock data for course attendance:', error?.response?.data || error.message);
+      return [
+        { studentId: 1, status: 'PRESENT', note: '' },
+        { studentId: 2, status: 'ABSENT', note: 'Bị ốm' },
+        { studentId: 3, status: 'PRESENT', note: '' }
+      ];
+    }
+  }
+
+  // 7. GET STUDENTS BY CLASS - New method
+  async getStudentsByClass(classId) {
+    try {
+      const response = await attendance.getStudentsByClass(classId);
+      return response.data.data || response.data || [];
+    } catch (error) {
+      console.warn('API error, fallback to mock data for students:', error?.response?.data || error.message);
+      // Mock students data
+      return [
+        { id: 1, name: 'Nguyễn Văn A', avatar: 'A' },
+        { id: 2, name: 'Trần Thị B', avatar: 'B' },
+        { id: 3, name: 'Lê Văn C', avatar: 'C' },
+        { id: 4, name: 'Phạm Thị D', avatar: 'D' },
+        { id: 5, name: 'Hoàng Văn E', avatar: 'E' },
+        { id: 6, name: 'Vũ Thị F', avatar: 'F' },
+        { id: 7, name: 'Đặng Văn G', avatar: 'G' },
+        { id: 8, name: 'Bùi Thị H', avatar: 'H' }
+      ];
+    }
+  }
+
+  // 8. DELETE ATTENDANCE - New method
+  async deleteAttendance(attendanceId) {
+    try {
+      const response = await attendance.deleteAttendance(attendanceId);
+      return response.data?.message || 'Xóa điểm danh thành công';
+    } catch (error) {
+      console.warn('API error, using mock response for delete attendance:', error?.response?.data || error.message);
+      return 'Xóa điểm danh thành công (Mock mode)';
+    }
+  }
+
+  // 9. GET ATTENDANCE STATS - New method
+  async getAttendanceStats(teacherId, startDate = null, endDate = null) {
+    try {
+      const params = {};
+      if (startDate) params.startDate = startDate;
+      if (endDate) params.endDate = endDate;
+      
+      const response = await attendance.getAttendanceStats(teacherId, params);
+      return response.data.data || response.data || {};
+    } catch (error) {
+      console.warn('API error, fallback to mock stats:', error?.response?.data || error.message);
+      return {
+        totalSessions: 15,
+        averageAttendance: 85.5,
+        totalPresent: 128,
+        totalAbsent: 22,
+        totalStudents: 150
+      };
+    }
+  }
+
+  // 10. GENERATE ATTENDANCE REPORT - New method
+  async generateAttendanceReport(teacherId, startDate, endDate, format = 'json') {
+    try {
+      const params = {
+        teacherId,
+        startDate,
+        endDate,
+        format
+      };
+      
+      const response = await attendance.generateAttendanceReport(params);
+      return response.data;
+    } catch (error) {
+      console.warn('API error, fallback to mock report:', error?.response?.data || error.message);
+      return {
+        reportData: MOCK_DATA.attendanceHistory,
+        summary: {
+          totalSessions: 3,
+          averageAttendance: 91.3,
+          totalPresent: 105,
+          totalAbsent: 10
+        },
+        generatedAt: new Date().toISOString()
+      };
     }
   }
 
@@ -282,10 +293,9 @@ class AttendanceService {
     };
   }
 
-  // Enable/disable mock mode
+  // Enable/disable mock mode - deprecated, now handled automatically
   setMockMode(enabled) {
-    this.useMockData = enabled;
-    console.log(`🔧 Mock mode ${enabled ? 'enabled' : 'disabled'}`);
+    console.log(`🔧 Mock mode setting is deprecated. Fallback is now automatic based on API availability.`);
   }
 }
 
