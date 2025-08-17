@@ -118,18 +118,8 @@ const TeacherAttendance = () => {
   const loadStudentsByClass = async (classId) => {
     try {
       setLoading(true);
-      // Mock students data - in real app, this would be an API call
-      const mockStudents = [
-        { id: 1, name: 'Nguyễn Văn A', avatar: 'A' },
-        { id: 2, name: 'Trần Thị B', avatar: 'B' },
-        { id: 3, name: 'Lê Văn C', avatar: 'C' },
-        { id: 4, name: 'Phạm Thị D', avatar: 'D' },
-        { id: 5, name: 'Hoàng Văn E', avatar: 'E' },
-        { id: 6, name: 'Vũ Thị F', avatar: 'F' },
-        { id: 7, name: 'Đặng Văn G', avatar: 'G' },
-        { id: 8, name: 'Bùi Thị H', avatar: 'H' }
-      ];
-      setStudents(mockStudents);
+      const studentsData = await attendanceService.getStudentsByClass(classId);
+      setStudents(studentsData);
     } catch (error) {
       showSnackbar('Lỗi khi tải danh sách học sinh: ' + error.message, 'error');
     } finally {
