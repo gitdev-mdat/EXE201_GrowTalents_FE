@@ -13,6 +13,7 @@ import {
   ThemeProvider,
   createTheme,
 } from "@mui/material";
+import { Toaster } from "react-hot-toast";
 import ErrorBoundary from "./components/ErrorBoundary";
 import HomePage from "./pages/HomePage";
 import CourseDetailPage from "./pages/CourseDetailPage";
