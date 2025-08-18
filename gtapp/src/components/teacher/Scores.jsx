@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
+import assignmentApi from '../../api/assignmentAPI';
 import {
   Card,
   CardContent,
@@ -49,21 +51,31 @@ const TeacherScores = () => {
   const [editingScores, setEditingScores] = useState({});
   const [isEditing, setIsEditing] = useState(false);
 
-  // Mock data for classes
-  const classes = [
-    { id: 1, name: 'Toán 10A', students: 40 },
-    { id: 2, name: 'Vật lý 11B', students: 35 },
-    { id: 3, name: 'Hóa học 12A', students: 30 },
-    { id: 4, name: 'Tiếng Anh 10C', students: 38 }
-  ];
-
-  // Mock data for tests
-  const tests = [
-    { id: 1, name: 'Kiểm tra 15 phút - Chương 1', maxScore: 10, date: '2024-03-20' },
-    { id: 2, name: 'Kiểm tra 1 tiết - Chương 2', maxScore: 10, date: '2024-03-25' },
-    { id: 3, name: 'Kiểm tra học kỳ 1', maxScore: 10, date: '2024-04-01' },
-    { id: 4, name: 'Bài tập về nhà - Tuần 1', maxScore: 10, date: '2024-03-18' }
-  ];
+  // State for assignments (tests)
+  const [tests, setTests] = useState([]);
+  useEffect(() => {
+    const fetchAssignments = async () => {
+      try {
+        const teacherId = localStorage.getItem('teacherId');
+        if (!teacherId) return;
+        const res = await assignmentApi.getByTeacher({ teacherId });
+        if (res && res.data && Array.isArray(res.data.data)) {
+          // Map API data to local test format
+          const mapped = res.data.data.map((item, idx) => ({
+            id: item.assignmentId || idx + 1,
+            name: item.title || item.lessonTitle || '',
+            maxScore: 10, // Nếu có trường maxScore thì lấy, không thì mặc định 10
+            date: '', // Nếu có trường ngày thì lấy, không thì để rỗng
+            ...item
+          }));
+          setTests(mapped);
+        }
+      } catch (error) {
+        setTests([]);
+      }
+    };
+    fetchAssignments();
+  }, []);
 
   // Mock data for students with scores
   const students = [
