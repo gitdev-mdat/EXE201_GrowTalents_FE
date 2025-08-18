@@ -20,6 +20,7 @@ const Semester = () => {
   const [newYear, setNewYear] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
+  const [showAddYearInput, setShowAddYearInput] = useState(false);
 
   // ---- API calls ----
   const fetchYears = async () => {
@@ -95,7 +96,7 @@ const Semester = () => {
         <h2>Academic Years</h2>
         <div className={styles.yearRow}>
           <div className={styles.yearBlock}>
-            <label>Select Year</label>
+            <label>Chọn năm học</label>
             <Select
               value={selectedYear?.year} // hiển thị theo year
               placeholder="Select year"
@@ -112,26 +113,47 @@ const Semester = () => {
           </div>
 
           <div className={styles.yearBlock}>
-            <label>Add New Year</label>
-            <div className={styles.addYearRow}>
-              <Input
-                type="number"
-                value={newYear}
-                onChange={(e) => setNewYear(e.target.value)}
-                placeholder="Enter year"
-              />
+            {!showAddYearInput ? (
               <Button
                 type="primary"
-                style={{
-                  backgroundColor: "#1d3274",
-                  borderColor: "#1d3274",
-                  marginLeft: 10,
-                }}
-                onClick={handleAddYear}
+                style={{ backgroundColor: "#1d3274", borderColor: "#1d3274" }}
+                onClick={() => setShowAddYearInput(true)}
               >
                 Add Year
               </Button>
-            </div>
+            ) : (
+              <div className={styles.addYearRow}>
+                <Input
+                  type="number"
+                  value={newYear}
+                  onChange={(e) => setNewYear(e.target.value)}
+                  placeholder="Enter year"
+                />
+                <Button
+                  type="primary"
+                  style={{
+                    backgroundColor: "#1d3274",
+                    borderColor: "#1d3274",
+                    marginLeft: 8,
+                  }}
+                  onClick={async () => {
+                    await handleAddYear();
+                    setShowAddYearInput(false);
+                  }}
+                >
+                  Save
+                </Button>
+                <Button
+                  style={{ marginLeft: 8 }}
+                  onClick={() => {
+                    setShowAddYearInput(false);
+                    setNewYear("");
+                  }}
+                >
+                  Cancel
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -181,13 +203,11 @@ const Semester = () => {
               style={{ marginTop: "1rem", backgroundColor: "#1d3274" }}
               onClick={() => setIsModalOpen(true)}
             >
-              Add Semester
+              Thêm kì học
             </Button>
           </>
         ) : (
-          <p style={{ color: "#666" }}>
-            Select an academic year to see semesters.
-          </p>
+          <p style={{ color: "#666" }}>Chọn 1 năm học để thấy những kì học.</p>
         )}
       </div>
 
