@@ -22,8 +22,8 @@
 .search-section input,
 .search-section select {
   height: 42px;
-  min-width: 220px; /* tăng độ rộng */
-  padding: 0 16px; /* rộng rãi hơn */
+  min-width: 220px;
+  padding: 0 16px;
   font-size: 1rem;
   border: 1px solid #cfd4e4;
   border-radius: 8px;
@@ -46,7 +46,7 @@
 /* ============ Cards Grid ============ */
 .course-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1.5rem;
 }
 
@@ -68,9 +68,9 @@
 
 .image {
   width: 100%;
-  height: 180px;
+  height: 260px;
   object-fit: cover;
-  background: #e3e6f5; /* placeholder color */
+  background: #e3e6f5;
 }
 
 .content {
@@ -104,29 +104,6 @@
   text-overflow: ellipsis;
 }
 
-.schedule {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  background: #f5f7fc;
-  padding: 0.4rem 0.6rem;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  margin-top: auto;
-  color: #666;
-}
-
-.scheduleIcon {
-  color: #666;
-}
-
-.status-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 0.8rem;
-}
-
 .status-ACTIVE {
   background: #e3f2fd;
   color: #1976d2;
@@ -151,6 +128,19 @@
   font-weight: 500;
 }
 
+/* -- Action bar dưới đáy card -- */
+.actions {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+/* ===================== Buttons ===================== */
+
 .button-group {
   display: flex;
   gap: 0.35rem;
@@ -174,6 +164,14 @@
 }
 .edit-button:hover {
   opacity: 0.9;
+}
+
+.assign-button {
+  background-color: #009999;
+  color: #fff;
+}
+.assign-button:hover {
+  opacity: 0.85;
 }
 
 .view-class-button {
