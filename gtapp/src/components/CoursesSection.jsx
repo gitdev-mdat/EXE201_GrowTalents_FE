@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+import toast from "react-hot-toast"; // Import toast
 import styles from "../styles/CoursesSection.module.css";
 import chemistry from "../assets/hoahoc.jpg";
 import math from "../assets/toan.jpg";
@@ -117,8 +118,71 @@ const CoursesSection = () => {
   };
 
   const handleViewDetails = (course) => {
-    // Điều hướng đến trang chi tiết khóa học và truyền dữ liệu qua state
-    navigate("/home/course-detail", { state: { course } });
+    // Hiển thị thông báo template
+    toast((t) => (
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '12px',
+        padding: '16px',
+        maxWidth: '350px'
+      }}>
+        <div style={{
+          fontSize: '28px',
+          marginBottom: '8px'
+        }}>
+          🚧
+        </div>
+        <div style={{
+          fontSize: '18px',
+          fontWeight: '600',
+          color: '#1976d2',
+          textAlign: 'center',
+          marginBottom: '8px'
+        }}>
+          Tính năng đang phát triển
+        </div>
+        <div style={{
+          fontSize: '14px',
+          color: '#666',
+          textAlign: 'center',
+          lineHeight: '1.4',
+          marginBottom: '12px'
+        }}>
+          Đây chỉ là <strong>template tham khảo</strong>,<br/>
+          nội dung khóa học <strong>{course.name}</strong> chưa có.<br/>
+          Vui lòng quay lại sau! 📚
+        </div>
+        <button
+          onClick={() => toast.dismiss(t.id)}
+          style={{
+            background: 'linear-gradient(135deg, #1976d2, #42a5f5)',
+            color: 'white',
+            border: 'none',
+            padding: '8px 16px',
+            borderRadius: '20px',
+            fontSize: '12px',
+            fontWeight: '500',
+            cursor: 'pointer',
+            transition: 'transform 0.2s ease'
+          }}
+          onMouseOver={(e) => e.target.style.transform = 'scale(1.05)'}
+          onMouseOut={(e) => e.target.style.transform = 'scale(1)'}
+        >
+          Đã hiểu ✨
+        </button>
+      </div>
+    ), {
+      duration: 6000,
+      style: {
+        background: 'white',
+        border: '1px solid #e0e0e0',
+        borderRadius: '12px',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+      },
+      position: 'top-center',
+    });
   };
 
   return (
