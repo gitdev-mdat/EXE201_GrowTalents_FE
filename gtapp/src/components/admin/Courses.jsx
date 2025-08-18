@@ -5,6 +5,7 @@ import CourseFormModal from "./CourseFormModal";
 import courseService from "../../services/courseService";
 import { CourseType } from "../../constants/course";
 import DeleteConfirm from "../reusable/DeleteConfirm";
+import AssignTeacherModal from "./AssignTeacherModal";
 const Courses = () => {
   const [courses, setCourses] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,6 +17,13 @@ const Courses = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const coursesPerPage = 6;
+  const [isAssignOpen, setIsAssignOpen] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState(null);
+
+  const openAssignTeacherModal = (course) => {
+    setSelectedCourse(course);
+    setIsAssignOpen(true);
+  };
 
   const fetchCourses = async () => {
     const params = {
@@ -116,12 +124,14 @@ const Courses = () => {
               <div className={styles.info}>
                 Thời lượng: {c.duration} phút/buổi
               </div>
-              <div className={styles.schedule}>
+              {/* <div className={styles.schedule}>
                 <FaClock className={styles.scheduleIcon} />
-                <span>Chưa cấu hình</span>
-              </div>
+                <button onClick={() => openAssignTeacherModal(c)}>
+                  Phân công GV
+                </button>
+              </div> */}
 
-              <div className={styles["status-container"]}>
+              <div className={styles.actions}>
                 <label className={styles[`status-${c.status}`]}>
                   {c.status}
                 </label>
@@ -131,6 +141,12 @@ const Courses = () => {
                     onClick={() => handleEdit(c)}
                   >
                     <FaEdit /> Edit
+                  </button>
+                  <button
+                    className={styles["assign-button"]}
+                    onClick={() => openAssignTeacherModal(c)}
+                  >
+                    Phân công GV
                   </button>
                   <DeleteConfirm
                     title="Xoá khoá học này?"
@@ -177,6 +193,12 @@ const Courses = () => {
         onClose={() => setIsModalOpen(false)}
         onSubmitDone={handleSubmitDone}
         initialData={editingCourse}
+      />
+      <AssignTeacherModal
+        isOpen={isAssignOpen}
+        onClose={() => setIsAssignOpen(false)}
+        course={selectedCourse}
+        onSubmitDone={fetchCourses}
       />
     </div>
   );
