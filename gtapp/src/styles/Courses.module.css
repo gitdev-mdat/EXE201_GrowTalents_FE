@@ -1,161 +1,172 @@
 /* ============ Layout chung ============ */
 .container {
+  padding: 1.5rem;
+  background-color: #f8f9fc;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  padding: 2rem;
-  background-color: #f5f7fc;
-  border-radius: 16px;
-  min-height: 100vh;
-  color: #2e3a59;
-  font-family: "Roboto", sans-serif;
-}
-
-/* === Search section layout === */
-.search-section {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  align-items: center;
-}
-
-.search-section input,
-.search-section select {
-  height: 42px;
-  min-width: 220px;
-  padding: 0 16px;
-  font-size: 1rem;
-  border: 1px solid #cfd4e4;
-  border-radius: 8px;
-  background: #fff;
-  color: #333;
-}
-
-.search-section button {
-  height: 42px;
-  padding: 0 26px;
-  border: none;
-  background-color: #152259;
-  color: white;
-  font-weight: 500;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-/* ============ Cards Grid ============ */
-.course-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1.5rem;
 }
-
-/* ============ Card ============ */
-.course-card {
-  background: #ffffff;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(21, 34, 89, 0.08);
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.2s, box-shadow 0.2s;
+.card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
 }
 
+/*=========== Search Section ===========*/
+.search-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* 3 ô input chiếm đều không gian tự co giãn */
+.search-section input,
+.search-section select {
+  flex: 1;
+  height: 36px;
+  padding: 0 14px;
+  border: 1px solid #d8deea;
+  border-radius: 12px;
+  background: #fff;
+  font-size: 0.95rem;
+  min-width: 200px;
+}
+
+/* placeholder */
+.search-section input::placeholder {
+  color: #9aa1b3;
+}
+
+/* Nút cố định bên phải, không giãn */
+.search-section button {
+  flex: none;
+  height: 36px;
+  padding: 0 24px;
+  background-color: #1d3274;
+  color: #fff;
+  font-weight: 500;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.search-section button:hover {
+  opacity: 0.92;
+}
+
+/* ============ Card grid ============ */
+.course-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 2.5rem;
+  padding: 0 1rem;
+  margin-bottom: 3rem;
+}
+
+/* ============ Course card ============ */
+.course-card {
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
 .course-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 20px rgba(21, 34, 89, 0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.1);
 }
 
 .image {
   width: 100%;
-  height: 260px;
+  height: 250px;
   object-fit: cover;
-  background: #e3e6f5;
+  background-color: #e9ecf8;
 }
 
 .content {
-  padding: 1rem 1.2rem 1.5rem;
+  padding: 1.25rem 1.5rem 2rem;
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
 .title {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 600;
   color: #152259;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.25rem;
 }
 
 .info {
   font-size: 0.9rem;
   color: #555;
-  margin-bottom: 0.2rem;
+  margin-bottom: 2px;
 }
 
 .description {
   font-size: 0.85rem;
   color: #666;
-  margin: 0.25rem 0;
+  margin: 4px 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
+}
+
+.status-ACTIVE,
+.status-INACTIVE,
+.status-COMPLETED {
+  padding: 4px 9px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 500;
 }
 
 .status-ACTIVE {
   background: #e3f2fd;
   color: #1976d2;
 }
-
 .status-INACTIVE {
   background: #fff3e0;
   color: #f57c00;
 }
-
 .status-COMPLETED {
   background: #e8f5e9;
   color: #388e3c;
 }
 
-.status-ACTIVE,
-.status-INACTIVE,
-.status-COMPLETED {
-  padding: 0.25rem 0.6rem;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  font-weight: 500;
-}
-
-/* -- Action bar dưới đáy card -- */
+/* ============ Action bar ============ */
 .actions {
   margin-top: auto;
-  padding-top: 10px;
+  padding-top: 12px;
   border-top: 1px solid #eee;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.6rem;
 }
-
-/* ===================== Buttons ===================== */
 
 .button-group {
   display: flex;
-  gap: 0.35rem;
+  gap: 6px;
 }
 
 .button-group button {
   display: flex;
   align-items: center;
-  gap: 0.3rem;
-  padding: 0.35rem 0.7rem;
+  gap: 4px;
+  padding: 5px 12px;
   border-radius: 6px;
   font-size: 0.8rem;
   color: #fff;
-  cursor: pointer;
   border: none;
+  cursor: pointer;
   transition: opacity 0.2s;
 }
 
@@ -165,15 +176,12 @@
 .edit-button:hover {
   opacity: 0.9;
 }
-
 .assign-button {
-  background-color: #009999;
-  color: #fff;
+  background: #009999;
 }
 .assign-button:hover {
-  opacity: 0.85;
+  opacity: 0.9;
 }
-
 .view-class-button {
   background: #1976d2;
 }
@@ -185,31 +193,24 @@
 .pagination {
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 2rem;
+  gap: 0.45rem;
 }
-
 .pagination button {
-  padding: 0.45rem 1rem;
+  padding: 0.4rem 1rem;
   border: 1px solid #cfd4e4;
   border-radius: 6px;
   background: #fff;
   font-size: 0.9rem;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
 }
-
 .pagination button:hover:not(.disabled) {
   background: #f4f7fc;
 }
-
 .pagination button.active {
-  background: #152259;
+  background: #1d3274;
   color: #fff;
-  border-color: #152259;
+  border-color: #1d3274;
 }
-
 .pagination button.disabled {
   opacity: 0.5;
   cursor: not-allowed;

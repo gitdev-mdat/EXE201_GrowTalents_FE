@@ -1,302 +1,84 @@
-/* Tổng container */
+/* Layout chung giống các route Admin */
+/* refactor chữ theo Teacher */
+/* .container,
+.card {
+  font-family: "Roboto", sans-serif;
+  color: #2e3a59;
+  font-size: 0.95rem;
+} */
+
 .container {
-  padding: 20px;
-  background-color: #f5f7fa; /* Nền nhẹ */
-  min-height: 100vh; /* Đảm bảo chiếm toàn bộ chiều cao màn hình */
-  box-sizing: border-box;
-  overflow: hidden; /* Không cho phép cuộn */
+  padding: 1.5rem;
+  background-color: #f8f9fc;
+  min-height: 100vh;
 }
 
-.paper {
-  padding: 24px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 1rem;
 }
-
-.header h1 {
-  color: #1976d2;
-  font-size: 24px;
+/* .header h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #152259;
   margin: 0;
-}
+} */
 
-/* Thanh tìm kiếm và bộ lọc */
+/* search + filter */
 .filterContainer {
   display: flex;
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
-/* Ô tìm kiếm */
 .search {
   flex: 1;
-  padding: 12px 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 1rem;
-  color: #333;
-  background-color: #f9f9f9; /* Nền sáng */
-  transition: all 0.3s ease;
 }
 
-.search:focus {
-  outline: none;
-  border-color: #0084ff; /* Màu xanh khi focus */
-  box-shadow: 0 0 8px rgba(0, 132, 255, 0.3); /* Hiệu ứng sáng */
-}
-
-/* Bộ lọc */
 .filter {
-  padding: 12px 15px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 1rem;
-  background-color: #f9f9f9; /* Nền sáng */
-  color: #333;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 200px;
+  min-width: 140px;
 }
 
-.filter:hover {
-  border-color: #0084ff;
-  background-color: #e6f0ff; /* Màu sáng khi hover */
-}
-
-/* Hiệu ứng hover tổng quan */
-.filterContainer:hover {
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Bóng đổ mạnh hơn */
-}
-
-/* Bảng thông tin học sinh */
-.infoContainer {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  height: calc(
-    100vh - 150px
-  ); /* Đảm bảo bảng chiếm hầu hết chiều cao màn hình */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  overflow: hidden; /* Không có cuộn dọc */
-}
-
-.studentTable {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-}
-
-.studentTable th,
-.studentTable td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #eee;
-}
-
-.studentTable th {
-  background-color: #f5f5f5;
+/* table header*/
+:global(.MuiTableHead-root th) {
+  background-color: #f4f6fb;
   font-weight: 600;
-  color: #333;
+  padding: 10px;
 }
 
-.studentRow {
-  cursor: pointer;
-  transition: background-color 0.2s;
+/* table body cell */
+:global(.MuiTableBody-root td) {
+  padding: 10px;
 }
 
-.studentRow:hover {
-  background-color: #f9f9f9;
-}
-
-.studentImage {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
-  vertical-align: middle;
-}
-
-/* Cột chi tiết học sinh */
-.detailContainer {
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 400px; /* Chiều rộng tối đa */
-  height: calc(100vh - 150px); /* Đảm bảo chiều cao cột chi tiết vừa vặn */
-  box-sizing: border-box;
-  overflow: hidden; /* Không cuộn */
-}
-
-/* Phần chi tiết học sinh (bên phải) */
-.detailImage {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  margin-bottom: 15px;
-  display: block;
-  margin: 0 auto 15px;
-  object-fit: cover;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.detailName {
-  text-align: center;
-  margin-bottom: 20px !important;
-  color: #152259;
-  font-size: 1.8rem;
-  font-weight: bold;
-  line-height: 1.2;
-}
-
-/* Phần thông tin chi tiết (số điện thoại, địa chỉ, ngày sinh) */
+/* thông tin chi tiết trong dialog */
 .detailInfo {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 16px;
-  margin-bottom: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .detailInfoCard {
-  background: #f8f9fa;
-  padding: 16px;
-  border-radius: 8px;
-  border: 1px solid #e0e0e0;
+  width: calc(50% - 12px);
 }
 
-.label {
-  color: #666;
-  margin-bottom: 4px;
-  font-weight: 500;
-}
-
-/* Biểu tượng School */
-.schoolIcon {
-  margin-top: 20px;
-  font-size: 1rem; /* Kích thước chữ lớn hơn một chút */
-  font-weight: bold;
-  color: #fff;
-  background: linear-gradient(90deg, #0084ff, #0062cc); /* Hiệu ứng gradient */
-  padding: 10px 20px; /* Tăng kích thước nút */
-  border-radius: 25px; /* Bo tròn đầy đặn */
-  display: inline-flex; /* Hiển thị linh hoạt */
-  align-items: center; /* Căn giữa icon và chữ */
-  gap: 10px; /* Khoảng cách giữa icon và chữ */
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.schoolIcon:hover {
-  background: linear-gradient(90deg, #0062cc, #005bb5); /* Màu sắc khi hover */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Hiệu ứng nổi */
-}
-
-.schoolIcon i {
-  font-size: 1.5rem; /* Tăng kích thước icon */
-}
-
-.paginationContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.paginationButton {
-  padding: 8px 16px;
-  border: 1px solid #ddd;
-  background: white;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.paginationButton:hover {
-  background: #f0f0f0;
-}
-
-.pageNumbers {
-  display: flex;
-  gap: 5px;
-}
-
-/* Styles for the detail dialog */
-.detailInfoCard:hover {
-  transform: translateY(-3px); /* Hiệu ứng nổi khi hover */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Tăng bóng đổ */
-}
-
-/* Class management styles */
-.classManagement {
-  background: #f8f9fa;
-  padding: 20px;
-  border-radius: 8px;
-  border: 1px solid #e0e0e0;
-}
-
-.currentClasses {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
+/* chip hiển thị lớp */
 .classChip {
-  background-color: #e3f2fd;
-  color: #1976d2;
+  margin-right: 8px;
+  margin-bottom: 8px;
 }
 
 .addClassSection {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-/* Responsive styles */
-@media (max-width: 768px) {
-  .container {
-    padding: 16px;
-  }
-
-  .paper {
-    padding: 16px;
-  }
-
-  .header {
-    flex-direction: column;
-    gap: 16px;
-    align-items: flex-start;
-  }
-
-  .filterContainer {
-    flex-direction: column;
-  }
-
-  .filter {
-    width: 100%;
-  }
-
-  .detailInfo {
-    grid-template-columns: 1fr;
-  }
-
-  .studentTable {
-    display: block;
-    overflow-x: auto;
-  }
+  margin-top: 1rem;
 }

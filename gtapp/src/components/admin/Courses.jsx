@@ -71,97 +71,98 @@ const Courses = () => {
 
   return (
     <div className={styles.container}>
-      {/* Search + Filter */}
-      <div className={styles["search-section"]}>
-        <input
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Tìm theo tên"
-        />
-        <select
-          value={selectedStatus}
-          onChange={(e) => setSelectedStatus(e.target.value)}
-        >
-          <option value="Tất cả">Tất cả trạng thái</option>
-          <option value="ACTIVE">Đang diễn ra</option>
-          <option value="INACTIVE">Chưa bắt đầu</option>
-          <option value="COMPLETED">Đã hoàn thành</option>
-        </select>
-        <select
-          value={selectedType}
-          onChange={(e) => setSelectedType(e.target.value)}
-        >
-          <option value="Tất cả">Tất cả loại</option>
-          {Object.entries(CourseType).map(([k, v]) => (
-            <option key={k} value={k}>
-              {v}
-            </option>
-          ))}
-        </select>
-        <button onClick={handleAdd}>Thêm khóa học</button>
-      </div>
+      <div className={styles.card}>
+        {/* Search + Filter */}
+        <div className={styles["search-section"]}>
+          <input
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Tìm theo tên"
+          />
+          <select
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
+          >
+            <option value="Tất cả">Tất cả trạng thái</option>
+            <option value="ACTIVE">Đang diễn ra</option>
+            <option value="INACTIVE">Chưa bắt đầu</option>
+            <option value="COMPLETED">Đã hoàn thành</option>
+          </select>
+          <select
+            value={selectedType}
+            onChange={(e) => setSelectedType(e.target.value)}
+          >
+            <option value="Tất cả">Tất cả loại</option>
+            {Object.entries(CourseType).map(([k, v]) => (
+              <option key={k} value={k}>
+                {v}
+              </option>
+            ))}
+          </select>
+          <button onClick={handleAdd}>Thêm khóa học</button>
+        </div>
 
-      {/* LIST */}
-      <div className={styles["course-list"]}>
-        {currentCourses.map((c) => (
-          <div key={c.courseId} className={styles["course-card"]}>
-            <img
-              src={
-                c.imageUrl ||
-                "https://via.placeholder.com/300x200?text=No+Image"
-              }
-              alt={c.nameCourse}
-              className={styles.image}
-            />
-            <div className={styles.content}>
-              <div className={styles.title}>{c.nameCourse}</div>
-              <div className={styles.info}>Người tạo: {c.createdBy}</div>
-              <div className={styles.info}>Loại: {CourseType[c.type]}</div>
-              <div className={styles.info}>
-                Học phí: {c.tuitionFee.toLocaleString("vi-VN")} ₫
-              </div>
-              <div className={styles.description}>Mô tả: {c.description}</div>
-              <div className={styles.info}>
-                Thời lượng: {c.duration} phút/buổi
-              </div>
-              {/* <div className={styles.schedule}>
+        {/* LIST */}
+        <div className={styles["course-list"]}>
+          {currentCourses.map((c) => (
+            <div key={c.courseId} className={styles["course-card"]}>
+              <img
+                src={
+                  c.imageUrl ||
+                  "https://via.placeholder.com/300x200?text=No+Image"
+                }
+                alt={c.nameCourse}
+                className={styles.image}
+              />
+              <div className={styles.content}>
+                <div className={styles.title}>{c.nameCourse}</div>
+                <div className={styles.info}>Người tạo: {c.createdBy}</div>
+                <div className={styles.info}>Loại: {CourseType[c.type]}</div>
+                <div className={styles.info}>
+                  Học phí: {c.tuitionFee.toLocaleString("vi-VN")} ₫
+                </div>
+                <div className={styles.description}>Mô tả: {c.description}</div>
+                <div className={styles.info}>
+                  Thời lượng: {c.duration} phút/buổi
+                </div>
+                {/* <div className={styles.schedule}>
                 <FaClock className={styles.scheduleIcon} />
                 <button onClick={() => openAssignTeacherModal(c)}>
                   Phân công GV
                 </button>
               </div> */}
 
-              <div className={styles.actions}>
-                <label className={styles[`status-${c.status}`]}>
-                  {c.status}
-                </label>
-                <div className={styles["button-group"]}>
-                  <button
-                    className={styles["edit-button"]}
-                    onClick={() => handleEdit(c)}
-                  >
-                    <FaEdit /> Edit
-                  </button>
-                  <button
-                    className={styles["assign-button"]}
-                    onClick={() => openAssignTeacherModal(c)}
-                  >
-                    Phân công GV
-                  </button>
-                  <DeleteConfirm
-                    title="Xoá khoá học này?"
-                    onConfirm={async () => {
-                      await courseService.deleteCourse(c.courseId);
-                      fetchCourses();
-                    }}
-                  />
+                <div className={styles.actions}>
+                  <label className={styles[`status-${c.status}`]}>
+                    {c.status}
+                  </label>
+                  <div className={styles["button-group"]}>
+                    <button
+                      className={styles["edit-button"]}
+                      onClick={() => handleEdit(c)}
+                    >
+                      <FaEdit /> Edit
+                    </button>
+                    <button
+                      className={styles["assign-button"]}
+                      onClick={() => openAssignTeacherModal(c)}
+                    >
+                      Phân công GV
+                    </button>
+                    <DeleteConfirm
+                      title="Xoá khoá học này?"
+                      onConfirm={async () => {
+                        await courseService.deleteCourse(c.courseId);
+                        fetchCourses();
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-
       {/* Pagination */}
       <div className={styles.pagination}>
         <button

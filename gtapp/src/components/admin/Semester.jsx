@@ -12,7 +12,7 @@ import {
 } from "antd";
 import semesterService from "../../services/semesterService";
 import yearService from "../../services/yearService";
-
+import DateDDMMYYYY from "../reusable/DateDDMMYYYY";
 const Semester = () => {
   const [years, setYears] = useState([]); // [{ id, year }]
   const [selectedYear, setSelectedYear] = useState(null); // { id, year }
@@ -61,6 +61,7 @@ const Semester = () => {
     if (!newYear) return message.warning("Nhập năm học trước");
     try {
       // DTO BE: AcademicYearCreateRequestDTO { academicYear: Integer }
+      console.log("year: ", newYear);
       await yearService.create({ academicYear: Number(newYear) });
       message.success("Thêm năm học thành công");
       setNewYear("");
@@ -76,9 +77,10 @@ const Semester = () => {
       const payload = {
         yearId: selectedYear.id, // BE createSemester cần yearId (id của AcademicYear)
         name: values.name,
-        startDate: values.startDate.format("YYYY-MM-DD"),
-        endDate: values.endDate.format("YYYY-MM-DD"),
+        startDate: values.startDate.format("DD/MM/YYYY"),
+        endDate: values.endDate.format("DD/MM/YYYY"),
       };
+      console.log("payload: ", payload);
       await semesterService.create(payload);
       message.success("Thêm học kỳ thành công");
       await fetchSemesters(selectedYear.year); // reload theo NĂM

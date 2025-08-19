@@ -1,132 +1,107 @@
-import React, { useState, useEffect } from "react";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  Button,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Select,
-} from "@mui/material";
+import React, { useEffect } from "react";
+import { Modal, Form, Input, Select, DatePicker } from "antd";
+import moment from "moment";
 
+const { Option } = Select;
 const GENDERS = ["Nam", "Nữ", "Khác"];
 
 const StudentFormDialog = ({ open, onClose, onSubmit, initialData }) => {
-  const [form, setForm] = useState({
-    name: "",
-    dob: "",
-    gender: "Nam",
-    email: "",
-    phone: "",
-    address: "",
-  });
+  const [form] = Form.useForm();
 
   useEffect(() => {
     if (initialData) {
-      setForm({ ...initialData });
-    } else {
-      setForm({
-        name: "",
-        dob: "",
-        gender: "Nam",
-        email: "",
-        phone: "",
-        address: "",
+      form.setFieldsValue({
+        ...initialData,
+        dob: initialData.dob ? moment(initialData.dob) : null,
       });
+    } else {
+      form.resetFields();
     }
   }, [initialData, open]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(form);
+  const handleFinish = (values) => {
+    const payload = {
+      ...values,
+      dob: values.dob ? values.dob.format("YYYY-MM-DD") : "",
+    };
+    onSubmit(payload);
     onClose();
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>{initialData ? "Chỉnh sửa học sinh" : "Thêm học sinh mới"}</DialogTitle>
-      <form onSubmit={handleSubmit}>
-        <DialogContent dividers>
-          <TextField
-            label="Họ và tên"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            required
-          />
-          <TextField
-            label="Ngày sinh"
-            name="dob"
-            type="date"
-            value={form.dob}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            InputLabelProps={{ shrink: true }}
-            required
-          />
-          <FormControl fullWidth margin="normal">
-            <InputLabel>Giới tính</InputLabel>
-            <Select
-              name="gender"
-              value={form.gender}
-              label="Giới tính"
-              onChange={handleChange}
-              required
-            >
-              {GENDERS.map((g) => (
-                <MenuItem key={g} value={g}>{g}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <TextField
-            label="Email"
-            name="email"
-            type="email"
-            value={form.email}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            required
-          />
-          <TextField
-            label="Số điện thoại"
-            name="phone"
-            value={form.phone}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            required
-          />
-          <TextField
-            label="Địa chỉ"
-            name="address"
-            value={form.address}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            required
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose}>Hủy</Button>
-          <Button type="submit" variant="contained">
-            {initialData ? "Lưu" : "Thêm mới"}
-          </Button>
-        </DialogActions>
-      </form>
-    </Dialog>
+    <Modal
+      open={open}
+      title={initialData ? "Chỉnh sửa học sinh" : "Thêm học sinh mới"}
+      onCancel={onClose}
+      okText={initialData ? "Lưu" : "Thêm mới"}
+      onOk={() => form.submit()}
+      destroyOnClose
+    >
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={handleFinish}
+        initialValues={{ gender: "Nam" }}
+      >
+        <Form.Item
+          name="name"
+          label="Họ và tên"
+          rules={[{ required: true, message: "Bắt buộc" }]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          name="dob"
+          label="Ngày sinh"
+          rules={[{ required: true, message: "Bắt buộc" }]}
+        >
+          <DatePicker style={{ width: "100%" }} format="DD/MM/YYYY" />
+        </Form.Item>
+
+        <Form.Item
+          name="gender"
+          label="Giới tính"
+          rules={[{ required: true, message: "Bắt buộc" }]}
+        >
+          <Select>
+            {GENDERS.map((g) => (
+              <Option key={g} value={g}>
+                {g}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
+
+        <Form.Item
+          name="email"
+          label="Email"
+          rules={[
+            { required: true, message: "Bắt buộc" },
+            { type: "email", message: "Email không hợp lệ" },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          name="phone"
+          label="Số điện thoại"
+          rules={[{ required: true, message: "Bắt buộc" }]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          name="address"
+          label="Địa chỉ"
+          rules={[{ required: true, message: "Bắt buộc" }]}
+        >
+          <Input />
+        </Form.Item>
+      </Form>
+    </Modal>
   );
 };
 
-export default StudentFormDialog; 
+export default StudentFormDialog;
